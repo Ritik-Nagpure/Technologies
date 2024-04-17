@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>
+        Todo List
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <script>
+
+        function runOnLoad() {
+            createTable();
+        }
+
+        let counter = 0;
+        function addButton() {
+            let newVal = document.getElementById("todovalue").value;
+            if (newVal != "") {
+                counter++;                
+                let newId = counter;
+                let newElement = { value: newVal, status: 1 };
+                sessionStorage.setItem(newId, JSON.stringify(newElement));
+                document.getElementById("todovalue").value = "";
+            }
+            createTable();
+        }
+
+        function readLocalStorage() {
+            let notEmpty = true;
+            let resultList = [];
+
+            if (sessionStorage.length != 0) {
+                while (notEmpty) {
+                    for (i = 1; i < 100; i++) {
+                        let getData = sessionStorage.getItem(i);
+                        if (getData == null) {
+                        }
+                        else {
+                            let tempobj = JSON.parse(getData);
+                            let addInResultList = { id: i, value: tempobj.value, status: tempobj.status }
+                            resultList.push(addInResultList);
+                        }
+                    }
+                    notEmpty = false;
+                }
+            }
+            return resultList;
+        }
+
+        function isChecked(chkid) {
+            let toggleDataStatus = JSON.parse(sessionStorage.getItem(chkid));
+
+            if (toggleDataStatus.status == 0) {
+                toggleDataStatus.status = 1;
+            }
+            else {
+                toggleDataStatus.status = 0;
+            }
+            sessionStorage.setItem(chkid, JSON.stringify(toggleDataStatus));
+
+            createTable();
+        }
+
+        function createTable() {
+            let localList = updatelist();
+
+            let table = '<table><tr><th>Things I need to Do &#9996; </th></tr>';
+
+            for (i of localList) {
+                let currid = '<tr><td>' + i.id + '</td>';
+                let currval = '<td>' + i.value + '</td>';
+                const donestatus = '<td><span id="chk' + i.id + '" onclick= "isChecked(`' + i.id + '`)"> &#9989; </span></td></tr>'
+                table += '<tr><td><span id="chk' + i.id + '" onclick= "isChecked(`' + i.id + '`)"> &#9989; </span> <span id="chk' + i.id + '" onclick= "removeChecked(`' + i.id + '`)"> &#10060; </span>' + i.value + '</td></tr>'
+            }
+
+            table += "</table>";
+            document.getElementById("todoDisplay").innerHTML = table;
+        }
+
+        function updatelist() {
+            let localList = readLocalStorage();
+            for (i of localList) {
+                if (i.status == 0) {
+                    if (!String(i.value).includes("strike")) {
+                        i.value = "<strike>" + i.value + "</strike>";
+                    }
+                }
+                else {
+                    i.value = String(i.value).replace("<strike>", "");
+                    i.value = String(i.value).replace("</strike>", "");
+                }
+            }
+            return localList;
+        }
+
+        function removeChecked(delId) {
+            if (delId != null) {
+                sessionStorage.removeItem(delId);
+            }
+            createTable();
+        }
+
+
+    </script>
+
+</head>
+
+<body onload="runOnLoad()">
+    <div id="mainDiv">
+        <div id="todoDisplay">
+        </div>
+
+        <br />
+        <br />
+
+        <div style="display: flex; justify-content: space-between;">
+            <div>
+                <input type="text" id="todovalue" placeholder="Enter a Todo" height="25px" />
+            </div>
+
+            <div>
+                <h5 id="addButton" onclick="addButton()"
+                    style="background-color: rgb(47, 188, 47); border-radius: 10px; color: rgb(236, 230, 230);padding: 7px;">
+                    <b>Add Element</b>
+                </h5>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<style>
+    table {
+        font-family: cursive;
+        font-size: large;
+        background-color: rgb(225, 225, 221);
+        width: 100%;
+        padding: 50px;
+        text-align: left;
+        box-shadow: 2px 2px 3px;
+        border-radius: 2px;
+        border: solid 2px black;
+    }
+
+    table th {
+        font-size: xx-large;
+        padding: 5px;
+    }
+
+    button {
+        border-radius: 10px;
+        background-color: rgb(210, 210, 95);
+        font-size: 15px;
+        color: rgb(144, 118, 118);
+        padding: 5px;
+    }
+
+    #mainDiv {
+        padding-left: 20%;
+        padding-top: 5%;
+        padding-right: 20%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+    }
+
+
+    body {
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+        height: 100vh;
+    }
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+</style>
+
+</html>

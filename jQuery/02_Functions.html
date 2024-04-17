@@ -1,0 +1,44 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="Website.css">
+    <meta http-equiv="refresh" content="10">
+    <title>Selectors Demo</title>
+</head>
+
+<body>
+    <div>
+        <div>
+            This is an example of multiple events in jQuery and there samples:
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        console.log("ready");
+    });
+
+    $("#idselbut").click(function () {
+        $("#idsel").html("Hi !! This is modified with Tag Selector")
+    });
+
+    $(".classselbut").click(() => {
+        $(".classsel").html("Hi !! This is mofified by class selector.");
+    });
+
+    $('h3').click(() => {
+        $('h4').html("Hi !! This is modified by Element Selector.")
+    });
+
+    $('p').click(function () {
+        $(this).hide(); // this selector doen't work with arrow functions
+    });
+</script>
+
+</html>

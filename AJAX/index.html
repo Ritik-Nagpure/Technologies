@@ -1,0 +1,90 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AJAX Demo</title>
+
+
+    <!-- <meta http-equiv="refresh" content="10"> -->
+</head>
+
+<body>
+    <div class="app">
+        <div class="Heading">
+            <h1> AJAX</h1>
+        </div>
+        <div class="content">
+            <ul>
+                <li>
+                    AJAX : Asynchronous JavaScript And XML.
+                </li>
+                <li>
+                    AJAX is not a programming language it just uses a combination of:
+                    <ul>
+                        <li>
+                            A browser built-in XMLHttpRequest object (to request data from a web server)
+                        </li>
+                        <li>
+                            JavaScript and HTML DOM (to display or use the data)
+
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    AJAX allows web pages to be updated asynchronously by exchanging data with a web server behind the
+                    scenes. This means that it is possible to update parts of a web page, without reloading the whole
+                    page.
+                </li>
+                <li>
+                    AJAX is a misleading name. AJAX applications might use XML to transport data, but it is equally
+                    common to
+                    transport data as plain text or JSON text.
+                </li>
+            </ul>
+        </div>
+        <div>
+            <input id="search" placeholder="Enter Page Number 1 or 2"/>
+            <button id="getbutton"> GET </button>
+        </div>
+        <div>
+            <div>
+                <table id="ajaxdata">
+
+                </table>
+            </div>
+        </div>
+        <div>
+            <input id="postdata" placeholder="Enter your Message/ID"/>
+            <button id="postbutton"> POST </button>
+            <button id="getPost"> Show POST </button>
+        </div>
+        <div id="showPost">
+
+        </div>
+    </div>
+    <script src="01_Ajax.js"></script>
+    <script src="02_More_Ajax.js"></script>
+</body>
+
+<style>
+    body {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+
+        color: white;
+        background-color: rgb(88, 144, 180);
+    }
+
+    .app {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+</style>
+
+</html>

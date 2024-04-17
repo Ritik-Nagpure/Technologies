@@ -1,0 +1,40 @@
+
+**What is AI?
+	Artificial intelligence (AI) is the simulation of human intelligence processes by machines, especially computer systems. These processes include learning (the acquisition of information and rules for using the information), reasoning (using rules to reach approximate or definite conclusions) and self-correction. Particular applications of AI include expert systems, speech recognition and machine vision.
+Arend Hintze, an assistant professor of integrative biology and computer science and engineering at Michigan State University, categorizes AI into four types, from the kind of AI systems that exist today to sentient systems, which do not yet exist. His categories are as follows:
+
+Type 1: Reactive machines. An example is Deep Blue, the IBM chess program that beat Garry Kasparov in the 1990s. Deep Blue can identify pieces on the chess board and make predictions, but it has no memory and cannot use past experiences to inform future ones. It analyzes possible moves -- its own and its opponent -- and chooses the most strategic move. Deep Blue and Google's AlphaGO were designed for narrow purposes and cannot easily be applied to another situation.
+Type 2: Limited memory. These AI systems can use past experiences to inform future decisions. Some of the decision-making functions in self-driving cars are designed this way. Observations inform actions happening in the not-so-distant future, such as a car changing lanes. These observations are not stored permanently.
+Type 3: Theory of mind. This psychology term refers to the understanding that others have their own beliefs, desires and intentions that impact the decisions they make. This kind of AI does not yet exist.
+Type 4: Self-awareness. In this category, AI systems have a sense of self, have consciousness. Machines with self-awareness understand their current state and can use the information to infer what others are feeling. This type of AI does not yet exist.
+
+** What is Machine Learning?
+	ML works with data and processes it to discover patterns that can be later used to analyse new data. ML usually relies on specific representation of data, a set of “features” that are understandable for a computer. For example, if we are talking about text it should be represented through the words it contains or some other characteristics such as length of the text, number of emotional words etc. This presentation depends on the task you are dealing with and is typically referred to as “feature extraction”.
+
+Types of ML
+
+All ML tasks can be classified in several categories, the main ones are:
+
+Supervised machine learning algorithms can apply what has been learned in the past to new data using labeled examples to predict future events. Starting from the analysis of a known training dataset, the learning algorithm produces an inferred function to make predictions about the output values. The system is able to provide targets for any new input after sufficient training. The learning algorithm can also compare its output with the correct, intended output and find errors in order to modify the model accordingly.
+unsupervised machine learning algorithms are used when the information used to train is neither classified nor labeled. Unsupervised learning studies how systems can infer a function to describe a hidden structure from unlabeled data. The system doesn’t figure out the right output, but it explores the data and can draw inferences from datasets to describe hidden structures from unlabeled data.reinforcement learning.
+Reinforcement machine learning algorithms is a learning method that interacts with its environment by producing actions and discovers errors or rewards. Trial and error search and delayed reward are the most relevant characteristics of reinforcement learning. This method allows machines and software agents to automatically determine the ideal behavior within a specific context in order to maximize its performance. Simple reward feedback is required for the agent to learn which action is best; this is known as the reinforcement signal.
+
+********************************************************************************************************************************************
+
+R-programming
+	intsallation:-
+			first install R-programming software developed by R- core team. its free software.freely download 			and use. then install R-studio. use R-studio for proramming instead of R programmer, R studio is 			more user friendly.
+
+	developed by: 
+			Robert gentleman and Ross ihaka
+	
+	features:
+			*line by line compilation and whole code compilation.
+			*user friendly and free for everyone.
+			*compatible with every other programming software including python, C++, html,java , javascript, 				 etc
+			*gives no error while compilling. ie runs even after error are present but gives idea about the 				 error.
+	codes are available on drive.
+
+R- programming syllabus:
+**as per the modules present in the r programing folder
+**E\study\r program

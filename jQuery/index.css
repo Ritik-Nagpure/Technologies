@@ -1,0 +1,52 @@
+body {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    color: white;
+    background-color: rgb(88, 144, 180);
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.notes {
+    min-height: 350px;
+    width: 90%;
+    margin: 20px;
+
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+
+    border: solid 3px black;
+}
+
+.section-heading {
+    height: 30px;
+    padding: 5px;
+    background-color: orange;
+}
+
+.section-content {
+    padding: 5px;
+    background-color: pink;
+    height: 100%;
+}
+
+.navButton {
+    background: transparent;
+    height: 100%;
+    border: solid 0px;
+
+    font-family: Arial;
+    font-size: large;
+}
+

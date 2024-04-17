@@ -1,0 +1,47 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(132, 132, 132);
+    color: rgb(255, 255, 255);
+}
+
+.app{
+    min-height: 90%;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+#header{
+    height: 5%;
+    background-color: rgb(134, 198, 254);
+    color: rgb(0, 0, 0);
+
+    font-size: x-large;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#footer{
+    height: 5%;
+    margin-bottom: 0%;
+    background-color: rgb(134, 198, 254);
+    color: rgb(0, 0, 0);
+
+    font-size: x-large;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}

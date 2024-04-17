@@ -1,0 +1,133 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- <meta http-equiv="refresh" content="2"> -->
+
+    <title>Working with APIs</title>
+
+    <script src="01_Web History.js"></script>
+    <script src="02_Web Storage.js"></script>
+    <script src="03_Web Worker.js"></script>
+    <script src="04_Geolocation API.js"></script>
+</head>
+
+<body>
+    <div class="maindiv">
+        <div>
+            <h1> Web Worker API Demo</h1>
+            <h3> Count :
+                <span id="worker">
+                </span>
+            </h3>
+            <button onclick="startWorker()"> Start </button>
+            &nbsp;
+            &nbsp;
+            <button onclick="stopWorker()"> Stop </button>
+        </div>
+        <div id="storage">
+            <h1> Storage API Demo [ Local , Session ]</h1>
+            <div id="local">
+                <input id="localkey" type="text" placeholder=" Enter Key" />
+                <input id="localval" type="text" placeholder=" Enter Value" />
+                <span id="localshow"></span>
+                <button onclick="setlocal()"> set </button>
+                <button onclick="getlocal()"> get </button>
+            </div>
+            <br>
+            <h3 id="localget"></h3>
+            <br>
+            <div id="session">
+
+
+                <input id="sessionkey" type="text" placeholder=" Enter Key" />
+                <input id="sessionval" type="text" placeholder=" Enter Value" />
+                <span id="localshow"></span>
+                <button onclick="setsession()"> set </button>
+                <button onclick="getsession()"> get </button>
+            </div>
+            <br>
+            <h3 id="sessionget"></h3>
+            <br>
+
+
+        </div>
+        <div>
+            <h1> Geolocation API Demo</h1>
+            <button onclick="getLocation()"> Show</button>
+            <br>
+            <br>
+            <div id="geolocation"> </div>
+        </div>
+        <div>
+            <button onclick="goback()"> BACK </button>
+            <button onclick="gofront()"> forward </button>
+            <button onclick="go2backs()"> 2 BACKS </button>
+        </div>
+        <button id="nextpage">
+            <a href="next.html" target="_blank"> HTTP requests test</a>
+        </button>
+    </div>
+</body>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        color: white;
+    }
+
+    .maindiv {
+        height: 100%;
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    button {
+        height: 40px;
+        width: 100px;
+        border-radius: 40px;
+        color: rgb(6, 6, 6);
+
+        background-color: rgb(244, 198, 142);
+        border: solid 0px;
+        box-shadow: 1px 1px 20px rgb(243, 204, 157);
+
+        font-size: 18px;
+        font-weight: bolder;
+        font-family: Georgia;
+    }
+
+    input {
+        height: 40px;
+        width: 250px;
+        border-radius: 40px;
+        border: solid 0px;
+        padding: 5px;
+        color: rgb(6, 6, 6);
+
+        background-color: rgb(242, 236, 228);
+        font-size: 18px;
+        font-weight: bolder;
+        font-family: Georgia;
+    }
+
+    #nextpage {
+        width: 220px;
+    }
+
+    a {
+        color: #b922b9;
+        text-decoration: none;
+    }
+</style>
+
+</html>

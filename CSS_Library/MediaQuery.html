@@ -1,0 +1,103 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="20">
+
+    <title>Media Query Demo </title>
+
+    <script></script>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            background-color: rgb(122, 162, 198);
+            color: white;
+        }
+
+        .app {
+            padding: 0px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hammydp {
+            max-height: 80%;
+            max-width: 80%;
+        }
+
+        .story{
+            width: 95%;
+        }
+
+        @media only screen and (max-width: 500px) {
+            body {
+                background-color: black;
+                color: white;
+            }
+
+            img {
+                margin: 20px;
+                padding: 10px;
+                max-height: 50%;
+                max-width: 50%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="app">
+        <h1> Hammy: the Hamster</h1>
+        <img class="hammydp"
+            src="https://miro.medium.com/v2/resize:fit:828/format:webp/1*6-8Tl0q077j9-KsYSghITw.jpeg" />
+        <div class="story">
+            <h2>Once upon a time, a large ad agency had a nice big client*.</h2>
+            <p>
+                It was in the middle of summer, and capacity was way down when the call came from on high. Immediately
+                produce and deliver two design concepts for an email marketing campaign. Two digital art directors were
+                tasked to come up with a concept idea each, and present it to the customer the day after.
+            </p>
+            <p>
+                I don’t know what possessed her to do it. I really don’t. I think she was a bit fed up. I know we both
+                were. I mean, we had a lot on our plates, especially her.
+            </p>
+            <p>
+                I made a concept that was safe and sane, on the verge of boring. She made a concept that had hamsters in
+                it. We presented our concepts to the project managers, hours before the client presentation. The project
+                managers actually looked pale when they saw the hamster boards. This was hours before the presentations,
+                we absolutely had to present two tracks. No other creatives were to be had, even if there had been time.
+
+            </p>
+            <p>
+                Moreover, sensing that the hamster track was met with some skepticism my colleague threw her hands in
+                the air and growled ‘-You got your concept. There. But I don’t have time for this anymore. I got work to
+                do.’ And she stomped off.
+
+            </p>
+            <p>
+                Leaving yours truly to present both tracks. Now, it might be important to stress the fact that this
+                client wasn’t some nice, hip consumer brand. No, this was heavy duty B2B known for being extremely
+                conservative when it came to creative, and also our biggest client. This was a pickle. Because now I had
+                to proudly present my hamster idea to the client as if it was my own beloved brainchild. I did some
+                research, and found a nice big doctoral thesis that cute animals are not to be underestimated in
+                advertising. I included this document, some 60 pages of it, with the PDF:s of the creative. Couldn’t
+                hurt, i thought.
+            </p>
+            <p>
+                And so came the time of the pitch. The team piled in to the little stuffy teleconference room I was
+                convinced would soon reek of roasted hamster. Roasted Art Director, for that matter. The first track,
+                the conservative idea i had made, resulted in a resounding ‘meh’ from the client. Their gist was that it
+                was ‘…ok, I guess, not very surprising…’. At least it passed, although not with a big margin.
+            </p>
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

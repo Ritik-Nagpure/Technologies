@@ -1,0 +1,181 @@
+<html>
+
+<head>
+    <title>
+        Todo List
+    </title>
+    <script>
+        let list = [
+            { id: 1, value: "First Element", status: 1 },
+            { id: 2, value: "Second Element", status: 1 },
+            { id: 3, value: "Third Element", status: 1 },
+        ];
+
+        function addButton() {
+            let newVal = document.getElementById("todovalue").value;
+            if (newVal != "") {
+                let newId = list.length + 1;
+                let newElement = { id: newId, value: newVal };
+                list.push(newElement);
+                document.getElementById("todovalue").value = "";
+            }
+            createTable();
+        }
+
+        function removeButton() {
+            let delId = document.getElementById("todoid").value;
+            let indexToDelete = 0;
+            if (delId != "") {
+                for (i of list) {
+                    console.log(indexToDelete);
+                    if (i.id == delId) {
+                        break;
+                    }
+                    indexToDelete++;
+                }
+                console.log(indexToDelete);
+                list.splice(indexToDelete, 1);
+                document.getElementById("todoid").value = "";
+            }
+            updateIds();
+            createTable();
+        }
+
+        function updateIds() {
+            let counter = 1;
+            for (i of list) {
+                i.id = counter;
+                counter++;
+            }
+        }
+
+        function updatelist() {
+            for (i of list) {
+                if (i.status == 0) {
+                    if (!String(i.value).includes("strike")) {
+                        i.value = "<strike>" + i.value + "</strike>";
+                    }
+                }
+                else {
+                    i.value = String(i.value).replace("<strike>", "");
+                    i.value = String(i.value).replace("</strike>", "");
+                }
+            }
+        }
+
+        function isChecked(chkid) {
+            let gotid = "chk" + chkid;
+            if (list[chkid - 1].status == 0) {
+                list[chkid - 1].status = 1;
+            }
+            else {
+                list[chkid - 1].status = 0;
+            }
+            console.log(chkid);
+            createTable();
+        }
+
+        function createTable() {
+            updatelist();
+            let table = '<table><tr><th>ID</th><th>Name</th><th>Done</th></tr><tr>';
+
+            for (i of list) {
+                let currid = '<tr><td>' + i.id + '</td>';
+                let currval = '<td>' + i.value + '</td>';
+                const donestatus = '<td><span id="chk' + i.id + '" onclick= "isChecked(`' + i.id + '`)">Toggle &#9989;</span></td></tr>'
+                table += currid + currval + donestatus;
+            }
+
+            table += "</table>";
+            document.getElementById("myList").innerHTML = table;
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <center>
+            <div id="AppTitle">
+                <span>Today's Todo List</span>
+            </div>
+        </center>
+
+        <div style="display: flex; justify-content:space-between; padding-left: 30px; padding-right: 30px;">
+            <div>
+                <center>
+                    <input type="textarea" id="todovalue" size="30" placeholder="Enter a Todo" required />
+                    <h3 id="addButton" onclick="addButton()"
+                        style="background-color: rgb(47, 188, 47); border-radius: 5px; color: rgb(236, 230, 230); padding: 10px;">
+                        <b>Add Element</b>
+                    </h3>
+                </center>
+
+            </div>
+            <div>
+                <center>
+                    <input type="textarea" id="todoid" size="30" placeholder="Enter a Todo ID to Delete" required />
+
+                    <b>
+                        <h3 onclick="removeButton()"
+                            style="background-color: rgb(188, 47, 47); border-radius: 5px; color: rgb(236, 230, 230); padding: 10px;">
+                            Remove Element
+                        </h3>
+                    </b>
+                </center>
+            </div>
+        </div>
+        <button onclick="createTable()">Click here to Refresh</button>
+        <br /><br />
+        <center>
+            <div id="myList">
+                <b>
+                    <h1>Today's Todo List will be displayed here </h1>
+                </b>
+            </div>
+
+        </center>
+    </div>
+</body>
+
+
+<style>
+    table {
+        font-family: cursive;
+        font-size: large;
+        background-color: rgb(214, 248, 232);
+        width: 100%;
+        padding: 2px;
+        text-align: center;
+        border: solid 2px black;
+        box-shadow: 1px 1px 2px;
+    }
+
+    table th {
+        font-size: x-large;
+        border: solid 1px black;
+        padding: 3px;
+        background-color: rgb(25, 201, 122);
+    }
+
+    table td {
+        border: solid 1px black;
+    }
+
+
+    button {
+        border-radius: 5px;
+        background-color: rgb(210, 210, 95);
+        font-size: 15px;
+        color: rgb(144, 118, 118);
+        padding: 5px;
+    }
+
+    h3:hover {
+        background-color: #a7a7a7;
+        size: 80;
+    }
+</style>
+
+</html>

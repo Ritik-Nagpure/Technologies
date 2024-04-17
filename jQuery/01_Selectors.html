@@ -1,0 +1,63 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="Website.css">
+    <meta http-equiv="refresh" content="10">
+    <title>Selectors Demo</title>
+</head>
+
+<body>
+    <div>
+        Use jQuery Script below body that is ideal. 
+        <a href="https://www.w3schools.com/jquery/jquery_selectors.asp" target="_blank">Click here to know more about Selectors</a>
+        <br>
+        <h2> Syntax: $(selector).action</h2> 
+        
+    </div>
+    <div>
+        <p id="idsel"> This is Paragraph tag</p>
+        <button id="idselbut"> Tag Selector</button>
+    </div>
+    <div>
+        <h4> This is Paragraph tag</h4>
+        <h3> Element Selector</h3>
+    </div>
+    <div>
+        <p class="classsel"> This is Paragraph tag</p>
+        <p class="classsel"> This is Paragraph tag</p>
+        <p class="classsel"> This is Paragraph tag</p>
+        <button class="classselbut"> Class Selector</button>
+    </div>
+    <div>
+
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        console.log("ready");
+    });
+
+    $("#idselbut").click(function () {
+        $("#idsel").html("Hi !! This is modified with Tag Selector")
+    });
+
+    $(".classselbut").click(() => {
+        $(".classsel").html("Hi !! This is mofified by class selector.");
+    });
+
+    $('h3').click(() => {
+        $('h4').html("Hi !! This is modified by Element Selector.")
+    });
+
+    $('p').click(function () {
+        $(this).hide(); // this selector doen't work with arrow functions
+    });
+</script>
+
+</html>

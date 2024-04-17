@@ -1,0 +1,106 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="20">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magic/1.1.0/magic.min.css"
+        integrity="sha512-5KJYgPF7pe0cdJAg/9X6UdHE5cN9fqjjIi8ASyIqlcsKZdHVouNRcweLGEdtrIJJxMn+GqwJBjAurCjWOvEdJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Catch me</title>
+
+    <script>
+        function dis() {
+            alert("You win");
+        }
+
+        function loaded() {
+            let bt = document.getElementById("ghost");
+            bt.style.setProperty("--l", "50%");
+            bt.style.setProperty("--t", "50%");
+        }
+
+        function homove() {
+            let bt = document.getElementById("ghost");
+
+            let left = (Math.random() * 90).toPrecision(2) + "%";
+            let top = (Math.random() * 90).toPrecision(2) + "%";
+
+            console.log(left, top);
+            bt.classList.add("animove")
+            bt.style.setProperty("--l", left);
+            bt.style.setProperty("--t", top);
+        }
+    </script>
+
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            background-color: black;
+            color: rgb(255, 255, 255);
+        }
+
+        #but {
+            background-color: transparent;
+
+            font-size: 30px;
+        }
+
+        #ghost {
+            height: 50px;
+            width: 100px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: solid 0px;
+            border-radius: 20px;
+            box-shadow: 1px 1px 5px white, -1px -1px 5px white;
+            background-color: rgb(192, 190, 190);
+            color: black;
+            position: absolute;
+            animation-fill-mode: forwards;
+
+            left: var(--l);
+            top: var(--t);
+
+        }
+
+        .animove {
+            animation-name: bmove;
+            animation-duration: 5s;
+        }
+
+
+        @keyframes bmove {
+            to {
+                left: var(--l);
+                top: var(--t);
+            }
+        }
+    </style>
+</head>
+
+<body onload="loaded()">
+    <div>
+        <button onmouseover="homove()" onclick="dis()" id="ghost">
+            <p id="but">
+                here !
+            </p>
+        </button>
+    </div>
+</body>
+
+</html>

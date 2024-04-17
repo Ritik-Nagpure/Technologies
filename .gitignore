@@ -1,0 +1,55 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore npm debug log files
+npm-debug.log*
+
+# Ignore environment-specific configuration files
+.env
+
+# Ignore any local configuration files that may contain sensitive information
+config.js
+
+# Ignore generated files
+dist/
+build/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
+
+
+# Ignore Python virtual environment
+venv/
+
+# Ignore Java build artifacts
+target/
+build/
+
+# Ignore Spring boot specific files
+*.jar
+*.war
+
+# Ignore JavaScript build artifacts
+dist/
+build/
+
+# Ignore TypeScript build artifacts
+dist/
+
+# Ignore IDE and editor-specific files
+.vscode/
+.idea/
+*.iml
+
+# Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db

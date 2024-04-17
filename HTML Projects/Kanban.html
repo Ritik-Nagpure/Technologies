@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <meta http-equiv="refresh" content="200"><!--  -->
+    <link rel="icon" type="image/x-icon" href="fav.icon">
+
+    <title>
+        Kanban Board
+    </title>
+
+    <style>
+        body {
+            background: linear-gradient(-45deg, #be5839, #af2a5d, #1c8bb3, #2cb394);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            height: 100vh;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        #mainDiv {
+            height: 90%;
+            padding-left: 3%;
+            padding-right: 3%;
+            padding-top: 5%;
+            padding-bottom: 5%;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+        }
+
+        .vertical-line {
+            width: 0px;
+            border-left: 2px solid rgb(182, 176, 176);
+            height: 100%;
+            float: left;
+        }
+
+        .board-section {
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            padding: 1%;
+        }
+
+        .board-heading {
+            color: white;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            border-bottom: 1px solid whitesmoke;
+        }
+
+        .board-card {
+            height: fit-content;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3%;
+            margin: 5px;
+            background-color: rgb(215, 215, 215);
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgb(122, 120, 120);
+        }
+
+        .board-section #New .board-card {
+            background-color: rgb(251, 178, 178);
+        }
+
+        .board-section #Planning .board-card {
+            background-color: rgb(253, 203, 133);
+        }
+
+        .board-section #In-Progress .board-card {
+            background-color: rgb(241, 250, 183);
+        }
+
+        .board-section #Done .board-card {
+            background-color: rgb(174, 246, 161);
+        }
+
+        header {
+            padding-top: 1%;
+            color: rgb(239, 218, 218);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 40px;
+            font-weight: bolder;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        button :hover{
+            opacity: 0.7;
+        }
+
+        #createTaskButton {
+            border-radius: 10px;
+            font-size: 30px;
+            color: rgb(189, 185, 185);
+            background: transparent;
+            border: 0px;
+        }
+
+        #cancelButton {
+            border-radius: 10px;
+            font-size: 25px;
+            opacity: 0.8;
+            color: rgb(189, 185, 185);
+            background: transparent;
+            border: 0px;
+        }
+
+        #addTaskButton {
+            width: 70%;
+            background-color: rgb(48, 192, 48);
+
+            color: white;
+            font-size: large;
+
+            border-radius: 20px;
+            box-shadow: 2px 2px 10px rgb(120, 119, 119);
+            box-sizing: content-box;
+        }
+
+        .loginPopup {
+            position: relative;
+            text-align: center;
+            width: 100%;
+        }
+
+        .formPopup {
+            display: none;
+            position: fixed;
+            left: 45%;
+            top: 5%;
+            transform: translate(-50%, 5%);
+            border-radius: 23px;
+            border: 3px solid #999999;
+            z-index: 9;
+        }
+
+        .formContainer {
+            max-width: 400px;
+            padding: 20px;
+            background-color: whitesmoke;
+            border-radius: 20px;
+        }
+
+        #task,
+        #desc {
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 20px 0;
+            border: none;
+            background: #e2e2e2;
+            border-radius: 15px;
+        }
+
+        #form-heading {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            font-size: 25px;
+            color: cornflowerblue;
+        }
+    </style>
+
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        let taskCardId;
+        function drag(ev) {
+            ev.dataTransfer.setData("text/html", ev.target.id);
+            taskCardId = ev.target.id;
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            let data = ev.dataTransfer.getData("text/html");
+            ev.target.appendChild(document.getElementById(data));
+            let currSectionId = ev.target.id;
+            updateCardData(taskCardId, currSectionId);
+            taskCardId = "";
+        }
+
+        function updateCardData(cardid, sectionid) {
+            for (i of list) {
+                if (i.id == cardid) {
+                    i.state = sectionid;
+                }
+            }
+        }
+
+        function openForm() {
+            document.getElementById("popupForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("popupForm").style.display = "none";
+        }
+
+        let list = [
+            { id: 1, title: "First Element", state: "New", content: "" },
+            { id: 2, title: "Second Element", state: "Done", content: "" },
+            { id: 3, title: "Third Element", state: "New", content: "" },
+            { id: 4, title: "Fourth Element", state: "Planning", content: "" },
+        ];
+
+        function createTask() {
+            let ntitle = document.getElementById("task").value;
+            let ndesc = document.getElementById("desc").value;
+            addtask(ntitle, ndesc);
+
+            document.getElementById("task").value = "";
+            document.getElementById("desc").value = "";
+            closeForm();
+        }
+
+        function addtask(ntitle, ndesc) {
+            if (ntitle != "" && ndesc != "") {
+                let newId = list.length + 1;
+                let newElement = { id: newId, title: ntitle, state: "New", content: ndesc };
+                list.push(newElement);
+                console.log(list);
+
+            }
+            refreshBoard();
+        }
+
+        function removeChecked(delId) {
+            let indexToDelete = 0;
+            if (delId != "") {
+                for (i of list) {
+                    console.log(indexToDelete);
+                    if (i.id == delId) {
+                        break;
+                    }
+                    indexToDelete++;
+                }
+                console.log(indexToDelete);
+                list.splice(indexToDelete, 1);
+            }
+            updateIds();
+            refreshBoard();
+        }
+
+        function updateIds() {
+            let counter = 1;
+            for (i of list) {
+                i.id = counter;
+                counter++;
+            }
+        }
+
+
+        function runOnLoad() {
+            refreshBoard();
+        }
+
+        function refreshBoard() {
+            clearBoard();
+            for (i of list) {
+                let data, val;
+                switch (i.state) {
+                    case "New":
+                        data = document.getElementById("New");
+                        val = createCard(i);
+                        data.innerHTML += val;
+                        break;
+
+                    case "Done":
+                        data = document.getElementById("Done");
+                        val = createCard(i);
+                        data.innerHTML += val;
+                        break;
+
+                    case "Planning":
+                        data = document.getElementById("Planning");
+                        val = createCard(i);
+                        data.innerHTML += val;
+                        break;
+
+                    case "In-Progress":
+                        data = document.getElementById("In-Progress");
+                        val = createCard(i);
+                        data.innerHTML += val;
+                        break;
+
+                    default:
+                        console.log(" unable to work with card : ", i);
+                }
+            }
+        }
+
+        function createCard(i) {
+            let card = `<div id="` + i.id + `" class="board-card" draggable="true" ondragstart="drag(event)"><h3>` + i.title + `</h3><p>` + i.content + `</p></div>`;
+
+            return card;
+        }
+
+        function clearBoard() {
+            document.getElementById("New").innerHTML = "";
+            data = document.getElementById("Done").innerHTML = "";
+            data = document.getElementById("Planning").innerHTML = "";
+            document.getElementById("In-Progress").innerHTML = "";
+        }
+    </script>
+
+</head>
+
+<body onload="runOnLoad()">
+    <header>
+        My Kanban Board
+    </header>
+    <div id="mainDiv">
+        <div class="board-section">
+            <button id="createTaskButton" onclick="openForm()">
+                <h1 class="board-heading">
+                    New
+                </h1>
+            </button>
+            <div id="New" ondrop="drop(event)" ondragover="allowDrop(event)" style="width: 100%; height: 100%;">
+
+            </div>
+        </div>
+
+        <div class="vertical-line"></div>
+
+        <div class="board-section">
+            <h1 class="board-heading">Planning</h1>
+            <div id="Planning" ondrop="drop(event)" ondragover="allowDrop(event)" style="width: 100%; height: 100%;">
+
+            </div>
+        </div>
+
+        <div class="vertical-line"></div>
+
+        <div class="board-section">
+            <h1 class="board-heading">Progress</h1>
+            <div id="In-Progress" ondrop="drop(event)" ondragover="allowDrop(event)" style="width: 100%; height: 100%;">
+
+            </div>
+        </div>
+
+        <div class="vertical-line"></div>
+
+        <div class="board-section">
+            <h1 class="board-heading">Done</h1>
+            <div id="Done" ondrop="drop(event)" ondragover="allowDrop(event)" style="width: 100%; height: 100%;">
+
+            </div>
+        </div>
+    </div>
+    <div class="loginPopup">
+        <div class="formPopup" id="popupForm">
+            <div class="formContainer">
+                <h2 id="form-heading">
+                    Create a Task
+                    <button type="button" id="cancelButton" onclick="closeForm()">&#10060;</button>
+                </h2>
+
+                <label for="title">
+                    <strong>Title</strong>
+                </label>
+                <input type="text" id="task" placeholder="Task Title" name="title" required>
+
+                <label for="description">
+                    <strong>Description</strong>
+                </label>
+                <textarea id="desc" placeholder="Elaborate your idea" name="desc" required></textarea>
+                <button id="addTaskButton" onclick="createTask()">Add Task</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

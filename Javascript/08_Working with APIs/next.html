@@ -1,0 +1,80 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- <meta http-equiv="refresh" content="2"> -->
+
+    <title>Working with APIs</title>
+
+    <script src="05_XMLHttpRequest.js"></script>
+    <script src="06_Fetch API.js"></script>
+</head>
+
+<body>
+    <div class="maindiv">
+        <div>
+            <button onclick="getjoke()"> HTTP GET</button>
+            <div class="xhr" id="xhr"></div>
+        </div>
+
+        <div>
+            <button onclick="fetchjoke()"> Fetch</button>
+            <div class="fetch" id="fetch"></div>
+        </div>
+
+
+    </div>
+</body>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        color: white;
+    }
+
+    .maindiv {
+        height: 100%;
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+
+    button {
+        height: 40px;
+        width: 100px;
+        border-radius: 40px;
+        color: rgb(6, 6, 6);
+
+        background-color: rgb(244, 198, 142);
+        border: solid 0px;
+        box-shadow: 1px 1px 20px rgb(243, 204, 157);
+
+        font-size: 18px;
+        font-weight: bolder;
+        font-family: Georgia;
+    }
+
+    input {
+        height: 40px;
+        width: 250px;
+        border-radius: 40px;
+        border: solid 0px;
+        padding: 5px;
+        color: rgb(6, 6, 6);
+
+        background-color: rgb(242, 236, 228);
+        font-size: 18px;
+        font-weight: bolder;
+        font-family: Georgia;
+    }
+</style>
+
+</html>

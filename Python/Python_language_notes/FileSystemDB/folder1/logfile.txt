@@ -1,0 +1,18 @@
+2023-05-03 13:47:53,066 - DEBUG - start of program
+2023-05-03 13:47:53,066 - WARNING - calling function factorial
+2023-05-03 13:47:53,067 - ERROR - start of function
+2023-05-03 13:47:53,067 - INFO - value supplied is 4
+2023-05-03 13:47:53,067 - DEBUG - factorial Calculated is 1
+2023-05-03 13:47:53,067 - DEBUG - factorial Calculated is 2
+2023-05-03 13:47:53,067 - DEBUG - factorial Calculated is 6
+2023-05-03 13:47:53,067 - DEBUG - factorial Calculated is 24
+2023-05-03 13:47:53,067 - CRITICAL - end of program
+2023-05-19 10:41:14,161 - DEBUG - start of program
+2023-05-19 10:41:14,162 - WARNING - calling function factorial
+2023-05-19 10:41:14,162 - ERROR - start of function
+2023-05-19 10:41:14,163 - INFO - value supplied is 4
+2023-05-19 10:41:14,163 - DEBUG - factorial Calculated is 1
+2023-05-19 10:41:14,163 - DEBUG - factorial Calculated is 2
+2023-05-19 10:41:14,163 - DEBUG - factorial Calculated is 6
+2023-05-19 10:41:14,163 - DEBUG - factorial Calculated is 24
+2023-05-19 10:41:14,163 - CRITICAL - end of program
