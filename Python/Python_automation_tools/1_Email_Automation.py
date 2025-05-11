@@ -12,13 +12,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 
-user_var = 'ritik.r-nagpure@capgemini.com'
-pass_var = 'Valardohaeris@1'  # ==> Email password
+user_var = ''
+pass_var = ''  # ==> Email password
 subject = "Pyhton bot SMTP test"
 message = "Hi,\nThis mail is sent from Py Bot."
 
-user_varg = 'ritiknagpure@gmail.com'
-pass_varg = 'tknn uwoz alhq foif'
+user_varg = ''
+pass_varg = ''
 
 
 def send_email_using_smtplib():
@@ -126,7 +126,7 @@ def interactgmail():
 
 
 def send_email_using_smtplib_cg():
-    conn = smtplib.SMTP('de-mucdssmtp01.corp.capgemini.com', 25)
+    conn = smtplib.SMTP('', 25)
     # print(type(conn))
 
     conn_res = conn.ehlo()
