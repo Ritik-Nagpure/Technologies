@@ -10,3 +10,4 @@ print(math.sqrt(64))  # ==> gives square root
 print(math.ceil(1.4))  # ==> rounds a no. upwards to its nearest integer
 print(math.floor(1.4))  # ==> rounds a no. downwards to its nearest integer
 print(math.pi)  # ==> print value of pi
+print(round(math.pi))  # ==> print round of value for pi

@@ -6,6 +6,8 @@ npm-debug.log*
 
 # Ignore environment-specific configuration files
 .env
+.venv/*
+.venv
 
 # Ignore any local configuration files that may contain sensitive information
 config.js

@@ -1,7 +1,7 @@
 import os
 import shelve
 import shutil
-import send2trash
+# import send2trash
 
 
 def printings():
