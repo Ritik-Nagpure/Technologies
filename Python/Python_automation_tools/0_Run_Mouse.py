@@ -1,5 +1,6 @@
-import webbrowser
+# to install all requirements run pip install -r requirements.txt in root directory with venv
 
+import webbrowser
 import pyautogui
 import time
 import random

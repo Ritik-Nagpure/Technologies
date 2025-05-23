@@ -1,0 +1,7 @@
+pandas
+numpy
+pyautogui
+openpyxl
+imapclient
+pyzmail
+pywin32

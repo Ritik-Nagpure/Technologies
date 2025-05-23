@@ -1,5 +1,7 @@
+from functools import reduce
+
 # creating a List
-newlist = ['cat', 'rat', 'mat', 'bat', 'hat', 'dog', 'elephant', 'hooman', 'corgi', 'husky', 3, 45, 345, 24 ]
+newlist = ['cat', 'rat', 'mat', 'bat', 'hat', 'dog', 'elephant', 'hooman', 'corgi', 'husky', 3, 45, 345, 24]
 anewlist = ['hi', 'hello', 'hey', 'heya', 'namaste', 'namaskaram', 'naman']
 dog = [['Husky', 'Corgi', 'Labrador', 'Pug', 'Border Collie'], ['Medium', 'Large''Small'],
        ['Domestic', 'Wild', 'Hunter', 'Toy'], ['Golden', 'White', 'Black', 'Brown', 'Fawn']]
@@ -96,6 +98,30 @@ def listfunctions(li1, inlist):
     # used to operate on each value of a list with a function
     list_square = list(map(square, inlist))
     print(list_square)
+
+    # Filter a list based on any function it can be a lambda function also as in below
+    def getodd(x):
+        return x % 2 != 0
+
+    even_squares = list(filter(lambda x: x % 2 == 0, list_square))
+    odd_squares = list(filter(getodd, list_square))
+    print(even_squares)
+    print(odd_squares)
+
+    # Reduce is used to apply a function cumulatively to items in an iterable, reducing it to a single value.
+    # It’s part of the functools module.
+    reduced_list = reduce(lambda x, y: x + y, list_square)
+    print(reduced_list)
+
+    # Enumerate
+    # he enumerate() function in Python is used to loop over an iterable while keeping track of the index of each item.
+    # It returns both the index and the value in a tuple.
+    for index, item in enumerate(list_square):
+        print(f'{index} --> {item}')
+
+    # Comprehension
+    # A shorthand way to create lists using a single line.
+    print([x**3 for x in range(10)])
 
 
 # call function to run
