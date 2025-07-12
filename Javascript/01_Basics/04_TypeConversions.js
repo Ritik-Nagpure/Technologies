@@ -27,7 +27,7 @@ console.log("*******************************************************************
 let x = 3.14
 
 console.log(String(x));
-console.log(String(123));
+console.log(String(1903));
 console.log(String(100+23));
 console.log();
 
@@ -65,7 +65,7 @@ console.log("                ||_____|| Dates to Strings ||_____||           ")
 console.log("************************************************************************")
 
 console.log(String(Date()));
-console.log(Date.toString());
+console.log(Date().toString());
 console.log();
 
 console.log(d.getDate());

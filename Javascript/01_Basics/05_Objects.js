@@ -12,7 +12,9 @@ console.log(user1);
 console.log(user2);
 console.log(user);
 console.log(user.name);
-console.log(user.age);
+console.log(user.age); // space in key name requires quotes
+console.log(user["likes birds"]);
+console.log(user["age"]); // another way of accessing elements
 delete user.age;
 console.log(user);
 console.log(user["name"]); // other way of accessing elements

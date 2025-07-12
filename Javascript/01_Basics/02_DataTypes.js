@@ -38,8 +38,12 @@ console.log(typeof(null), null);
 // its non mutable and unique datatype means no two symbols having same value returns true when tried to equal.
 const sym1 = Symbol('RED');
 const sym2 = Symbol('BLUE');
+const sym3 = Symbol('BLUE');
 
 console.log(sym1, sym2);
 console.log(sym1.toString(), sym1.description, sym1.valueOf());
 console.log(sym1 == sym2);
+console.log(sym3 == sym2);
 console.log(typeof(sym1));
+sym1.description = 'GREEN'; // This will not change the description as symbols are immutable
+console.log(sym1.description); // Still 'RED'

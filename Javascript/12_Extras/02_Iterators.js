@@ -33,3 +33,6 @@ console.log(numbers.next());
 console.log(numbers.next().value);
 console.log(numbers.next().done);
 console.log(numbers.next());
+console.log(numbers.next());
+console.log(numbers.next());
+console.log(numbers.next());

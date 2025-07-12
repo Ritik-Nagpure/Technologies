@@ -52,7 +52,9 @@ let cataar = arr1.concat(arr2, arr3);
 console.log(cataar);
 
 // Flattening an Array
-let flataar = [[1,2], ["hi","hello"],[56,85]]; // nexted array
+console.log("// Flattening an Array");
+
+let flataar = [[1,2], ["hi","hello"],[56,85]]; // nested array
 console.log(flataar[1][1]); //accessing nested array elements
 console.log(flataar);
 console.log(flataar.flat());

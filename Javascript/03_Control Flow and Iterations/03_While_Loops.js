@@ -1,7 +1,7 @@
 let i =0 ;
 
 // while loops
-// runs untill the conditions is true. runs untill condition is false
+// runs till the conditions is true. runs untill condition is false
 while(i<10){
     console.log(i);
     i++;

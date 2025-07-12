@@ -10,6 +10,10 @@ function func1(a, b, c) {
     console.log(arguments[2]);
     console.log(arguments[2]);
     console.log(arguments[2]);
+
+    console.log(arguments[3]); // undefined, since no fourth argument is passed
+    console.log(arguments.length); // 3, since three arguments are passed
+    console.log(arguments); // [1, 2, 3]
 }
 
 func1(1, 2, 3);

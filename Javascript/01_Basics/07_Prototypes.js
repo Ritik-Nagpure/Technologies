@@ -1,5 +1,6 @@
 // prototype is a property of an js object that is either null or refer another object
 // js objects can inherit properties and methods from a prototype
+// the prototype essentially acts like a parent object—it's how inheritance is achieved.
 
 let a = {
     name: "Ritik",
@@ -30,3 +31,5 @@ a.speak();
 a.eat();
 a.run();
 a.walk();
+
+r.eat()

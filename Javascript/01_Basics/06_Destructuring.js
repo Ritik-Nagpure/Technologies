@@ -1,3 +1,5 @@
+"use strict";
+
 // ********************* Destucturing of Array ***********************
 let names = ['husky', 'sexa', 'octya', 'Tatya'];
 console.log(typeof(names), names);
@@ -17,7 +19,7 @@ let toy6 , toy7, toy8, toy9 ;
 console.log(toy6, toy7, toy8, toy9);
 
 // Skipping element 
-[toy1 , toy2 , , toy4] = names;
+[toy1 , toy2 , , toy4,] = names;
 console.log(toy1, toy2, toy3, toy4);
 
 // using rest parameters
@@ -38,5 +40,5 @@ console.log(typeof(id1) , id1);
  
 // method 2 of destructuring for some reasons not working on node
 let id2, nam2, code2 ;
-({id2, nam2, code2} = obj) ;
+id2, nam2, code2 = obj ;
 console.log(id2, nam2, code2);

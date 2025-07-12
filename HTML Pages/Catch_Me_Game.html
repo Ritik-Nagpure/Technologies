@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="20">
+    <meta http-equiv="refresh" content="3">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magic/1.1.0/magic.min.css"
         integrity="sha512-5KJYgPF7pe0cdJAg/9X6UdHE5cN9fqjjIi8ASyIqlcsKZdHVouNRcweLGEdtrIJJxMn+GqwJBjAurCjWOvEdJQ=="
@@ -15,7 +15,7 @@
 
     <script>
         function dis() {
-            alert("You win");
+            alert("I Love you Too Baby !!!");
         }
 
         function loaded() {
@@ -31,7 +31,6 @@
             let top = (Math.random() * 90).toPrecision(2) + "%";
 
             console.log(left, top);
-            bt.classList.add("animove")
             bt.style.setProperty("--l", left);
             bt.style.setProperty("--t", top);
         }
@@ -50,32 +49,44 @@
             width: 100%;
             background-color: black;
             color: rgb(255, 255, 255);
-        }
-
-        #but {
-            background-color: transparent;
-
-            font-size: 30px;
-        }
-
-        #ghost {
-            height: 50px;
-            width: 100px;
 
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+
+            font-size: xx-large;
+            font-family: cursive;
+        }
+
+        .but {
+            height: 60px;
+            width: fit-content;
+            padding: 4px;
+
+            font-size: xx-large;
+            font-family: cursive;
+
+            background-color: transparent;
             border: solid 0px;
             border-radius: 20px;
-            box-shadow: 1px 1px 5px white, -1px -1px 5px white;
-            background-color: rgb(192, 190, 190);
-            color: black;
-            position: absolute;
-            animation-fill-mode: forwards;
 
+            box-shadow: 1px 1px 5px white, -1px -1px 5px white;
+            background-color: rgb(192, 190, 190);         
+        }
+
+        .que_option {           
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #ghost{
+            position:absolute;
+            animation-fill-mode: forwards;
             left: var(--l);
             top: var(--t);
-
         }
 
         .animove {
@@ -90,16 +101,28 @@
                 top: var(--t);
             }
         }
+
+        .question {
+            color: greenyellow;
+        }
     </style>
 </head>
 
 <body onload="loaded()">
-    <div>
-        <button onmouseover="homove()" onclick="dis()" id="ghost">
-            <p id="but">
-                here !
-            </p>
+    <div class="question">
+        Will you go out with me ?
+    </div>
+    <div style="margin: 20px;" class="que_option">
+        <button onclick="dis()" class="but">
+                Yes
         </button>
+        <div></div>
+        <button onmouseover="homove()" class="but" id="ghost">
+                No !!
+        </button>
+    </div>
+    <div>
+        <img src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA0L2pvYjY4Ni0yODUtcC5wbmc.png" height="300rem" width="270rem" style="background: transparent;"/>
     </div>
 </body>
 

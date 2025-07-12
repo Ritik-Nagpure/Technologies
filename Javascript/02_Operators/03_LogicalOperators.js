@@ -14,4 +14,5 @@ console.log(!false)
 
 // ?? Nullish coalescing operator
 console.log((null || undefined) ?? "foo");
+console.log((2 || 3) ?? "foo");
 

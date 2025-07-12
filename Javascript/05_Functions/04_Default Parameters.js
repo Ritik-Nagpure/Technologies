@@ -3,7 +3,7 @@
 // parameter will be overwritten is provided while calling
 
 function getCity(name, city = "Nagpur"){
-    console.log(`${name} leaves in ${city}`);
+    console.log(`${name} lives in ${city}`);
 }
 
 getCity("Neha");
