@@ -18,8 +18,6 @@
 
 - Node JS
 - Express JS
-- Java
-- Springboot
 
 # Automation
 
@@ -30,7 +28,7 @@ UiPath Studio
 
 # Database
 
-- MS SQL Server
+- MSSQL
 - PostgreSQL
 - MongoDB
 
