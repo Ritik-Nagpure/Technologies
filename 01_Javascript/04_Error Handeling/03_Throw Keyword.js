@@ -1,4 +1,4 @@
-// throw keyword thors an error but we need to specify it with Error() object if not it throws it as a string or other datatype
+// throw keyword throws an error but we need to specify it with Error() object if not it throws it as a string or other datatype
 function guessNumber(num){
     try {
         if( num != 7){

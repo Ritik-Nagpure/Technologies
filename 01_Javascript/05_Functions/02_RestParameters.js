@@ -13,6 +13,7 @@ logids(34,23,5,6,7,45,67)
 
 function logshifts(day, ...persons){
     console.log(day);
+    console.log(persons);    
     persons.forEach((person)=> console.log(person));
 }
 
