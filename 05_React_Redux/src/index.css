@@ -1,1 +1,21 @@
-@import 'tailwindcss'
+@import 'tailwindcss';
+
+html, body {
+    width: screen;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    background-color: white;
+    color: black;
+
+}
+
+.light-mode{
+    background-color: #c4c5fb;
+    color: black;
+}
+
+.dark-mode{
+    background-color: #260147;
+    color:white;
+}
