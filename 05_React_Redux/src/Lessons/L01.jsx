@@ -1,7 +1,9 @@
 
 const L01 = () => {
   return (
-    <div>L01</div>
+    <div className="flex flex-col justify-between items-center">
+      
+    </div>
   )
 }
 
