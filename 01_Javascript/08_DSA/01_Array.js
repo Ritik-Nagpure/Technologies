@@ -5,7 +5,7 @@
 let arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 let arr2 = new Array();
 let arr3 = [];
-let arr4 = Array.of(4,5,6,7,8,3,2)
+let arr4 = Array.of(4, 5, 6, 7, 8, 3, 2)
 
 // gives an array of single element only as the array is pass as single element use spread instead to create a shallow copy
 console.log(Array.of(arr1))
@@ -13,7 +13,7 @@ console.log(Array.of(arr1))
 console.log("array 1 : ", arr1);
 console.log("array 2 : ", arr2);
 console.log("array 3 : ", arr3);
-console.log("array 4 : ", arr4, typeof(arr4));
+console.log("array 4 : ", arr4, typeof (arr4));
 
 // accessing Array elements
 arr2[0] = "hello";
@@ -138,5 +138,5 @@ console.log('---------- Sorting -------------')
 for (i of arr1.values()) { console.log(i); }
 arr1.forEach((el) => console.log(el));
 console.log(arr1.map((el) => el * 2))
-console.log(arr1.some((el) => el * 2)) // some() => checks atleast one element passes the function
+console.log(arr1.some((el) => el * 2)) // some() => checks atleast one element passes the function returm a single boolean value true if true
 
