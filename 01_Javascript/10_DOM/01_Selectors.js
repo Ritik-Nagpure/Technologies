@@ -4,6 +4,7 @@
 
 
 let idsel = () => {
+    console.log("ID selector");
     document.getElementById("idsel").innerHTML = " You have used ID Selector"
 }
 
@@ -14,6 +15,22 @@ let classsel = () => {
 
 let tagsel = () => {
     console.log("tag selector");
-    document.getElementsByTagName("P")[0].innerHTML = "You have used Tag Selector"; // use [n] after tagselector to specify which particular tag to select
+    document.getElementsByTagName("h4")[0].innerHTML = "You have used Tag Selector"; // use [n] after tagselector to specify which particular tag to select
 }
+
+let querysel = () => {
+    console.log("Query Selector");
+    console.log(document.querySelector('.qsel'));
+    document.querySelector('.qsel').innerHTML = 'Select one (First)';
+}
+
+let queryselall = () => {
+    console.log("Query Selector All");
+    console.log(document.querySelectorAll('.qsel'));
+    document.querySelectorAll('.qsel').forEach(el => {
+        el.innerHTML = 'Select ALL';
+    });
+}
+
+
 
