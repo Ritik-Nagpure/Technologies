@@ -44,7 +44,8 @@ function myFunction() {
 // 4. Lexical Scope
 // Nested functions can access variables from their outer functions:
 // ✅ Enables closures and powerful abstraction patterns
-
+//  the term 'lexical environment' in simple words, the lexical environment for a function 'outer'
+//  simply refers to the environment enclosing that function's definition in the source code.
 
 function outer() {
     const outerVar = "outer";
