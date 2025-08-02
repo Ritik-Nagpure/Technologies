@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta http-equiv="refresh" content="5"> -->
+    <!-- <meta http-equiv="refresh" content="2"> -->
     <script src="01_Selectors.js"></script>
+    <script src="02_Manupulation.js"></script>
+    <script src="03_Styling.js"></script>
+    <script src="04_Events.js"></script>
+    <script src="05_Forms_and_Input.js"></script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
@@ -18,26 +23,26 @@
         </div>
         <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
         <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
-            <div class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950 "
+            <div class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950 cursor-pointer"
                 onclick="queryselall()">
                 <p class="qsel">
                     Query Selector All Demo
                 </p>
             </div>
-            <div class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950"
+            <div class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950 cursor-pointer"
                 onclick="querysel()">
                 <p class="qsel">
                     Query Selector Demo
                 </p>
             </div>
             <div
-                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950 ">
+                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950 cursor-pointer ">
                 <p id="idsel">
                     <button onclick="idsel()"> ID Selector Demo</button>
                 </p>
             </div>
 
-            <div class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950 "
+            <div class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950 cursor-pointer"
                 onclick="classsel()">
                 <p class="classsel">
                     Class Selector Demo
@@ -45,7 +50,7 @@
             </div>
 
             <div
-                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950 cursor-pointer">
                 <h4>
                     <button onclick="tagsel()"> Tag Selector Demo </button>
                 </h4>
@@ -55,32 +60,81 @@
 
     <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
         <div class="font-bold text-5xl text-amber-700">
-            02 Selectors
+            02 Manupulation
         </div>
         <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
         <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
             <div
                 class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
-                <p id="idsel">
-                    <button onclick="idsel()"> ID Selector Demo</button>
-                </p>
-            </div>
 
-            <div class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950"
-                onclick="classsel()">
-                <p class="classsel">
-                    Class Selector Demo
-                </p>
             </div>
+        </div>
+    </div>
 
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+        <div class="font-bold text-5xl text-amber-700">
+            03 Styling
+        </div>
+        <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
+        <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
             <div
                 class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
-                <h4>
-                    <button onclick="tagsel()"> Tag Selector Demo </button>
-                </h4>
-            </div>
 
+            </div>
         </div>
+    </div>
+
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+        <div class="font-bold text-5xl text-amber-700">
+            04 Events and Event Handling
+        </div>
+        <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
+        <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
+            <div
+                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+        <div class="font-bold text-5xl text-amber-700">
+            05 Forms and Input
+        </div>
+        <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
+        <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
+            <div
+                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+        <div class="font-bold text-5xl text-amber-700">
+            06 Miscellaneous Essentials
+        </div>
+        <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
+        <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
+            <div
+                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+                The importand Ones are covered above. Add more DOM ObjectsIf required ...
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+        <div class="font-bold text-5xl text-amber-700">
+            End of Document
+        </div>
+        <div class="h-0.5 my-1 bg-amber-950 w-5/6 rounded-full "></div>
+        <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white w-full">
+            <p
+                class="flex items-center bg-amber-900 h-fit w-fit rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+                The importand Ones are covered above. Add more DOM ObjectsIf required ...
+            </p>
+        </div>
+        <div class="h-0.5 my-0.5 bg-amber-950 w-5/6 rounded-full "></div>
     </div>
 
 </body>

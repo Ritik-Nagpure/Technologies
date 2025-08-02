@@ -12,3 +12,5 @@ console.log(num);
 // As a resule 6 present anywhere in memory.
 
 // If no referece is available then the value is eligible for garbage collection irrespective of the type ( primitive or non-primitive).
+
+

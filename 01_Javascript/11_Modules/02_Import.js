@@ -10,3 +10,5 @@ class Dog extends Animal {
 let husky = new Dog("Dollar", "Husky");
 husky.ability = "Drama";
 console.log(husky.ability);
+console.log(husky._define());
+
