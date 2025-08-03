@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta http-equiv="refresh" content="2"> -->
+    <meta http-equiv="refresh" content="5">
     <script src="01_Selectors.js"></script>
     <script src="02_Manupulation.js"></script>
     <script src="03_Styling.js"></script>
-    <script src="04_Events.js"></script>
+    <!-- Adding defer to make sure this particular js file runs only after everything in loaded on body -->
+    <script src="04_Events.js" defer></script> 
     <script src="05_Forms_and_Input.js"></script>
 
 
@@ -17,10 +18,12 @@
 </head>
 
 <body class="flex flex-col justify-between items-center align-middle bg-amber-100 m-2 p-4">
+    <!-- Selectors -->
     <div class="flex flex-col w-full m-0 p-0 align-middle justify-center items-center">
         <div class="font-bold text-5xl text-amber-700">
             01 Selectors
         </div>
+
         <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
         <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
             <div class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950 cursor-pointer"
@@ -58,41 +61,149 @@
         </div>
     </div>
 
+
+    <!-- Manupulation -->
     <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
         <div class="font-bold text-5xl text-amber-700">
             02 Manupulation
         </div>
         <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
-        <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
-            <div
-                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
 
+        <div class="font-semibold text-3xl text-amber-800">
+            Changing element content
+        </div>
+        <div class="h-0.5 my-4 bg-amber-950 w-3/6 rounded-full "></div>
+
+        <div class="flex flex-row justify-center space-x-6 items-center m-4 p-4 w-full text-xl text-white">
+
+            <div id="man01" onclick="updateMan01()"
+                class="flex items-center bg-amber-900 h-40  mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+                innerText
             </div>
+
+            <div id="man02" onclick="updateMan02()"
+                class="flex items-center bg-amber-900 h-40  mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+                textContent
+            </div>
+
+            <div id="man03" onclick="updateMan03()"
+                class="flex items-center bg-amber-900 h-40  mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+                innerHTML
+            </div>
+
+        </div>
+
+
+        <div class="font-semibold text-3xl text-amber-800">
+            Modifying attributes
+        </div>
+        <div class="h-0.5 my-4 bg-amber-950 w-3/6 rounded-full "></div>
+        <div class="flex flex-col justify-center space-y-4 m-4  p-4 max-w-4/6 text-xl text-white">
+            <div
+                class="flex flex-col w-fit items-center bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 space-y-4 text-white">
+                <p class="text-center">
+                    The <code class="font-mono bg-black/20 px-1 rounded">dataset</code> is a special property in
+                    JavaScript that lets you access and manipulate custom data
+                    attributes on HTML elements — those that start with <code
+                        class="font-mono bg-black/20 px-1 rounded">data-</code>.
+                </p>
+
+                <code>
+                <pre class="text-left overflow-x-auto bg-gray-900 text-gray-100 p-4 rounded-lg text-sm font-mono">
+&lt;div id="userCard" data-user-id="123" data-role="admin"&gt;&lt;/div&gt;
+
+const div = document.getElementById('userCard');
+console.log(div.dataset.userId); // "123"
+console.log(div.dataset.role); // "admin"
+                </pre>
+            </code>
+            </div>
+
+            <div id="att01" onclick="updateAtt01()"
+                class="flex items-center justify-center bg-amber-900 h-40 mx-4 rounded-xl shadow-3xl z-10 p-4 hover:font-semibold hover:bg-amber-950 transition duration-300 ease-in-out text-white cursor-pointer">
+                Run Attributes Manipulations
+            </div>
+
+        </div>
+
+
+        <div class="font-semibold text-3xl text-amber-800">
+            Adding/removing elements
+        </div>
+        <div class="h-0.5 my-4 bg-amber-950 w-3/6 rounded-full "></div>
+
+        <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white space-x-6">
+
+            <button
+                class="p-3 text-2xl font-bold bg-blue-400 rounded-3xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out "
+                onclick="addBox()">Add Element</button>
+            <button
+                class="p-3 text-2xl font-bold bg-blue-400 rounded-3xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer active:scale-90 transition transform duration-150 ease-in-out "
+                onclick="removeBox()">Remove Element</button>
+        </div>
+        <div id="contain" class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white space-x-6">
         </div>
     </div>
 
+    <!-- Styling -->
     <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
         <div class="font-bold text-5xl text-amber-700">
             03 Styling
         </div>
         <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
         <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
-            <div
-                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
 
+            <div id="style01" onclick="updateStyle01()"
+                class="flex items-center justify-center bg-amber-900 h-40 mx-4 rounded-3xl shadow-3xl z-10 p-4 hover:font-semibold hover:bg-amber-950 transition duration-300 ease-in-out text-white cursor-pointer">
+                Run Style Manipulations
             </div>
+
         </div>
     </div>
 
-    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+    <!-- Events -->
+    <div class="flex flex-col w-full mt-10 p-0 align-bottom justify-center items-center">
         <div class="font-bold text-5xl text-amber-700">
             04 Events and Event Handling
         </div>
         <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
         <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
             <div
-                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+                class="flex flex-col justify-center align-bottom items-center space-y-4 h-100 w-full bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 ">
 
+                <p id="pev011"></p>
+                <p id="pev012"></p>
+                <button id="ev01"
+                    class="p-3 text-lg font-bold bg-blue-400 rounded-3xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                    Fire Click Event
+                </button>
+            </div>
+            <div
+                class="flex flex-col justify-center align-bottom items-center space-y-4 h-100 w-full bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 ">
+
+                <p id="pev02"></p>
+                <button id="ev02"
+                    class="p-3 text-lg font-bold bg-blue-400 rounded-3xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">Fire
+                    Keyboard Event
+                </button>
+            </div>
+            <div
+                class="flex flex-col justify-center align-bottom items-center space-y-4 h-100 w-full bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 ">
+
+                <p id="pev03"></p>
+                <button id="ev03"
+                    class="p-3 text-lg font-bold bg-blue-400 rounded-3xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">Fire
+                    Click Event
+                </button>
+            </div>
+            <div
+                class="flex flex-col justify-center align-bottom items-center space-y-4 h-100 w-full bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 ">
+
+                <p id="pev04"></p>
+                <button id="ev04"
+                    class="p-3 text-lg font-bold bg-blue-400 rounded-3xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">Fire
+                    Click Event
+                </button>
             </div>
         </div>
     </div>
