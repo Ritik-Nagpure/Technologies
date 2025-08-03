@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="5">
+
+    <!-- <meta http-equiv="refresh" content="5"> -->
+
     <script src="01_Selectors.js"></script>
     <script src="02_Manupulation.js"></script>
     <script src="03_Styling.js"></script>
     <!-- Adding defer to make sure this particular js file runs only after everything in loaded on body -->
-    <script src="04_Events.js" defer></script> 
-    <script src="05_Forms_and_Input.js"></script>
+    <script src="04_Events.js" defer></script>
+    <script src="05_Forms_and_Input.js" defer></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -182,32 +184,27 @@ console.log(div.dataset.role); // "admin"
                 class="flex flex-col justify-center align-bottom items-center space-y-4 h-100 w-full bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 ">
 
                 <p id="pev02"></p>
-                <button id="ev02"
-                    class="p-3 text-lg font-bold bg-blue-400 rounded-3xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">Fire
+                <p id="ev02" class="p-3 text-lg font-bold bg-blue-400 rounded-xl border-2 border-solid border-blue-600">
                     Keyboard Event
-                </button>
+                </p>
             </div>
             <div
                 class="flex flex-col justify-center align-bottom items-center space-y-4 h-100 w-full bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 ">
 
-                <p id="pev03"></p>
+                <p id="pev03">
+                    This text is written for testing copy event
+                </p>
+                <input type="text" id="textInput03" placeholder="Try copying, cutting, or pasting here" />
+
                 <button id="ev03"
-                    class="p-3 text-lg font-bold bg-blue-400 rounded-3xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">Fire
-                    Click Event
-                </button>
-            </div>
-            <div
-                class="flex flex-col justify-center align-bottom items-center space-y-4 h-100 w-full bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 ">
-
-                <p id="pev04"></p>
-                <button id="ev04"
-                    class="p-3 text-lg font-bold bg-blue-400 rounded-3xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">Fire
-                    Click Event
+                    class="p-3 text-lg font-bold bg-blue-400 rounded-xl border-2 border-solid border-blue-600">
+                    ClipBoard Event
                 </button>
             </div>
         </div>
     </div>
 
+    <!-- Forms and Input -->
     <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
         <div class="font-bold text-5xl text-amber-700">
             05 Forms and Input
@@ -215,8 +212,36 @@ console.log(div.dataset.role); // "admin"
         <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
         <div class="flex flex-row justify-center items-center m-4 p-4 w-full text-xl text-white">
             <div
-                class="flex items-center bg-amber-900 h-40 w-1/6 mx-4 rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-amber-950">
+                class="flex flex-col justify-center align-bottom items-center space-y-4 h-full w-full bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 ">
 
+                <p id="pev041" class="text-md font-semibold"></p>
+                <p id="pev042" class="text-md font-semibold"></p>
+                <p id="pev043" class="text-md font-semibold"></p>
+                <p id="pev044" class="text-md font-semibold"></p>
+            </div>
+            <div
+                class="flex flex-col justify-center align-bottom items-center space-y-4 h-fit w-full bg-amber-900 mx-4 rounded-xl shadow-3xl z-10 p-4 w-full">
+                <p id="ev04" class="p-3 text-lg font-bold bg-blue-400 rounded-xl border-2 border-solid border-blue-600">
+                    Form Event
+                </p>
+                <form id="userForm" class="flex flex-col space-y-1 w-full">
+                    <label>Name:
+                        <input type="text" name="name"
+                            class="border-2 border-solid border-gray-200 rounded-lg p-1 mx-12 focus:border-violet-400 focus:outline-none" />
+                    </label><br />
+                    <label>Email:
+                        <input type="email" name="email"
+                            class="border-2 border-solid border-gray-200 rounded-lg p-1 mx-14 focus:border-violet-400 focus:outline-none" />
+                    </label><br />
+                    <label>Comment :
+                        <textarea name="comment" id="" rows="3"
+                            class="w-4/6 overflow-hidden resize-none border-2 border-solid border-gray-200 rounded-lg p-1 mx-2 focus:border-violet-400 focus:outline-none">
+                        </textarea>
+                    </label>
+                    <br />
+                    <button type="submit" name="submit"
+                        class="p-1 text-md font-semibold bg-blue-400 rounded-xl border-2 border-solid border-blue-600 hover:shadow-md shadow-blue-500 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">Submit</button>
+                </form>
             </div>
         </div>
     </div>

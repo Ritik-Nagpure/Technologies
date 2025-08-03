@@ -230,4 +230,21 @@ const {gamename , gameprice: price, consoleWhereGameIsAvailable: device } = game
 console.log(gamename, price, device);
 
 
+console.log("------------------- Function as a property of an Object -----------------------------");
+
+fobj = {
+    nam : "Pankaj",
+    stat : function() { 
+        return `${this.nam } is Udas`;
+    },
+    // to Define method property --> a function ' : ' is not mandatory 
+    balance(){
+        return `Oh!! ${this.nam} is Broke.`
+    }
+}
+
+console.log(fobj.nam);
+console.log(fobj.stat());
+console.log(fobj.balance());
+
 
