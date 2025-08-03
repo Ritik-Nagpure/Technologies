@@ -1,16 +1,14 @@
 //  setTimeout: runs once after delay
 let timeoutval;
 document.getElementById('runTimeout').addEventListener('click', () => {
-    document.getElementById("log").innerText = "Waiting 5 seconds...";
-    let count = 5
+    document.getElementById("timeoutlog").innerText = "Waiting 5 seconds...";
     timeoutval = setTimeout(() => {
-        count--;
-        document.getElementById("timeoutlog").innerText = `${count} seconds remaining!`;
+        document.getElementById("timeoutlog").innerText = `5 seconds Passed!`;
     }, 5000);
 });
 
 // clearTimeout: stops the Timeout
-document.getElementById('clearTiemout').addEventListener('click', () => {
+document.getElementById('clearTimeout').addEventListener('click', () => {
     clearTimeout(timeoutval);
     document.getElementById("timeoutlog").innerText = "Interval stopped.";
 });
@@ -18,7 +16,6 @@ document.getElementById('clearTiemout').addEventListener('click', () => {
 // setInterval: runs repeatedly
 let intervalId;
 document.getElementById('startInterval').addEventListener('click', () => {
-    alert('p');
     let count = 0;
     intervalId = setInterval(() => {
         count++;
@@ -39,7 +36,3 @@ document.getElementById('stopInterval').addEventListener('click', () => {
 // make sure you note id of each timing object/ promise to keep control on it.
 
 // I've fix this issue with appropriate for loops use below commented code to understand this
-
-
-
-document.getElementById('startInterval').addEventListener('click', () => alert('dshj'));

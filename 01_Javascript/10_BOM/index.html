@@ -17,6 +17,7 @@
 </head>
 
 <body class="flex flex-col bg-violet-400 m-2 p-4 text-white text-lg">
+    <div class="text-2xl font-bold flex flex-row justify-end"><p id="time" ></p></div>
     <!-- Navigation -->
     <div class="flex flex-col w-full mt-10 p-0 items-center">
         <div class="font-bold text-5xl text-violet-900">
@@ -86,9 +87,9 @@
         <div class="h-0.5 my-1 bg-amber-950 w-5/6 rounded-full "></div>
 
         <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white h-fit">
-            <div class="flex flex-row justify-center items-center w-full gap-20 h-40">
 
-                <div class="flex flex-col p-4 m-2 h-full w-2/6 bg-violet-900 rounded-xl shadow-lg shadow-violet-800">
+            <div class="flex flex-row justify-center items-center w-full gap-20 h-full">
+                <div class="flex flex-col p-4 m-2 h-full w-5/6 bg-violet-900 rounded-xl shadow-lg shadow-violet-800">
                     <div class="flex flex-row justify-center items-center space-x-20 p-4 w-full text-xl text-white">
                         <button onclick="closetab()"
                             class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
@@ -100,11 +101,245 @@
                     </div>
                     <p>Only close Tabs open by window.open method</p>
                 </div>
-
-
             </div>
+
+            <div class="flex flex-row justify-center items-center w-full gap-20 h-full">
+
+                <div
+                    class="flex flex-col p-4 m-2 h-full w-5/6 bg-violet-900 items-center rounded-xl shadow-lg shadow-violet-800">
+                    <span class="text-xl font-bold">Window Object BOM Demo</span>
+                    <div class="flex flex-row justify-center items-center space-x-20 p-4 w-full text-xl text-white">
+                        <button onclick="scrollToBottom()"
+                            class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Scroll to Bottom </button>
+
+                        <button onclick="showLocation()"
+                            class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Show Location Info</button>
+
+                        <button onclick="triggerError()"
+                            class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Trigger Error</button>
+                    </div>
+
+                    <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white h-fit">
+                    </div>
+                    <!-- Focus & Blur -->
+                    <input id="textInput" type="text" placeholder="Focus and blur me!"
+                        class="border-2 rounded-2xl p-2 border-purple-200 focus:border-purple-600 focus:outline-none border-solid" />
+
+                    <div id="log" class="m-2 text-sm font-semibold"></div>
+                    <div id="errlog" class="m-2 text-sm font-semibold"></div>
+                    <div id="loc" class="m-2 text-sm font-semibold"></div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white h-fit">
+
+            <div class="flex flex-row justify-center items-center w-full gap-20 h-full">
+                <div
+                    class="flex flex-col p-4 m-2 h-full w-5/6 bg-violet-900 items-center rounded-xl shadow-lg shadow-violet-800">
+                    <span class="text-xl font-bold">Local Storage</span>
+                    <div class="flex flex-col p-4 m-2 h-full w-5/6 bg-violet-900 ">
+                        <div class="flex flex-row justify-center items-center space-x-20 p-4 w-full text-xl text-white">
+                            <button onclick="loadLocal()"
+                                class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                                Load from Local</button>
+
+                            <button onclick="saveLocal()"
+                                class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                                Save to Local</button>
+                        </div>
+                    </div>
+                    <input id="localInput" placeholder="Enter something for localStorage"
+                        class="border-2 rounded-2xl p-2 border-purple-200 focus:border-purple-600 focus:outline-none border-solid w-fit" />
+                    <p id="localResult" class="m-2 text-sm font-semibold"></p>
+                </div>
+            </div>
+
+            <div class="flex flex-row justify-center items-center w-full gap-20 h-full">
+                <div
+                    class="flex flex-col p-4 m-2 h-full w-5/6 bg-violet-900 items-center rounded-xl shadow-lg shadow-violet-800">
+                    <span class="text-xl font-bold">Session Storage</span>
+                    <div class="flex flex-row justify-center items-center space-x-20 p-4 m-2 w-full text-xl text-white">
+                        <button onclick="loadSession()"
+                            class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Load to Session</button>
+
+                        <button onclick="saveSession()"
+                            class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Save from Session</button>
+
+                    </div>
+
+                    <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white h-fit">
+                    </div>
+
+                    <input id="sessionInput" placeholder="Enter something for sessionStorage"
+                        class="border-2 rounded-2xl p-2 border-purple-200 focus:border-purple-600 focus:outline-none border-solid" />
+                    <p id="sessionResult" class="m-2 text-sm font-semibold"></p>
+                </div>
+            </div>
+
         </div>
         <div class="h-0.5 my-3 bg-amber-950 w-3/6 rounded-full "></div>
+
+
+        <div>
+
+        </div>
+
+        <div class="overflow-x-auto w-4/6 p-0 border-4 border-violet-900 rounded-2xl shadow-xl shadow-violet-800">
+            <table class="min-w-full bg-violet-700 text-xl" cellpadding="8" cellspacing="0">
+                <thead class="bg-violet-800">
+                    <tr>
+                        <th class="border-b px-6 py-2 font-semibold hover:font-bold">Feature</th>
+                        <th class="border-b px-6 py-2 font-semibold hover:font-bold">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.alert()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Displays a popup alert box</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.confirm()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Shows a confirmation dialog with
+                            OK/Cancel</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.prompt()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Opens a dialog box that prompts the
+                            user for input</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.open()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Opens a new browser window or tab
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.close()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Closes the current browser window
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.setTimeout()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Executes a function after a
+                            specified delay</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.setInterval()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Repeats execution of a function at
+                            set intervals</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.clearTimeout()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Cancels a timeout set with
+                            setTimeout()</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.clearInterval()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Cancels an interval set with
+                            setInterval()</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.location</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Provides access to the current URL
+                            and allows navigation</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.history</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Enables navigation through browser
+                            history</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.navigator</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Gives information about the browser
+                            and device</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.screen</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Provides details about the user's
+                            screen</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.document</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Refers to the DOM document loaded
+                            in the window</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.innerWidth</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Width of the viewport</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.innerHeight</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Height of the viewport</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.scrollTo()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Scrolls the window to a specific
+                            position</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.print()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Opens the print dialog</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.focus()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Brings the window to the foreground
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.blur()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Removes focus from the window</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.onresize</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Event triggered when the window is
+                            resized</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.onerror</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Handles errors that occur in the
+                            window</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.localStorage</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Stores data locally with no
+                            expiration</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.sessionStorage</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Stores data for the duration of the
+                            page session</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.fetch()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Performs network requests (modern
+                            alternative to XMLHttpRequest)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.crypto</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Provides cryptographic functions
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.matchMedia()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Checks if the document matches a
+                            media query</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">window.requestAnimationFrame()</td>
+                        <td class="border-b px-6 py-2 font-semibold hover:font-bold">Optimizes animations by syncing
+                            with browser refresh rate</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
     </div>
 
     <!-- Display and Interface -->
@@ -183,7 +418,7 @@
                     </span>
 
                     <span>
-                        <button id="startInterval" 
+                        <button id="startInterval"
                             class="p-2 m-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
                             Start setInterval
                         </button>
