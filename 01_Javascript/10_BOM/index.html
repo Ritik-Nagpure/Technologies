@@ -4,25 +4,258 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta http-equiv="refresh" content="2">
+    <!-- <meta http-equiv="refresh" content="2"> -->
 
-    <script src="BOM_01_.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <script src="01_nav.js" defer></script>
+    <script src="02_window.js" defer></script>
+    <script src="03_display_interface.js" defer></script>
+    <script src="04_timing.js" defer></script>
+
     <title>BOM Demo</title>
 </head>
 
-<body>
-    <div>
-        Can only close tabs open by them
-        <br>
-        <button onclick="closetab()"> close Tab </button>
+<body class="flex flex-col bg-violet-400 m-2 p-4 text-white text-lg">
+    <!-- Navigation -->
+    <div class="flex flex-col w-full mt-10 p-0 items-center">
+        <div class="font-bold text-5xl text-violet-900">
+            Navigation
+        </div>
+        <div class="h-0.5 my-4 bg-amber-950 w-5/6 rounded-full "></div>
+
+        <div class="flex flex-row space-x-4 w-full">
+            <div
+                class="flex flex-col h-100 w-full justify-end items-center space-y-4 bg-violet-800 rounded-xl shadow-md shadow-violet-800 p-4">
+                <span><button id="navopen"
+                        class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                        End of Document
+                    </button>
+                </span>
+                <span><button id="navopenyoutube"
+                        class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                        Open Youtube
+                    </button>
+                </span>
+                <span><button id="navreload"
+                        class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                        Reload this Page
+                    </button>
+                </span>
+                <span><button id="navback"
+                        class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                        Go Back
+                    </button>
+                </span>
+
+                <span><button id="navfw"
+                        class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                        Go Forward
+                    </button>
+                </span>
+            </div>
+
+            <div
+                class="flex flex-col h-100 w-full justify-end items-center bg-violet-800 rounded-xl shadow-md shadow-violet-800 p-4 space-y-20">
+                <p id="navinfodisplay" class="text-sm"></p>
+                <span><button id="navinfo"
+                        class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                        Get Nav Info
+                    </button>
+                </span>
+            </div>
+
+            <div
+                class="flex flex-col h-100 w-full justify-end items-center bg-violet-800 rounded-xl shadow-md shadow-violet-800 p-4 space-y-20">
+                <p id="navscedisplay" class="text-sm"></p>
+                <span><button id="navsce"
+                        class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                        Nav SCE
+                    </button>
+                </span>
+            </div>
+        </div>
     </div>
-    <div>
-        <button onclick="opentab()"> Open Tab</button>
+
+
+    <!-- Window -->
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+        <div class="font-bold text-5xl text-violet-900">
+            Core Window
+        </div>
+        <div class="h-0.5 my-1 bg-amber-950 w-5/6 rounded-full "></div>
+
+        <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white h-fit">
+            <div class="flex flex-row justify-center items-center w-full gap-20 h-40">
+
+                <div class="flex flex-col p-4 m-2 h-full w-2/6 bg-violet-900 rounded-xl shadow-lg shadow-violet-800">
+                    <div class="flex flex-row justify-center items-center space-x-20 p-4 w-full text-xl text-white">
+                        <button onclick="closetab()"
+                            class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Close Tab </button>
+
+                        <button onclick="opentab()"
+                            class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Open Tab</button>
+                    </div>
+                    <p>Only close Tabs open by window.open method</p>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="h-0.5 my-3 bg-amber-950 w-3/6 rounded-full "></div>
     </div>
-    <div>
-        <button onclick="showdimen()"> Show Dimentions</button>
+
+    <!-- Display and Interface -->
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+        <div class="font-bold text-5xl text-violet-900">
+            Display & Interface
+        </div>
+        <div class="h-0.5 my-1 bg-amber-950 w-5/6 rounded-full "></div>
+
+        <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white w-full">
+            <div class="flex flex-row justify-center items-center w-full gap-20 h-65">
+                <div
+                    class="flex flex-row p-4 m-2 h-full w-2/6 bg-violet-900 rounded-xl shadow-lg shadow-violet-800 items-center justify-between">
+                    <span>
+                        <button id="alert"
+                            class="p-2 m-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Alert
+                        </button>
+                    </span>
+                    <span>
+                        <button id="confirm"
+                            class="p-2 m-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Confirm
+                        </button>
+                    </span>
+                    <span>
+                        <button id="prompt"
+                            class="p-2 m-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Prompt
+                        </button>
+                    </span>
+                    <span>
+                        <button id="print"
+                            class="p-2 m-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            print
+                        </button>
+                    </span>
+                </div>
+
+                <div
+                    class="flex flex-col p-4 m-2 h-full w-2/6 bg-violet-900 rounded-xl shadow-lg shadow-violet-800 items-center">
+                    <span><button id="showscreen"
+                            class="p-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Show Dimentions
+                        </button></span>
+                    <div id="Dimen" class="text-md font-semibold"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div id="Dimen"></div>
+
+    <!-- Timming and Scheduling -->
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+        <div class="font-bold text-5xl text-violet-900">
+            Timing & Scheduling
+        </div>
+        <div class="h-0.5 my-1 bg-amber-950 w-5/6 rounded-full "></div>
+        <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white ">
+            <div
+                class="flex flex-col justify-center items-center w-4/6  p-4 m-2 h-fit bg-violet-900 shadow-lg shadow-violet-800 rounded-xl items-center justify-between">
+
+                <div class="flex flex-row p-4 m-2 h-full rounded-xl items-center justify-between">
+                    <span>
+                        <button id="runTimeout"
+                            class="p-2 m-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Run setTimeout
+                        </button>
+                    </span>
+
+                    <span>
+                        <button id="clearTimeout"
+                            class="p-2 m-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Clear setTimeout
+                        </button>
+                    </span>
+
+                    <span>
+                        <button id="startInterval" 
+                            class="p-2 m-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Start setInterval
+                        </button>
+                    </span>
+
+                    <span>
+                        <button id="stopInterval"
+                            class="p-2 m-2 text-md text-white font-semibold bg-purple-700 rounded-xl border-2 border-solid border-purple-600 hover:shadow-md shadow-purple-900 cursor-pointer  active:scale-90 transition transform duration-150 ease-in-out ">
+                            Stop Interval
+                        </button>
+                    </span>
+
+
+                </div>
+
+                <div class="flex flex-row gap-20 justify-between items-center p-4 m-2">
+                    <div>
+                        Timeout Log:
+                        <div id="timeoutlog"
+                            class="border-4 border-solid border-purple-600 w-60 h-30 rounded-xl p-2 m-2"> </div>
+                    </div>
+                    <div>
+                        Interval Log:
+                        <div id="intervallog"
+                            class="border-4 border-solid border-purple-600 w-60 h-30 rounded-xl p-2 m-2">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center">
+        <div class="font-bold text-5xl text-violet-900">
+            Document Access (via BOM)
+        </div>
+        <div class="h-0.5 my-1 bg-amber-950 w-5/6 rounded-full "></div>
+        <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white w-full">
+
+        </div>
+        <ul class="text-lg text-violet-100 font-semibold list-disc pl-5 p-2 m-2">
+            <li>
+                When you open a webpage, the browser loads its HTML and creates a structured representation called
+                the
+                Document Object Model (DOM).
+            </li>
+
+            <li>
+                The BOM gives you access to the DOM via window.document, allowing JavaScript to interact with the
+                content of the page.
+            </li>
+            <li>
+                This Interact will be then done using DOM Manupulations.
+            </li>
+        </ul>
+    </div>
+
+    <div class="flex flex-col w-full mt-10 p-0 align-middle justify-center items-center" id='END OF DOCUMENT'>
+        <div class="font-bold text-5xl text-violet-900">
+            End of Document
+        </div>
+        <div class="h-0.5 my-1 bg-amber-950 w-5/6 rounded-full "></div>
+        <div class="flex flex-row justify-center items-center  p-4 w-full text-xl text-white w-full">
+            <p
+                class="flex items-center bg-violet-900 h-fit w-fit rounded-xl shadow-3xl z-10 p-4  hover:font-semibold duration-300 ease-in-out hover:bg-violet-950">
+                The importand Ones are covered above. Add more BOM Objects If required ...
+            </p>
+        </div>
+        <div class="h-0.5 my-0.5 bg-amber-950 w-5/6 rounded-full "></div>
+    </div>
+
 </body>
 
 </html>
