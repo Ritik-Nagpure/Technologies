@@ -26,7 +26,9 @@ a {
 
 .showcase {
     @include config.set-background(config.$primary-color);
-    height: 600px;
+    height: fit-content;
+    padding: 4px;
+    margin-bottom: 20px;
 
     nav {
         display: flex;
@@ -44,6 +46,16 @@ a {
 
         a {
             color: set-text-color(config.$primary-color);
+            background-color: #055577;
+            border: 4px;
+            border-radius: 4px;
+            border: solid;
+            border-color: #056893;
+            padding: 6px;
+            font-size: large;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: 900;
+            color: aliceblue;
         }
 
         a:hover {
@@ -52,16 +64,27 @@ a {
     }
 
     &-content {
-        height: 100%;
+        height: fit-content;
+        overflow-y: auto;
         display: flex;
-        margin: 20px;
+
         flex-direction: column;
         align-items: center;
         justify-content: center;
         margin-top: 30px;
+        margin: 20px;
 
         img {
+            margin-top: 10px;
+            margin-bottom: 100px;
             width: 50%;
+            border: 4px;
+            border: solid;
+            border-color: gray;            
+            border-radius: 10px;
+
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+            z-index: 10;
         }
 
         h1 {

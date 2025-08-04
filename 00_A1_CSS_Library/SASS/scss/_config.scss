@@ -4,16 +4,19 @@ $light-color: #f4f4f4;
 $primary-color: #0e6cff;
 // $primary-color: #e0ffff;
 $secondary-color: #ff8700;
+$color : #313131;
+
+@use "sass:color";
 
 // Set text color based on bg
 @function set-text-color($color) {
-    @if(lightness($color) > 70) {
-        @return #333;
-    }
+  $lightness: color.channel($color, "lightness", $space: hsl);
 
-    @else {
-        @return #fff;
-    }
+  @if $lightness > 70 {
+    @return #333;
+  } @else {
+    @return #fff;
+  }
 }
 
 // Set background & text color
