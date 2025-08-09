@@ -1,6 +1,9 @@
 
 const getbutton = document.getElementById("getbutton");
-const apilink = "https://reqres.in/api/users?page=";
+
+const proxy = 'https://cors-anywhere.herokuapp.com/';
+const apilink = proxy + 'https://cat-fact.herokuapp.com/facts';
+
 
 let sec = document.getElementById("ajaxdata");
 
@@ -9,7 +12,7 @@ getbutton.addEventListener('click', clickedgetbutton);
 function clickedgetbutton() {
     const topic = document.getElementById("search").value;
     //create url
-    const url = apilink + topic;
+    const url = apilink;
     console.log(url);
 
     // create XMLHttpRequest Object
@@ -17,7 +20,7 @@ function clickedgetbutton() {
 
     // Open the object
     xhr.open('GET', url, true);
-
+    xhr.withCredentials = false;
     // setting Headers
     // xhr.setRequestHeader("Authorization", apikey);
 

@@ -34,7 +34,7 @@ const imageCtx = imageCanvas.getContext("2d");
 const img = new Image();
 
 // Must be set before src
-// When you load an image from another domain (like Wikimedia, Unsplash, or Google) without 
+// When you load an image from another domain (like Wikimedia, Unsplash, or Google) without
 // setting crossOrigin = "anonymous", the browser marks the canvas as "tainted". This means:
 
 img.crossOrigin = "anonymous";
