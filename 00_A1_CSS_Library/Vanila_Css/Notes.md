@@ -79,9 +79,100 @@ Vanilla CSS is perfect when you want to learn the fundamentals or build somethin
 ## ⚙️ Modern Workflow Add-ons
 - CSS Preprocessors (Sass, Less)
 - Utility-First CSS (e.g., Tailwind)
-- CSS Modules
+- ## CSS Modules
+  🧪 How It Works
+    - The class name card is scoped only to the Card component.
+    - When compiled, it becomes something like Card_card__abc123 to avoid global conflicts.
+    - You import the styles as an object (styles) and use styles.card to apply them.
+
+
+  🧩 1. Card.module.css 
+  ```css
+  .card {
+    background-color: lightblue;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+  }
+  ```
+
+  ⚛️ 2. Card.jsx
+  ```jsx
+  import styles from './Card.module.css';
+
+  function Card() {
+    return <div className={styles.card}>Hello from CSS Modules!</div>;
+  }
+
+  export default Card;
+  ```
+
+
 - PostCSS
+  - PostCSS is a tool that processes your CSS with plugins. It can transform, lint, optimize, and extend your CSS
 - Web Components styling (::part, ::slotted)
+
+  <table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Technique</th>
+      <th>Scope</th>
+      <th>Crosses Shadow DOM?</th>
+      <th>Use Case</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Scoped Styles</td>
+      <td>Inside Shadow DOM</td>
+      <td>No ❌</td>
+      <td>Style internal elements privately</td>
+    </tr>
+    <tr>
+      <td>:host</td>
+      <td>Shadow Host</td>
+      <td>Yes ✅</td>
+      <td>Style the custom element itself</td>
+    </tr>
+    <tr>
+      <td>:host()</td>
+      <td>Conditional Host</td>
+      <td>Yes ✅</td>
+      <td>Style based on attributes or state</td>
+    </tr>
+    <tr>
+      <td>::part()</td>
+      <td>Exposed Internal Elements</td>
+      <td>Yes ✅</td>
+      <td>Style internal parts from outside</td>
+    </tr>
+    <tr>
+      <td>::slotted()</td>
+      <td>Slotted Content</td>
+      <td>Yes ✅</td>
+      <td>Style content passed into slots</td>
+    </tr>
+    <tr>
+      <td>CSS Custom Properties</td>
+      <td>Global ↔ Shadow DOM</td>
+      <td>Yes ✅</td>
+      <td>Theming and dynamic styling</td>
+    </tr>
+    <tr>
+      <td>Imported Styles</td>
+      <td>Inside Shadow DOM</td>
+      <td>No ❌</td>
+      <td>Use external stylesheets internally: <br>
+        <code>
+          &lt;style&gt;<br>
+          &nbsp;&nbsp;@import url('styles.css');<br>
+          &lt;/style&gt;
+        </code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 <hr/>
 

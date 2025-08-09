@@ -1,0 +1,119 @@
+/* ✅ CSS Variables */
+:root {
+    --primary-color: #023457;
+    --hover-color: #b4b4b4;
+    --font-size: 1rem;
+    --transition-speed: 0.3s;
+}
+
+/* ✅ Pseudo-classes */
+div:hover {
+    background-color: var(--hover-color);
+}
+
+input:focus {
+    outline: 2px solid var(--primary-color);
+}
+
+div:nth-child(3) {
+    background-color: #69460a;
+}
+
+/* ✅ Pseudo-elements */
+div::before {
+    content: "->";
+}
+
+/* 👉👈 */
+
+div::after {
+    content: "<-";
+}
+
+/* ✅ Specificity and Inheritance */
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.container .box {
+    color: inherit;
+    /* Inherits from body */
+    font-size: var(--font-size);
+}
+
+/* ✅ Flexbox */
+.flex-container {
+    display: flex;
+    gap: 1em;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 2em;
+}
+
+.flex-container .box {
+    flex: 1;
+    padding: 1em;
+    background-color: #e0f7fa;
+}
+
+/* ✅ Grid Layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1em;
+    margin-bottom: 2em;
+}
+
+.grid-container .box {
+    background-color: #f9f9f9;
+    padding: 1em;
+    border: 1px solid #ccc;
+}
+
+/* ✅ Transitions */
+.transition-box {
+    background-color: #ddd;
+    transition: background-color var(--transition-speed);
+}
+
+.transition-box:hover {
+    background-color: #bbb;
+}
+
+/* ✅ Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.animated-box {
+    animation: pulse 2s infinite;
+    background-color: #cce5ff;
+    padding: 1em;
+}
+
+/* ✅ Media Queries */
+@media (max-width: 600px) {
+    .responsive-box {
+        background-color: #ffcccb;
+        font-size: 0.8rem;
+    }
+}
+
+/* ✅ Box-sizing: content-box example */
+.content-box-example {
+    box-sizing: content-box;
+    width: 200px;
+    padding: 20px;
+    border: 5px solid #333;
+    background-color: #fafafa;
+}

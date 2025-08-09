@@ -6,20 +6,116 @@
     <title>CSS Notes</title>
     <meta http-equiv="refresh" content="2">
     <link href="01_Selectors.css" rel="stylesheet" />
+
+    <link href="01_Fundamentals.css" rel="stylesheet" />
+    <link href="02_Intermidiate.css" rel="stylesheet" />
+    <!-- <link href="03_Advanced.css" rel="stylesheet" /> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 </head>
 
-<body>
-    <div class="section">
-        <div id="idsel">
-            This is example of class Selector
+<body class="flex flex-col space-x-10 items-center justify-center align-middle gap-y-10 p-0 m-2">
+
+    <!-- 01 🎯 Fundamentals  -->
+    <div class="flex flex-col justify-center items-center space-y-5 gap-10 p-6">
+        <div id="demo-box" class="box-style" data-role="kanban">
+            This div demonstrates core CSS concepts.
         </div>
-        <div class="classsel">
-            This is an example of ID Selector
+
+        <div class="container">
+            <div class="sticky-box">Sticky Box (scroll to test)</div>
+            <p>Scroll down to see how sticky behaves.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.</p>
+            <p>More content to enable scrolling...</p>
+            <div class="absolute-box">Absolute Box (inside container)</div>
         </div>
+
+        <div class="flex flex-row gap-x-10">
+            <span class="inline-box">Inline Box</span>
+            <span class="inline-block-box">Inline-Block Box</span>
+            <span class="hidden-box">Hidden Box (you can't see me)</span>
+        </div>
+
+        <div class="fixed-box">Fixed Box (always visible)</div>
     </div>
-    <div class="section">
+
+    <!-- 02 💡 Intermediate Techniques -->
+    <div class="flex flex-col justify-center items-center space-x-10">
+        <div class="container">
+            <div class="box">Inherited text</div>
+        </div>
+
+        <div class="flex-container">
+            <div class="box">Flex 1</div>
+            <div class="box">Flex 2</div>
+            <div class="box">Flex 3</div>
+        </div>
+
+        <div class="grid-container">
+            <div class="box">Grid 1</div>
+            <div class="box">Grid 2</div>
+            <div class="box">Grid 3</div>
+        </div>
+
+        <div class="transition-box">Hover me for transition</div>
+        <div class="animated-box">I'm animated</div>
+        <div class="responsive-box">Resize the window</div>
+        <div class="content-box-example">Content-box sizing</div>
+
+        <input type="text" placeholder="Focus me">
+    </div>
+
+    <!-- 03 🧠 Advanced Topics -->
+    <div class="flex flex-col justify-center items-center space-x-5">
+        <div class="dynamic-box">Responsive box using CSS functions</div>
+
+        <div class="scroll-box">
+            <p>Scrollable content line 1</p>
+            <p>Scrollable content line 2</p>
+            <p>Scrollable content line 3</p>
+            <p>Scrollable content line 4</p>
+        </div>
+
+        <input type="text" placeholder="Styled input">
+
+        <div class="animated-box">I fade in!</div>
+
+        <div class="card">
+            <h3>Card with heading</h3>
+        </div>
+        <div class="card excluded">Excluded card</div>
+
+        <div class="container">
+            <div class="card">Container-aware card</div>
+        </div>
+
+        <div class="logical-box">Using logical properties</div>
+
+        <div class="vertical-text">Vertical writing mode</div>
 
     </div>
+
+    <!-- 04 ⚙️ Modern Workflow Add-ons -->
+    <div class="flex flex-row justify-center items-center space-x-5">
+
+    </div>
+
+    <!-- 05 ⚙️ Markdown file notes -->
+    <div class="flex flex-row justify-center items-center space-x-5 bg-gray-300">
+        <div id="markdown-container"></div>
+    </div>
+    <!-- <script>
+        fetch('G:\\Technologies\\00_A1_CSS_Library\\Vanila_Css\\Notes.md') 
+            .then(response => response.text())
+            .then(markdown => {
+                document.getElementById('markdown-container').innerHTML = marked.parse(markdown);
+            });
+    </script> -->
+
+
 
 </body>
 

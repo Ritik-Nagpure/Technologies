@@ -1,0 +1,128 @@
+/* ✅ CSS Functions */
+.dynamic-box {
+  width: calc(100% - 2rem); /* Subtract fixed space from full width */
+  font-size: clamp(1rem, 2vw, 2rem); /* Responsive font size */
+  height: min(300px, 50vh); /* Choose the smaller value */
+  padding: max(1em, 2%); /* Choose the larger value */
+  background-color: #e0f7fa;
+  margin-bottom: 2em;
+}
+
+/* ✅ Custom Scrollbar (WebKit only) */
+.scroll-box {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.scroll-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-box::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.scroll-box::-webkit-scrollbar-thumb {
+  background-color: #0077cc;
+  border-radius: 4px;
+}
+
+/* ✅ Styling Form Elements */
+input[type="text"] {
+  padding: 0.5em;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #0077cc;
+}
+
+/* ✅ Keyframe Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animated-box {
+  animation: fadeIn 1s ease-out;
+}
+
+/* ✅ Advanced Selectors */
+div:not(.excluded) {
+  background-color: #f9f9f9;
+}
+
+.card:has(h3) {
+  border: 2px solid #0077cc;
+}
+
+/* ✅ CSS Layers and Cascade Level */
+@layer base, theme, components;
+
+@layer base {
+}
+
+@layer theme {
+  .card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1em;
+  }
+}
+
+@layer components {
+  .card.highlight {
+    background-color: #ffe;
+    border: 2px dashed #fc0;
+  }
+}
+
+/* ✅ Container Queries */
+.container {
+  container-type: inline-size;
+  container-name: cardContainer;
+}
+
+@container cardContainer (min-width: 400px) {
+  .card {
+    font-size: 1.2rem;
+    background-color: #e6f7ff;
+  }
+}
+
+/* ✅ Logical Properties */
+.logical-box {
+  margin-inline: auto;
+  padding-block: 1em;
+  border-inline: 2px solid #0077cc;
+}
+
+/* ✅ Writing Modes */
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  background-color: #f0f0f0;
+  padding: 1em;
+  height: 200px;
+}
+
+/* ✅ CSS for Dark Mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212; 
+    color: #eee;
+  }
+
+  .card {
+    background-color: #1e1e1e;
+    border-color: #444;
+  }
+
+  input[type="text"] {
+    background-color: #222;
+    color: #fff;
+    border-color: #555;
+  }
+}
