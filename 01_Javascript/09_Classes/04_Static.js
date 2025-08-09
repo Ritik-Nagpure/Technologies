@@ -13,3 +13,4 @@ class Car {
 
 let mycar = new Car("Mahindra");
 console.log(Car.hello(mycar));
+console.log(Car.hello({name : 'PINKY'}));
