@@ -11,6 +11,27 @@
     </script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
 
+
+    <script src="./01_Plotly.js" defer></script>
+    <script src="./02_Chart.js" defer></script>
+    <script src="./03_Google_Chart.js" defer></script>
+    <script src="./04_svg.js" defer></script>
+
+
+    <style>
+        .demo {
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        canvas,
+        svg,
+        img {
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,10 +41,43 @@
     </div>
     <div id="gogleChart" style="width:100%; max-width:600px; height:500px;"></div>
 
+    <div id="svg">
 
-    <script src="./01_Plotly.js"></script>
-    <script src="./02_Chart.js"></script>
-    <script src="./03_Google_Chart.js"></script>
+    </div>
+    <div>
+        <!-- Canvas API -->
+        <div class="demo" id="canvasDemo">
+            <h3>Canvas API</h3>
+            <canvas id="canvas" width="200" height="100"></canvas>
+        </div>
+
+        <!-- SVG Manipulation -->
+        <div class="demo" id="svgDemo">
+            <h3>SVG Manipulation</h3>
+            <svg id="svg" width="200" height="100">
+                <circle id="circle" cx="50" cy="50" r="30" fill="blue" />
+            </svg>
+        </div>
+
+        <!-- CSS + JS Animations -->
+        <div class="demo" id="animationDemo">
+            <h3>CSS + JS Animation</h3>
+            <div id="box" style="width:50px; height:50px; background:red; position:relative;"></div>
+        </div>
+
+        <!-- Image Loading & Manipulation -->
+        <div class="demo" id="imageDemo">
+            <h3>Image Loading & Manipulation</h3>
+            <canvas id="imageCanvas" width="200" height="150"></canvas>
+        </div>
+
+        <!-- Mouse Events on Canvas -->
+        <div class="demo" id="mouseCanvasDemo">
+            <h3>Mouse Events on Canvas</h3>
+            <canvas id="mouseCanvas" width="200" height="150" style="border:1px solid black;"></canvas>
+        </div>
+    </div>
+
 </body>
 
 </html>
