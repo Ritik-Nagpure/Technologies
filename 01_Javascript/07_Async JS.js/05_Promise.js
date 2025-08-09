@@ -8,7 +8,7 @@ let myPromise = new Promise(function (myResolve, myReject) {
         myReject("Promise is rejected!");
     }
     
-});
+},);
 
 
 // "Consuming Code" (Must wait for a fulfilled Promise)
