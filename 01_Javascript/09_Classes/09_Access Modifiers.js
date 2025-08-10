@@ -38,7 +38,9 @@ toy.age = 45;
 
 console.log(toy);
 
-// console.log(toy._toyname);
+console.log(toy._toyname);
+toy._toyname = 'Ana';
+console.log(toy._toyname);
 // console.log(toy.#toyage);
 
 console.log(toy.name);

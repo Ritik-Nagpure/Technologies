@@ -14,7 +14,7 @@ class Human {
     }
 
     speak() {
-        return " how arew you?";
+        return " how are you?";
     }
 }
 
