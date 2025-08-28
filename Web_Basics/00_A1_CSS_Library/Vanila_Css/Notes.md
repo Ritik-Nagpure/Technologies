@@ -38,9 +38,8 @@
   }
 </style>
 
-```
-Vanilla CSS is perfect when you want to learn the fundamentals or build something lightweight and custom. Want help converting a Tailwind or Bootstrap layout into pure CSS? I can walk you through it! 🎨💡
-```
+Vanilla CSS is perfect when you want to learn the fundamentals or build something lightweight and custom.
+
 
 
 ## Course Index
@@ -274,4 +273,5 @@ npx cssnano style.css style.min.css
 /* Inline critical CSS */
 <style>
   body { margin: 0; font-family: sans-serif; }
-</style>```
+</style>
+```

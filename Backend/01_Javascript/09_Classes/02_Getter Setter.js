@@ -26,3 +26,4 @@ c1.carname = "x6";
 
 console.log(c1.cname);
 console.log(c1.carname);
+console.log(c1); // this will only show public properties in our case a blank object as there is no public property

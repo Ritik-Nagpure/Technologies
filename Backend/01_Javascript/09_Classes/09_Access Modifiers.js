@@ -2,9 +2,12 @@
 // converting toy class into private and protected class
 
 // Protected ==> are only accessible to the object and its descendants.
+//That is not enforced on the language level, but there’s a well-known convention between programmers that such properties and methods should not be accessed from the outside.
+
 // Private ==> are not accessible outside of the object
 
-class Toy {
+export class Toy {
+    a = '';
     _toyname = "Robert"; // Protected properties are usually prefixed with an underscore _
     #toyage; // Privates should start with #. They are only accessible from inside the class.
 
@@ -30,21 +33,25 @@ class Toy {
 }
 
 
-let toy = new Toy();
-console.log(toy);
+export let toy = new Toy();
 
-toy.name = "Chukky";
-toy.age = 45;
+console.log(typeof Toy)
+console.log(toy instanceof Toy);
 
-console.log(toy);
+// console.log(toy);
 
-console.log(toy._toyname);
-toy._toyname = 'Ana';
-console.log(toy._toyname);
-// console.log(toy.#toyage);
+// toy.name = "Chukky";
+// toy.age = 45;
 
-console.log(toy.name);
-console.log(toy.age);
+// console.log(toy);
+
+// console.log(toy._toyname);
+// toy._toyname = 'Ana';
+// console.log(toy._toyname);
+// // console.log(toy.#toyage);
+
+// console.log(toy.name);
+// console.log(toy.age);
 
 
 // Read-only “power”
@@ -62,8 +69,7 @@ class CoffeeMachine {
 }
 let coffeeMachine = new CoffeeMachine(100);
 
-console.log(`Power is: ${coffeeMachine.power}W`); // Power is: 100W
-coffeeMachine.power = 25; // Error (no setter)
-// coffeeMachine.#power = 25; // cannot modify directly as it is private no accesible outside of class
-console.log(`Power is: ${coffeeMachine.power}W`); // Power is: 100W
-
+// console.log(`Power is: ${coffeeMachine.power}W`); // Power is: 100W
+// // coffeeMachine.power = 25; // Error (no setter)
+// // coffeeMachine.#power = 25; // cannot modify directly as it is private no accesible outside of class
+// console.log(`Power is: ${coffeeMachine.power}W`); // Power is: 100W

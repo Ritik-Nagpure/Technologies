@@ -6,3 +6,9 @@ hi();
 bye();
 
 greetme();
+
+
+import { greet, work } from './greet.js';
+
+console.log(greet('Alex'));
+console.log(work('Alex'));

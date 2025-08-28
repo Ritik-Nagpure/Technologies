@@ -1,7 +1,7 @@
 /* ✅ CSS Variables */
 :root {
     --primary-color: #023457;
-    --hover-color: #b4b4b4;
+    --hover-color: #460051b3;
     --font-size: 1rem;
     --transition-speed: 0.3s;
 }
@@ -15,18 +15,18 @@ input:focus {
     outline: 2px solid var(--primary-color);
 }
 
-div:nth-child(3) {
+p:nth-child(2) {
     background-color: #69460a;
 }
 
 /* ✅ Pseudo-elements */
-div::before {
+p::before {
     content: "->";
 }
 
 /* 👉👈 */
 
-div::after {
+p::after {
     content: "<-";
 }
 
@@ -53,7 +53,8 @@ body {
 .flex-container .box {
     flex: 1;
     padding: 1em;
-    background-color: #e0f7fa;
+    background-color: #6f03da;
+    border-radius: 10px;
 }
 
 /* ✅ Grid Layout */
@@ -65,25 +66,26 @@ body {
 }
 
 .grid-container .box {
-    background-color: #f9f9f9;
+    background-color: #8209d8;
     padding: 1em;
     border: 1px solid #ccc;
+    border-radius: 20px;
 }
 
 /* ✅ Transitions */
 .transition-box {
-    background-color: #ddd;
+    background-color: #dddddd4e;
     transition: background-color var(--transition-speed);
 }
 
 .transition-box:hover {
-    background-color: #bbb;
+    background-color: #bbbbbb2d;
 }
 
 /* ✅ Animations */
 @keyframes pulse {
     0% {
-        transform: scale(1);
+        transform: scale(0.95);
     }
 
     50% {
@@ -97,7 +99,7 @@ body {
 
 .animated-box {
     animation: pulse 2s infinite;
-    background-color: #cce5ff;
+    background-color: #2f5775;
     padding: 1em;
 }
 
@@ -114,6 +116,6 @@ body {
     box-sizing: content-box;
     width: 200px;
     padding: 20px;
-    border: 5px solid #333;
-    background-color: #fafafa;
+    border: 5px solid #c30707;
+    background-color: #e66767;
 }

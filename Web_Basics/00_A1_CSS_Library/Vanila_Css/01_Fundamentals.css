@@ -1,8 +1,8 @@
 /* ✅ CSS Variables */
 :root {
-    --main-bg: #522d57;
+    --main-bg: #27002d;
     --main-color: #fff;
-    --accent-color: #c86ad4;
+    --accent-color: #630370;
     --font-size: 1.2rem;
     --padding: 1em;
 }
@@ -16,7 +16,6 @@
 
 /* ✅ Type Selector */
 body {
-    font-family: Arial, sans-serif;
     background-color: var(--main-bg);
     color: var(--main-color);
     padding: 2em;
@@ -57,7 +56,7 @@ body {
 
 /* ✅ Class Selector */
 .box-style {
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 5px 5px 20px rgb(224, 48, 209);
 }
 
 /* ✅ Attribute Selector */
@@ -70,7 +69,7 @@ div[data-role="kanban"] {
     position: fixed;
     bottom: 10px;
     right: 10px;
-    background-color: #ffc;
+    background-color: rgb(127, 127, 4);
     padding: 0.5em;
     border-radius: 10px;
 }
@@ -78,7 +77,7 @@ div[data-role="kanban"] {
 .sticky-box {
     position: sticky;
     top: 0;
-    background-color: #cfc;
+    background-color: rgb(0, 146, 0);
     padding: 0.5em;
     border-radius: 10px;
 }
@@ -87,7 +86,7 @@ div[data-role="kanban"] {
     position: absolute;
     top: 5px;
     right: 5px;
-    background-color: #fcc;
+    background-color: rgb(153, 1, 1);
     padding: 0.5em;
     border-radius: 10px;
 }
@@ -103,4 +102,16 @@ div[data-role="kanban"] {
 
 .hidden-box {
     display: none;
+}
+
+.section{
+    width: 100%;
+    height: fit-content;
+
+    padding: 4px;
+    margin: 2px;
+
+    
+    display: flex;
+    flex-direction: column;
 }
