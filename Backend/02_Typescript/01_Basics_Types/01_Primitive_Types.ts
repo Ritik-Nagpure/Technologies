@@ -45,15 +45,6 @@ console.log(uniqueId === anotherId); // false — each symbol is unique
 let bigNumber: bigint = 9007199254740991n;
 let anotherBig: bigint = BigInt("123456789012345678901234567890");
 
-// ✅ TYPE INFERENCE
-// TypeScript can automatically infer the type based on the assigned value.
-let score = 100;       // inferred as number
-let message = "Hello"; // inferred as string
-
-// ✅ STRICT NULL CHECKS (optional)
-// With strictNullChecks enabled, null and undefined must be explicitly handled.
-let maybeString: string | null = null;
-let optionalValue: number | undefined = undefined;
 
 // ✅ LOGGING ALL VALUES
 console.log("Age:", age);
@@ -62,3 +53,58 @@ console.log("Is Active:", isActive);
 console.log("Empty Value:", emptyValue);
 console.log("Not Assigned:", notAssigned);
 console.log("Big Number:", bigNumber);
+
+
+// voidTypeDemo.ts
+
+// ✅ What is `void`?
+// `void` is used to indicate that a function does not return a value.
+// It's commonly used for functions that perform actions like logging or updating state.
+
+function logMessage(message: string): void {
+  console.log("Log:", message);
+}
+logMessage("Hello from a void function!");
+
+// 🧪 Invalid use of return in a void function
+// Uncommenting the line below will cause a TypeScript error
+/*
+function invalidReturn(): void {
+  return "Oops"; // ❌ Error: Type 'string' is not assignable to type 'void'
+}
+*/
+
+// 🧼 Usage in Callbacks
+// `void` is often used in callback functions where the return value is ignored.
+
+type Callback = () => void;
+
+function run(callback: Callback): void {
+  console.log("Running callback...");
+  callback();
+}
+
+run(() => {
+  console.log("Callback executed.");
+});
+
+// ⚠️ `void` vs `undefined`
+
+// `undefined` is a value, while `void` is a type.
+// You can assign `undefined` to a variable, but you can't assign `void`.
+
+let notDefined: undefined = undefined;
+console.log("Undefined value:", notDefined);
+
+// let nothing: void = undefined; // ✅ Technically allowed, but not useful
+// let wrong: void = "hello";     // ❌ Error: Type 'string' is not assignable to type 'void'
+
+// 🧠 Trivia
+// In JavaScript, functions that don’t return anything implicitly return `undefined`.
+// TypeScript uses `void` to make that intent explicit.
+
+function jsStyleFunction() {
+  console.log("This function returns nothing.");
+}
+const result = jsStyleFunction(); // result is `undefined`
+console.log("Result of jsStyleFunction():", result);
