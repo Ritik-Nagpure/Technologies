@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page Not Found</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #0d0d0d;
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .glitch {
+            font-size: 6rem;
+            position: relative;
+            color: #fff;
+            animation: flicker 1.5s infinite;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: '404';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            color: #ff00c8;
+            background: transparent;
+        }
+
+        .glitch::before {
+            top: -2px;
+            text-shadow: -2px 0 red;
+            animation: glitchTop 1s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            top: 2px;
+            text-shadow: -2px 0 blue;
+            animation: glitchBottom 1s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitchTop {
+            0% {
+                clip-path: inset(0 0 80% 0);
+            }
+
+            50% {
+                clip-path: inset(0 0 50% 0);
+            }
+
+            100% {
+                clip-path: inset(0 0 70% 0);
+            }
+        }
+
+        @keyframes glitchBottom {
+            0% {
+                clip-path: inset(80% 0 0 0);
+            }
+
+            50% {
+                clip-path: inset(50% 0 0 0);
+            }
+
+            100% {
+                clip-path: inset(70% 0 0 0);
+            }
+        }
+
+        @keyframes flicker {
+
+            0%,
+            19%,
+            21%,
+            23%,
+            25%,
+            54%,
+            56%,
+            100% {
+                opacity: 1;
+            }
+
+            20%,
+            24%,
+            55% {
+                opacity: 0.4;
+            }
+        }
+
+        .message {
+            position: absolute;
+            bottom: 10%;
+            font-size: 1.2rem;
+            color: #aaa;
+            text-align: center;
+        }
+
+        .message a {
+            color: #ff00c8;
+            text-decoration: none;
+            border-bottom: 1px dashed #ff00c8;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glitch">404</div>
+    <div class="message">
+        <p>Oops... The page you're looking for is not available as this is not a website but an api.</p>
+        <p>Use the endpoints to utilize the application at its best</p>
+    </div>
+</body>
+
+</html>

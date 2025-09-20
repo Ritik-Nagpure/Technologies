@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fancy Express Homepage</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind Config for Custom Colors -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366f1',
+            accent: '#f472b6',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-gradient-to-br from-primary to-accent min-h-screen flex items-center justify-center text-white font-sans">
+
+  <div class="text-center p-6 max-w-xl animate-fade-in">
+    <!-- Logo or Icon -->
+    <div class="mb-6">
+      <svg class="mx-auto w-16 h-16 text-white animate-bounce" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
+    </div>
+
+    <!-- Title -->
+    <h1 class="text-4xl font-bold mb-4 drop-shadow-lg">Welcome to Express 🚀</h1>
+
+    <!-- Subtitle -->
+    <p class="text-lg mb-6 opacity-90">Your backend is live and ready to serve. Let’s build something amazing!</p>
+
+    <!-- CTA Button -->
+    <a href="/json" class="inline-block bg-white text-primary font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-accent hover:text-white transition duration-300">
+      View JSON Response
+    </a>
+  </div>
+
+  <!-- Tailwind Animations -->
+  <style>
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fade-in 1s ease-out forwards;
+    }
+  </style>
+</body>
+</html>
