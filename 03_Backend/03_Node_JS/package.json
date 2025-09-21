@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "nodemon ./packages/URL/url.js"
+    "start": "nodemon ./packages/URL/url.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "chalk": "^5.6.2",
+    "cli-progress": "^3.12.0",
+    "figlet": "^1.9.3",
     "node": "^21.6.1",
     "nodemon": "^3.0.3"
   }
