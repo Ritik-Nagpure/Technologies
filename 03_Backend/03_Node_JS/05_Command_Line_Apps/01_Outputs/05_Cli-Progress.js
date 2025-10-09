@@ -9,7 +9,7 @@ Installation:
 
 // ✅ Single Progress Bar
 const singleBar = new SingleBar({
-    format: 'Progress |{bar}| {percentage}% || {value}/{total}',
+    format: 'Progress : {bar}| {percentage}% || {value}/{total}' ,
     barCompleteChar: '\u2588',
     barIncompleteChar: '\u2591',
     hideCursor: true

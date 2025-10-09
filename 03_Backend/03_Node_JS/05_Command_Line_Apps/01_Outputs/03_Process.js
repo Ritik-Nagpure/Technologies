@@ -1,5 +1,3 @@
-// process-output-demo.js
-
 console.log('🖥️ Node.js Output Using process.stdout and process.stderr\n');
 
 // ✅ Basic Output
@@ -12,8 +10,8 @@ const age = 30;
 process.stdout.write(`User: ${username}, Age: ${age}\n`);
 
 // ✅ Colored Output using ANSI escape codes
-process.stdout.write(' \x1b[32m Success: \\x1b[0m Operation completed \n'); // Green
-process.stderr.write(' \x1b[31m Error: \\x1b[0m Something went wrong \n');   // Red
+process.stdout.write(' \x1b[32m Success: \x1b[0m Operation completed \n'); // Green
+process.stderr.write(' \x1b[31m Error: \x1b[0m Something went wrong \n');   // Red
 
 // ✅ Manual Table Printing (no console.table, no external modules)
 const headers = ['Name', 'Age', 'Role'];

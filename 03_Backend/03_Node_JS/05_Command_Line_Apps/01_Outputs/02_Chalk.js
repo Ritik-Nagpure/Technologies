@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import chalk , {Chalk} from 'chalk';
 
 /*
     Chalk.js Complete Notes
@@ -12,6 +12,10 @@ import chalk from 'chalk';
     Importing Chalk (ESM and CommonJS):
         import chalk from 'chalk'; // ESM
         // const chalk = require('chalk'); // CommonJS
+    
+    note: 
+        ->  works only in terminal when used with node.
+        ->  output terminal is not able to show the output as expected due to limitations.
 */
 
 /*
@@ -64,7 +68,7 @@ console.log('Chalk color support level:', chalk.level);
 /*
     9. Disabling Chalk (useful for logging to files)
 */
-const noColor = new chalk.Instance({ level: 0 });
+const noColor = new Chalk({ level: 0 });
 console.log(noColor.red('This will not be colored'));
 
 /*
@@ -111,7 +115,7 @@ console.log(chalk.bgHex('#00FF00').black('Black text on green background'));
 /*
     12. Custom Chalk Instances
 */
-const customChalk = new chalk.Instance({ level: 3 });
+const customChalk = new Chalk({ level: 3 });
 console.log(customChalk.hex('#FF69B4').bold('Custom instance with pink bold text'));
 
 /*
