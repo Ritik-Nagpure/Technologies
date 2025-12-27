@@ -1,10 +1,9 @@
 const http = require('http');
+const url = require('url');
 
 const Port = 3000;
 
 const app = http.createServer((req, res) => {
-    // console.log(req);
-    // console.log(req.url);
 
     if (req.url == '/') {
         res.writeHead(200, { "Content-Type": "text/html" });
@@ -19,14 +18,29 @@ const app = http.createServer((req, res) => {
 
     }
 
-    if (req.url == '/create-user' & req.method == 'POST') {
-        console.log(req.body)
-        // let username = 
-        res.writeHead(200, { "Content-Type": "text/html" });
-        res.write(user_created(username));
-        return res.end();
+    if (req.url === '/create-user' && req.method === 'POST') {
+        let body = '';
 
+        req.on('data', chunk => {
+            body += chunk.toString();
+        });
+
+        req.on('end', () => {
+
+            const querystring = require('querystring');
+            const parsedData = querystring.parse(body);
+
+            console.log(body, 'Parsed Data:', parsedData);
+
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.write(user_created(parsedData.username));
+            return res.end();
+        });
+
+        return;
     }
+
+
 
     res.writeHead(404, { "Content-Type": "text/html" });
     res.write(`<center><h1>OOp's !! Wrong URL... </h1><p>What do you want buddy ??</p></center>`);
@@ -71,7 +85,7 @@ var homepage = `
     <br/>
     <form action='/create-user' method='post'>
         <h2> Know your User </h2>
-        <input required placeholder='Enter a User Name' />
+        <input required placeholder='Enter a User Name' type="text" name="username" />
         <button> Submit </button>
     </form>
  </center>
@@ -87,7 +101,7 @@ var user_created = (username) => `
 </head>
 <body>
   <h2>Thank You!</h2>
-  <p>Your username [ ${username} ] has been successfully added.</p>
+  <p>Your username [ ${username.toString()} ] has been successfully added.</p>
 </body>
 </html>
 `
