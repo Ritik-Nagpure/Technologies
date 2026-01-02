@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    parameters {
+        booleanParam(defaultValue : false, description: 'Enable Service ?', name : 'boolin')
+        
+        string(defaultValue : 'STR1', description: 'String input test', name : 'str1')
+
+        text(name: 'CONFIG_BLOCK', defaultValue: '''
+        {
+        "env": "staging",
+         "retries": 3,
+          "timeout": 120
+        }
+        ''', description: 'Enter JSON configuration')
+
+        choice(choices: ['PROD', 'TEST', 'INT', 'QA'], description: 'Choice parameter from dropdown !', name : 'choice')
+
+    }
+    stages {
+        stage('Echo Boolean Input') {
+            steps {
+                echo "booleanParam is set to ${params.boolin}"
+            }
+        }
+        stage('Echo String Input') {
+            steps {
+                echo "String Parameter is set to ${params.str1}"
+            }
+        }
+        stage('Echo Text Input') {
+            steps {
+                echo "Received config:\n${params.CONFIG_BLOCK}"
+            }
+        }
+        stage('Echo Choice Input') {
+            steps {
+                echo "Enviornment Choice:\n${params.choice}"
+            }
+        }
+    }
+}

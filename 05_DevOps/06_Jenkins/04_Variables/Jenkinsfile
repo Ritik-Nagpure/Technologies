@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    // ✅ User-defined environment variables (always strings)
+
+    environment {
+        STR = 'Hello World'
+        NUM = '10'
+        BOOL = 'true'
+    }
+
+    stages {
+        // 1️⃣ Built-in Environment Variables
+        stage('Built-in Variables') {
+            steps {
+                echo "Build number: ${env.BUILD_NUMBER}"
+                echo "Job name: ${env.JOB_NAME}"
+                echo "Workspace: ${env.WORKSPACE}"
+            }
+        }
+
+        // 2️⃣ User-defined Environment Variables
+        stage('User-defined Environment Variables') {
+            steps {
+                echo "STR -> ${env.STR}"
+                echo "NUM -> ${env.NUM}"
+                echo "BOOL -> ${env.BOOL}"
+
+                script {
+                    // Convert strings to proper types if needed
+                    def numInt = env.NUM.toInteger()
+                    def boolVal = env.BOOL.toBoolean()
+                    echo "Converted NUM (int): ${numInt}"
+                    echo "Converted BOOL (boolean): ${boolVal}"
+                }
+            }
+        }
+
+        // 3️⃣ Local Script Variables
+        stage('Local Script Variables') {
+            steps {
+                script {
+                    def str = "Local Hello"
+                    int num = 42
+                    boolean bool = false
+
+                    echo "Local STR -> ${str}"
+                    echo "Local NUM -> ${num}"
+                    echo "Local BOOL -> ${bool}"
+                }
+            }
+        }
+    }
+}

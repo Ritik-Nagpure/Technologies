@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+    parameters {
+        string(defaultValue: 'Deployment Today', description: 'Please enter deployment name.', name: 'deploymentName')
+
+        choice(choices: ['EU-WEST-2A', 'EU-WEST-2B', 'EU-WEST-2C'], description: 'Select the Server Region to Deploy', name: 'serverName')
+
+        booleanParam(defaultValue: false, description: 'Is ready to deploy', name: 'isDeployable')
+    }
+    stages {
+        stage('Display Parameters') {
+            steps {
+                echo "Deployment Name is : ${params.deploymentName}"
+                echo "Deployment Server Region is : ${params.serverName}"
+                echo "Is ready to Deploy ? : ${params.isDeployable}"
+            }
+        }
+    }
+}

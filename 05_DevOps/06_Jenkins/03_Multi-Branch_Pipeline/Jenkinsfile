@@ -1,14 +1,14 @@
 pipeline {
-    agent none
+    agent any
     stages {
         stage('Clean Up') {
             steps {
-                deleteDir { }
+                deleteDir()
             }
         }
-        stage('Clone Repo') {
+        stage('Checkout') {
             steps {
-                sh 'git clone https://github.com/Ritik-Nagpure/tests.git'
+                checkout scm
             }
         }
         stage('Build') {
@@ -17,6 +17,13 @@ pipeline {
                     sh 'node -v'
                     sh 'npm install'
                     sh 'npm run build'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                dir('tests') {
+                    sh 'npm run test'
                 }
             }
         }
