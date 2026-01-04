@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    environment {
+        USERPASS = credentials('my-secret-id')
+    }
+
+    stages {
+        stage('Declarative Style (Single Env Binding)') {
+            steps {
+                script {
+                    sh """
+                        echo "Using combined user:pass string..."
+                        # Example: curl with user:pass
+                        curl -u $USERPASS https://example.com/api/demo
+                    """
+                }
+            }
+        }
+
+        stage('Scripted Style (Split Username/Password)') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'my-secret-id',
+                                                 usernameVariable: 'USER',
+                                                 passwordVariable: 'PASS')]) {
+                    sh """
+                        echo "Connecting with user: $USER"
+                        curl -u $USER:$PASS https://example.com/api/demo
+                    """
+                                                 }
+            }
+        }
+    }
+}

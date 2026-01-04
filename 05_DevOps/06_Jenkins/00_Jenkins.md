@@ -65,7 +65,7 @@ Jenkins is a popular, free, open-source automation server that helps developers 
 
 ## 📄 File
 
-Jenkins doesn’t use a special file extension like .xml or .json for its pipelines. Instead, it relies on a plain text file named Jenkinsfile (with no extension).
+Jenkins doesn’t use a special file extension like .xml or .json for its pipelines. Instead, it relies on a plain text file named Jenkinsfile (with no extension). a prefix with a . also works ex. prod.Jenkinsfile 
 
 Key points about the Jenkinsfile
 

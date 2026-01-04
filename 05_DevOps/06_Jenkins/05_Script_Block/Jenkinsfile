@@ -1,0 +1,67 @@
+def checkEvenOdd(num) {
+    if (num % 2 == 0) {
+        echo "${num} is Even"
+                        } else {
+        echo "${num} is Odd"
+    }
+}
+
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'innum', defaultValue: '20', description: 'Input Number ?')
+        choice(name: 'incase', choices: ['1', '2', '3'], description: 'Input Case ?')
+    }
+
+    stages {
+        stage('Conditional') {
+            steps {
+                script {
+                    def num = params.innum.toInteger()
+                    echo 'Conditional statements Demo starts here ...'
+
+                    if (num % 2 == 0) {
+                        echo "${num} is Even"
+                    } else {
+                        echo "${num} is Odd"
+                    }
+                }
+            }
+        }
+
+        stage('Loops') {
+            steps {
+                script {
+                    echo 'Loops Demo Starts here ...'
+
+                    // For loop
+                    for (int i = 1; i <= 5; i++) {
+                        echo "Iteration number: ${i}"
+                    }
+
+                    // While loop
+                    int count = 1
+                    while (count <= 5) {
+                        echo "Count is: ${count}"
+                        count++
+                    }
+                }
+            }
+        }
+
+        stage('Functions') {
+            steps {
+                script {
+                    echo 'Functions Demo Starts here ...'
+
+                    checkEvenOdd(5)
+                    checkEvenOdd(10)
+                }
+            }
+        }
+
+        
+    }
+}
+
