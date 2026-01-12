@@ -1,10 +1,13 @@
 // ✅ Import the dotenv package to load environment variables from a .env file
 import dotenv from 'dotenv';
 
+// Access variable using built-in method make sure the env is accessible in this case it isn't configured directly
+console.log(process.env.UK);
+
 // ✅ Optionally load a .env file from a custom path
 // This is useful when your .env file is not in the root directory
 // Uncomment the line below to use a specific .env file location
-dotenv.config({ path: '05_Command_Line_Apps/03_Env_vars/.env' });
+dotenv.config({ path: `G:\\Technologies\\03_Backend\\03_Node_JS\\05_Command_Line_Apps\\03_Env_vars\\.env` });
 
 // ✅ Load environment variables from the default .env file
 // By default, dotenv looks for a .env file in the root folder (same level as package.json)
@@ -16,9 +19,10 @@ const mycountry = process.env.US || "Not found";
 
 // ✅ Print the value of the environment variable to the console
 console.log(mycountry);
+console.log(process.env.UK);
+
 
 /*
-
 🌱 What Are Environment Variables?
     Environment variables are key-value pairs used to configure how software behaves without changing its code. 
     They act like invisible settings that your app can read at runtime.
