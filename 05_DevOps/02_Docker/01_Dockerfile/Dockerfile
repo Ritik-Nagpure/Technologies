@@ -23,5 +23,10 @@ RUN npm run build
 # 7. Expose app port
 EXPOSE 3000
 
-# 8. Start the app from dist
-CMD ["npm", "run", "serve"]
+# 8. Create an Entrypoint
+ENTRYPOINT [ "npm run" ]
+
+# 9. Start the app from dist
+CMD ["serve"]
+
+

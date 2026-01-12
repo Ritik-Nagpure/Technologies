@@ -14,6 +14,7 @@ config.js
 
 # Ignore generated files
 dist/
+00_Dist/
 build/
 
 # Ignore logs and temporary files

@@ -95,10 +95,11 @@ console.log('Parameters:', args, '→ Sum:', sum(...args));
 class Person {
   constructor(public name: string, public age: number) {}
 }
+
 type PersonArgs = ConstructorParameters<typeof Person>;
 const personArgs: PersonArgs = ['Zoe', 22];
 const person = new Person(...personArgs);
-console.log('ConstructorParameters:', person);
+console.log(person);
 
 // ─────────────────────────────────────────────────────────────
 // INSTANCETYPE<T>: Gets the instance type from a constructor.
