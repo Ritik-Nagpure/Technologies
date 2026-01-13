@@ -135,7 +135,6 @@ Docker follows a **client-server architecture**:
 ---
 
 ## Quick Mnemonic
-**Docker Workflow = F-B-R-R-N-D-M-S-C**
 - **F**ile → **B**uild → **R**egistry → **R**un → **N**etwork → **D**ata → **M**onitor → **S**top → **C**leanup
 
 
