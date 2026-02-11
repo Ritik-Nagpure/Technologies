@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
+type Todo = { id: number; title: string; completed: boolean }
 
 // Mock in-memory store
-let todos: { id: number; title: string; completed: boolean }[] = [];
+let todos: Todo[] = [];
 let idCounter = 1;
 
 export const getTodos = (req: Request, res: Response) => {
