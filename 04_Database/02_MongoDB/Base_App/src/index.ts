@@ -5,7 +5,7 @@ dotenv.config();
 
 
 import todo from "./Todo/todo.router";
-import { createTodo } from './mongoose/db_layer';
+// import { createTodo } from './mongoose/db_layer';
 
 const port = process.env.PORT || 3000
 const app = express();
@@ -26,7 +26,7 @@ const t1: Todo = { id: 45, title: "first todo", completed: false };
 app.get("/", (req: Request, res: Response) => {
     console.log('incomming req.')
     res.send("Welcome to Express + TypeScript Todo Application! use api endpoint /todo");
-    createTodo(t1);
+    // createTodo(t1);
 });
 
 app.listen(port, () => {
