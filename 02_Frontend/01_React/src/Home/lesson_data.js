@@ -40,3 +40,26 @@ export const data = [
         desc: "Redux"
     },
 ]
+
+export const libraries = [
+    {
+        title: "Formik",
+        desc: "React, Vite , Package.json and JSX"
+    },
+    {
+        title: "Spring",
+        desc: "React, Vite , Package.json and JSX"
+    },
+    {
+        title: "Virtualised",
+        desc: "React, Vite , Package.json and JSX"
+    },
+    {
+        title: "Testing Library",
+        desc: "React, Vite , Package.json and JSX"
+    },
+    {
+        title: "Query",
+        desc: "React, Vite , Package.json and JSX"
+    },
+]

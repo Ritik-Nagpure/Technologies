@@ -1,8 +1,5 @@
-import React from 'react'
 import Header from '../Header/Header'
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
-
-import Demo from '../Demo'
 import Formik from '../Formik/Formik'
 import Virtualised from '../Virtualised/Virtualised'
 import Hooks from '../Hooks/Hooks'
@@ -15,7 +12,6 @@ function Router() {
             <BrowserRouter>
                 <Header />
                 <Routes>
-                    <Route path="/" element={<Demo />} />
                     <Route path="/Query" element={<Query />} />
                     <Route path="/Virtualised" element={<Virtualised />} />
                     <Route path="/Spring" element={<Spring />} />

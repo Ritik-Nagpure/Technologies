@@ -2,7 +2,7 @@ import Card from './Card'
 import { data } from './lesson_data'
 import { useNavigate } from 'react-router-dom'
 
-const Lessons = () => {
+const Core = () => {
   const navigate = useNavigate();
 
   const goto = (lesson_number) => {
@@ -23,4 +23,4 @@ const Lessons = () => {
   )
 }
 
-export default Lessons
+export default Core
