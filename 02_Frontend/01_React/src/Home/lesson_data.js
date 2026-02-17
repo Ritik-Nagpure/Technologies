@@ -28,15 +28,15 @@ export const data = [
         desc: "React Router DOM"
     },
     {
-        title: "",
+        title: "08",
         desc: "Context API"
     },
     {
-        title: "",
+        title: "09",
         desc: "Zustand"
     },
     {
-        title: "",
+        title: "10",
         desc: "Redux"
     },
 ]

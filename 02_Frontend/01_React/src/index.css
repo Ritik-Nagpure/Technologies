@@ -5,13 +5,13 @@ html, body {
     height: 100%;
     padding: 0px;
     margin: 0px;
-    background-color: white;
+    background-color: rgb(210, 210, 210);
     color: black;
 
 }
 
 .light-mode{
-    background-color: #c4c5fb;
+    background-color: #c0c0c0;
     color: black;
 }
 

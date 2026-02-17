@@ -1,30 +1,17 @@
-import Header from './Header'
-import Footer from './Footer'
-import Core from './Core'
-import Library from './Library'
+import Header from './Header';
+import Footer from './Footer';
+import { Outlet } from 'react-router-dom';
 
-import { useState } from 'react'
-
-function Layout() {
-  const [isDark, setIsDark] = useState(true);
-  const [home, setHome] = useState('core');
-
-  const togglemode = () => {
-    setIsDark(!isDark)
-    console.log(isDark)
-  }
-
-  const notesMode = (name) => {
-    setHome(name);
-  }
-
+function Layout({ isDark, toggle }) {
   return (
     <div className={`flex flex-col justify-between h-full ${isDark ? "dark-mode" : "light-mode"}`}>
       <div className="">
-        <Header isDark={isDark} toggle={togglemode} notesMode={notesMode}/>
+        <Header isDark={isDark} toggle={toggle}/>
       </div>
       <div className="">
-        {home == 'core' ? <Core /> : <Library />}
+        <main className="flex-grow">
+          <Outlet/>
+        </main>
       </div>
       <div className="">
         <Footer />
@@ -33,4 +20,4 @@ function Layout() {
   )
 }
 
-export default Layout
+export default Layout;
