@@ -11,6 +11,8 @@ import L05 from './Lessons/L05';
 import L06 from './Lessons/L06';
 import L07 from './Lessons/L07';
 import Core from './Home/Core';
+import Projects from './Home/Projects';
+import TicTacToe from './Projects/TicTacToe/TicTacToe';
 
 const App = () => {
   const [isDark, setIsDark] = useState(true);
@@ -21,7 +23,7 @@ const App = () => {
   }
 
   return (
-    <div className='w-full h-full'>
+    <div className='w-full min-h-screen'>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout isDark={isDark} toggle={togglemode} />} >
@@ -29,7 +31,8 @@ const App = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/Core" element={<Core />} />
             <Route path="/Library" element={<Library />} />
-            
+            <Route path="/Projects" element={<Projects />} />
+
             <Route path="/L01" element={<L01 />} />
             <Route path="/L02" element={<L02 />} />
             <Route path="/L03" element={<L03 />} />
@@ -37,6 +40,8 @@ const App = () => {
             <Route path="/L05" element={<L05 />} />
             <Route path="/L06" element={<L06 />} />
             <Route path="/L07" element={<L07 />} />
+
+            <Route path="/TicTacToe" element={<TicTacToe />} />
 
             <Route path="/*" element={<h1>Not Found</h1>} />
           </Route>

@@ -21,6 +21,9 @@ const Header = ({ isDark, toggle }) => {
         <button onClick={() => { navigate(`/Library`); }} className="rounded-3xl p-4 m-1 text-2xl transition ease-in-out hover:bg-indigo-700 text-center">
           Libraries
         </button>
+        <button onClick={() => { navigate(`/Projects`); }} className="rounded-3xl p-4 m-1 text-2xl transition ease-in-out hover:bg-indigo-700 text-center">
+          Projects
+        </button>
       </p>
     </div>
   );

@@ -63,3 +63,10 @@ export const libraries = [
         desc: "React, Vite , Package.json and JSX"
     },
 ]
+
+export const Projects_list = [
+    {
+        title: "TicTacToe",
+        desc: "A Tic Tac Toe application Game"
+    },
+]
