@@ -69,4 +69,8 @@ export const Projects_list = [
         title: "TicTacToe",
         desc: "A Tic Tac Toe application Game"
     },
+    {
+        title: "SnakeGame",
+        desc: "A Tic Tac Toe application Game"
+    },
 ]
