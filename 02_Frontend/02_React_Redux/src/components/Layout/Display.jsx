@@ -1,23 +1,19 @@
-import { useDispatch, useSelector } from "react-redux"
-// import { increment, decrement } from '../../store/store'
-import Home from "../Pages/Home";
-import Cart from "../Pages/Cart";
-import Footer from "./Footer"
-
 import { useState } from "react";
 import { Route, Routes } from "react-router";
+
+import Home from "../Pages/Home";
+import Cart from "../Pages/Cart";
+import Footer from "./Footer";
 import Products from "../Pages/Products";
 import Billing from "../Pages/Billing";
 
 const Display = ({ isCartVisible }) => {
-  const [isBilling, setIsBilling] = useState(true);
+  const [isBilling, setIsBilling] = useState(false);
 
   const toggleBilling = () => {
     setIsBilling(!isBilling);
   }
 
-  // const count = useSelector((state) => state.counter.value);
-  // const dispatch = useDispatch();
 
 
   return (
