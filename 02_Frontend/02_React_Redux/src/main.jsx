@@ -3,11 +3,11 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { Provider } from 'react-redux'
-import { cartStore } from './store/cartstore.js'
+import { stateStore } from './store/store.js'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Provider store={cartStore}>
+    <Provider store={stateStore}>
       <div className='h-screen w-full overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none]'>
         <App />
       </div>
