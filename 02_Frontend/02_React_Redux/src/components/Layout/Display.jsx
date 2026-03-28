@@ -18,23 +18,32 @@ const Display = ({ isCartVisible }) => {
 
 
   return (
-    <div className="w-full h-full">
+    <div className="h-full">
 
-      <div className=" flex flex-col justify-center items-center w-full h-full overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none]">
-        <div className='h-full w-full'>
-          <Routes >
-            <Route path="/" element={<Home />} />
-            <Route path="/Products" element={<Products />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
-          </Routes>
-          <div className="bottom-0 w-full">
+      <div className="bg-amber-400 flex flex-col justify-center items-center h-full overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none]">
+        <div className='h-full'>
+          <div className='mx-15'>
+
+            <Routes >
+              <Route path="/" element={<Home />} />
+              <Route path="/Products" element={<Products />} />
+              <Route path="/Dashboard" element={<Dashboard />} />
+            </Routes>
+          </div>
+          <div className={` ${isCartVisible ? 'block' : 'hidden'} absolute top-25 right-0 bg-gray-100 my-2 mx-4 rounded-xl border-2 p-4 sm:w-3/12 w-36 h-10/12`}>
+            <Cart onproceed={toggleBilling} />
+          </div>
+
+          <div className="bottom-0">
             <Footer />
           </div>
         </div>
 
-        <div className={` ${isCartVisible ? 'block' : 'hidden'} absolute top-0 right-0 bg-gray-100 my-2 mx-4 rounded-xl border-2 p-4 sm:w-3/12 w-36 h-screen`}>
-          <Cart onproceed={toggleBilling} />
-        </div>
+        {/* <div>
+          <div className={` ${isCartVisible ? 'block' : 'hidden'} absolute top-0 right-0 bg-gray-100 my-2 mx-4 rounded-xl border-2 p-4 sm:w-3/12 w-36 h-screen`}>
+            <Cart onproceed={toggleBilling} />
+          </div>
+        </div> */}
 
 
 

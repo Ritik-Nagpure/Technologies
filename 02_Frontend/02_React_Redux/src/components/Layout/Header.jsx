@@ -4,7 +4,7 @@ const Header = ({ cartvisiblity, togglecart }) => {
     const navig = useNavigate();
     return (
 
-        <div className="relative h-fit w-full bg-gray-900 text-white shadow-md">
+        <div className="relative bg-gray-900 text-white shadow-md">
             <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
 
                 <button className="flex items-center space-x-3" onClick={() => { navig('/') }}>

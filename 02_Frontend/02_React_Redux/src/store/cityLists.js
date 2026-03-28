@@ -6,6 +6,10 @@ export const getdata = createAsyncThunk('jsdata/getdata', async () => {
     return res.data.cities
 })
 
+// thunks are not required anymore due to adcase, builder and extrareducers concept of redux toolkit
+// it makes writing code simpler and out put as it is by giving builtin : pending, fulfilled, rejected methods 
+// input of addcase is a function with api call, callback function for state update
+
 const jsdataSlice = createSlice({
     name: 'jsdata',
     initialState: {
@@ -22,7 +26,7 @@ const jsdataSlice = createSlice({
                 state.cities = ['Requesting ...']
             })
             .addCase(getdata.fulfilled, (state, action) => {                
-                state.loading = false
+                state.loading = false   
                 state.cities = action.payload
             })
             .addCase(getdata.rejected, (state, action) => {

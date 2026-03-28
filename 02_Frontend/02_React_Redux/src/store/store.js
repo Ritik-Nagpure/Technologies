@@ -1,5 +1,5 @@
 import { combineReducers, applyMiddleware, configureStore } from '@reduxjs/toolkit';
-import logger from 'redux-logger';
+import { logger } from 'redux-logger';
 
 import cartred from './cartstore';
 import cities from './cityLists';
@@ -18,10 +18,17 @@ export const rootReducer = combineReducers({
 
 export const stateStore = configureStore(
     {
-        reducer: rootReducer,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(customMiddleware, logger)
+        // old method of using combine reducers 
+        // reducer: rootReducer,
+        // new method does not need combine reducers can handle this on its own
+        reducer: {
+            cart: cartred,
+            citylist: cities,
+        },
+
         // applyMiddleware(logger, thunk) --> this is old in redux method
         // this is new mordern redux toolkit way as it wrap everything and emits a simple way to implement it
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(customMiddleware, logger)
     }
 );
 

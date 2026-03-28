@@ -7,17 +7,17 @@ function App() {
   const [isCartVisible, setIsCartVisible] = useState(false);
 
   return (
-    <div className="h-full w-full flex flex-col">
+    <div className="h-full flex flex-col">
       <BrowserRouter>
-        <div className=" w-full z-50">
+        <div className="z-50">
           <Header togglecart={setIsCartVisible} cartvisiblity={isCartVisible} />
         </div>
 
-        <div className=" flex-1 w-full overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none]">
+        <div className="bg-red-400 flex-1 overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none]">
           <Display isCartVisible={isCartVisible} />
-          <div className=" w-full">
-            {/* <Footer /> */}
-          </div>
+          {/* <div className=" w-full">
+            <Footer /> 
+          </div> */}
         </div>
       </BrowserRouter>
 
