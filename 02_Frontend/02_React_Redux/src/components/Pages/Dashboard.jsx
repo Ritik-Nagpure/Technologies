@@ -7,7 +7,7 @@ const Dashboard = () => {
 
   const { loading, cities, err, iserror } = useSelector((state) => state.citylist)
 
-  useEffect(() => { dispatch(getdata()) }, [dispatch])
+  useEffect(() => { dispatch(getdata()) }, []);
 
   return (
     <div className="h-fit flex justify-center items-center">

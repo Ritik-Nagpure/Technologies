@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
 const todoSchema = new mongoose.Schema({
-    id: Number,
+    id: {
+        type: Number,
+        required: true,
+        unique: true
+    },
     title: String,
     completed: Boolean
 });
