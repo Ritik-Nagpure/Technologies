@@ -1,18 +1,45 @@
 import { Request, Response } from "express";
+import { createEntry, getEntry, getALLEntries } from "../Redis/redis";
+
 
 // Mock in-memory store
 let todos: { id: number; title: string; completed: boolean }[] = [];
 let idCounter = 1;
 
-export const getTodos = (req: Request, res: Response) => {
-  res.json(todos);
+export const getTodos = async (req: Request, res: Response) => {
+  try {
+    const todos = await getALLEntries();
+    res.status(200).json(todos);
+  }
+  catch {
+    res.status(500).json("Some error Occured");
+  }
+
 };
 
-export const createTodo = (req: Request, res: Response) => {
-  const { title, completed } = req.body;
-  const newTodo = { id: idCounter++, title, completed: completed || false };
-  todos.push(newTodo);
-  res.status(201).json(newTodo);
+export const getTodo = async (req: Request, res: Response) => {
+  try {
+    const tid: string = String(req.params.id);
+    const todos: string = await getEntry(tid) || '';
+    res.status(200).json(JSON.parse(todos));
+  }
+  catch {
+    res.status(500).json("Some error Occured");
+  }
+
+};
+
+export const createTodo = async (req: Request, res: Response) => {
+  try {
+    const { title, completed } = req.body;
+    const newTodo = { id: idCounter++, title, completed: completed || false };
+    const todokey = await createEntry(JSON.stringify(newTodo));
+    res.status(201).json(todokey);
+  }
+  catch {
+    res.status(500).json("Some error Occured");
+  }
+
 };
 
 export const updateTodo = (req: Request, res: Response) => {
@@ -25,7 +52,7 @@ export const updateTodo = (req: Request, res: Response) => {
   todo.title = title ?? todo.title;
   todo.completed = completed ?? todo.completed;
 
-  res.json(todo);
+  res.status(200).json(todo);
 };
 
 export const deleteTodo = (req: Request, res: Response) => {
