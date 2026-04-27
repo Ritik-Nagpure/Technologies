@@ -13,7 +13,7 @@ function* createotp(n) {
     }
 }
 
-let otp = createotp(4);
+let otp = createotp(7);
 console.log(otp.next());
 console.log(otp.next());
 console.log(otp.next());

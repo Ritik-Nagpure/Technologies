@@ -1,5 +1,5 @@
 // async keyword creates asynchronous function and run it asynchronouly
-// await wait for the repose from async function to proceed futher async task has to be finished first.
+// await wait for the response from async function to proceed futher async task has to be finished first.
 // await can only be used inside an async function only
 
 // Below the program will wait for the promise to be resolved and untill then no further action will be taken.
