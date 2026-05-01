@@ -158,7 +158,7 @@ function DemoForm() {
         {/* Range input */}
         <div>
           <label>Progress (0-100):</label>
-          <input type="range" min="0" max="100" value={0} {...register("progress", { required: "Progress is required" })} />
+          <input type="range" min="0" max="100" defaultValue={0} {...register("progress", { required: "Progress is required" })} />
           {errors.progress && <p style={{ color: "red" }}>{errors.progress.message}</p>}
         </div>
 
