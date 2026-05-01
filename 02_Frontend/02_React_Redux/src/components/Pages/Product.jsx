@@ -2,7 +2,7 @@
 const Product = ({ productdetail, buypress }) => {
     return (
         <div>
-            <div className="border rounded-lg shadow p-4">
+            <div className="border rounded-xl shadow-gray-400 p-4 shadow-xl">
                 <img
                     src={productdetail.imgurl}
                     alt={productdetail.name}

@@ -13,7 +13,7 @@ function App() {
           <Header togglecart={setIsCartVisible} cartvisiblity={isCartVisible} />
         </div>
 
-        <div className="bg-red-400 flex-1 overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none]">
+        <div className=" flex-1 overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none]">
           <Display isCartVisible={isCartVisible} />
           {/* <div className=" w-full">
             <Footer /> 

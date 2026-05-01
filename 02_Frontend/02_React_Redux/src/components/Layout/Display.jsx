@@ -20,7 +20,7 @@ const Display = ({ isCartVisible }) => {
   return (
     <div className="h-full">
 
-      <div className="bg-amber-400 flex flex-col justify-center items-center h-full overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none]">
+      <div className="flex flex-col justify-center items-center h-full overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none]">
         <div className='h-full'>
           <div className='mx-15'>
 
