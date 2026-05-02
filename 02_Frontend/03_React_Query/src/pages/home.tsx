@@ -14,7 +14,7 @@ const home = () => {
 
             {/* Hero Section */}
             <header className="max-w-4xl mx-auto text-center py-20 px-6">
-                <h1 className="text-6xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-6xl font-extrabold tracking-tight mb-6 bg-gradient-to-right from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                     Mastering Server State
                 </h1>
                 <p className="text-xl text-slate-600 leading-relaxed">

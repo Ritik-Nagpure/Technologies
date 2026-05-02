@@ -5,7 +5,7 @@ import { useState } from "react";
 
 const address = () => {
 
-    const [isvisible, setIsvisible] = useState(true);
+    const [isvisible, setIsvisible] = useState(false);
     const [uid, setUid] = useState<number | null>(null);
 
     const initialSample = { "id": 123, "first_name": "Loading" }
@@ -43,7 +43,7 @@ const address = () => {
 
     const handleFocus = (id: number) => {
         // queryclient.invalidateQueries({ queryKey: ['unique_data', null], exact: true });
-        // queryclient.removeQueries({ queryKey: ['unique_data', null], exact: true });
+        queryclient.removeQueries({ queryKey: ['unique_data', null], exact: true });
         // console.log(queryclient.getQueryCache())
         // console.log(queryclient.getQueriesData({ queryKey: ['unique_data', null], exact: true }))
         // console.log(queryclient.getQueriesData({ queryKey: ['unique_data', 1], exact: true }))
