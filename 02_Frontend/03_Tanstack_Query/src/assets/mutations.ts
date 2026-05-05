@@ -4,8 +4,8 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 // Fetch all users (for table)
 export const fetchUsers = async (id_arr: string[]): Promise<data_type[] | undefined> => {
-    console.log(id_arr);
-    const res = await axios.get('http://localhost:8000/api/demos/react_query', {
+    // console.log(id_arr);
+    const res = await axios.get('http://localhost:8000/api/demos/react_query/idlist', {
         params: { ids: id_arr.join(',') }
     })
     return res.data;

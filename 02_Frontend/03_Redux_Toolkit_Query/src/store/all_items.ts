@@ -48,16 +48,18 @@ export const apiSlice = createApi({
       }),
     }),
     getInfyPage: builder.infiniteQuery({
-      
       infiniteQueryOptions: {
         initialPageParam: 1, // Must provide a default initial page param value  
-        maxPages: 3, // Optionally limit the number of cached pages 
-        getNextPageParam: (lastPageParam,) => lastPageParam + 1,
-        getPreviousPageParam: (firstPageParam, allPageParams,) => firstPageParam > 0 ? firstPageParam - 1 : undefined,
+        getNextPageParam: (lastPage, allPages, lastPageParam) => {
+          if (!lastPage?.data?.length) return undefined; // stop when no data
+          return lastPageParam + 1;
+        }
+        // maxPages: 3, Optionally limit the number of cached pages 
       },
 
       query({ pageParam }) {  // The `query` function receives `{queryArg, pageParam}` as its argument
-        return `/pages?page=${pageParam}&limit=10`
+        console.log(pageParam)
+        return `/pages?page=${pageParam}&limit=500`
       },
     }),
   })

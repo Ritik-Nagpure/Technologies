@@ -105,14 +105,7 @@ const UserFormAndTable = () => {
     return (
         <div className="p-4">
 
-            <Createupdatenode
-                handleSubmit={handleSubmit}
-                handleChange={handleChange}
-                createLoading={createLoading}
-                updateLoading={updateLoading}
-                setAction={setAction}
-                formData={formData}
-            />
+            <Createupdatenode handleSubmit={handleSubmit} handleChange={handleChange} createLoading={createLoading} updateLoading={updateLoading} setAction={setAction} formData={formData} />
 
             <Deletenode deleteLoading={deleteLoading} handleDelete={handleDelete} />
 

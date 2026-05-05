@@ -31,7 +31,7 @@ const infyscroll = () => {
     const { data: user, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetInfyPageInfiniteQuery({
         initialPageParam: 1
     });
-    console.log(user);
+    console.log(user, hasNextPage, isFetchingNextPage);
 
     const loadmoreref = useRef<HTMLDivElement | null>(null)
 
@@ -45,7 +45,7 @@ const infyscroll = () => {
                     fetchNextPage();
                 }
             },
-            { threshold: 0.1 }
+            { threshold: 1.0 }
         );
         observer.observe(el);
         return () => observer.disconnect();

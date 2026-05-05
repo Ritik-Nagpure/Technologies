@@ -50,13 +50,12 @@ const pagina = () => {
     return (
         <div className="grid grid-cols-1 justify-items-center">
             <div className="flex flex-row justify-between w-48 m-1 p-2">
-                <div className={`${user?.page === 1 ? 'hidden' : 'block'} `}>
-                    <button onClick={() => handlepage('-')}>Prev</button>
-                </div>
-                <p>{pid}</p>
-                <div className={`${user?.totalPages === pid ? 'hidden' : 'block'} `}>
-                    <button onClick={() => handlepage('+')}>Next</button>
-                </div>
+                <button className={`bg-blue-500 px-4 py-1 m-1 text-white rounded-lg font-bold  disabled:bg-gray-600`} onClick={() => handlepage('-')} disabled={!!(user?.page === 1)}>Prev</button>
+
+                <p className={`bg-gray-200 px-4 py-1 m-1 text-black rounded-lg font-bold ring-1 ring-black`}>{pid}</p>
+
+                <button className={`bg-blue-500 px-4 py-1 m-1 text-white rounded-lg font-bold  disabled:bg-gray-600`} onClick={() => handlepage('+')} disabled={!!(user?.totalPages === pid)}>Next</button>
+
             </div>
 
             {user &&

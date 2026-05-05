@@ -2,13 +2,13 @@ import type { data_type } from "../assets/utils";
 import { useState } from "react";
 import { useGetPaginatedQuery } from "../store/all_items";
 
-// type page_data = {
-//     page: number,
-//     limit: number,
-//     totalItems: number,
-//     totalPages: number,
-//     data: data_type[]
-// }
+type page_data = {
+    page: number,
+    limit: number,
+    totalItems: number,
+    totalPages: number,
+    data: data_type[]
+}
 
 const pagina = () => {
     const [pid, setPid] = useState(1);
