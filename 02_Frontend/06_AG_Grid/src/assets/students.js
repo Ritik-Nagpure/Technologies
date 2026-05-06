@@ -15,12 +15,12 @@ export const columns = [
     { "field": "class", sortable: true, filter: true },
     { "field": "address", sortable: true, filter: true },
     { "field": "section", sortable: true, filter: true },
-    { "field": 1101, sortable: true, filter: true, headerName: () => subjects['1101'] },
-    { "field": 1102, sortable: true, filter: true, headerName: () => subjects['1102'] },
-    { "field": 1103, sortable: true, filter: true, headerName: () => subjects['1103'] },
-    { "field": 1104, sortable: true, filter: true, headerName: () => subjects['1104'] },
-    { "field": 1105, sortable: true, filter: true, headerName: () => subjects['1105'] },
-    { "field": 1106, sortable: true, filter: true, headerName: () => subjects['1106'] },
+    { "field": subjects['1101'], sortable: true, filter: true, },
+    { "field": subjects['1102'], sortable: true, filter: true, },
+    { "field": subjects['1103'], sortable: true, filter: true, },
+    { "field": subjects['1104'], sortable: true, filter: true, },
+    { "field": subjects['1105'], sortable: true, filter: true, },
+    { "field": subjects['1106'], sortable: true, filter: true, },
     { "field": "total", sortable: true, filter: true },
 ]
 
