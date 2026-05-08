@@ -1,9 +1,12 @@
-function App() {
-  return (
-    <>
-      <h1 className="text-5xl text-red-900 font-extrabold">Hi react </h1>
-    </>
-  )
-}
+// App.jsx
 
-export default App
+import { createRouter, RouterProvider, } from "@tanstack/react-router"
+import { routeTree } from "./routeTree.gen"
+
+const router = createRouter({
+  routeTree,
+})
+
+export default function App() {
+  return <RouterProvider router={router} />
+}
