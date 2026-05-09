@@ -13,33 +13,15 @@ function DashboardLayout() {
       }}
     >
       {/* Sidebar */}
-      <aside
-        style={{
-          width: "220px",
-          borderRight: "1px solid gray",
-          padding: "20px",
-        }}
-      >
-        <h2>Dashboard</h2>
-
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          <Link to="/dashboard">
-            Home
-          </Link>
-
-          <Link to="/dashboard/analytics">
-            Analytics
-          </Link>
-
-          <Link to="/dashboard/settings">
-            Settings
-          </Link>
+      <aside style={{ width: "220px", borderRight: "1px solid gray", padding: "20px", }}      >
+        <h2 className="px-4 py-2 text-2xl font-bold text-violet-500 rounded-lg ring-2 ring-violet-300 bg-violet-200">Menu</h2>
+        
+        <br /><hr /><br />
+        
+        <div className="flex flex-col gap-4 ">
+          <Link className="px-4 py-2 font-semibold text-xl rounded-lg hover:ring-2 ring-violet-500 hover:bg-violet-400 " to="/dashboard">            Home          </Link>
+          <Link className="px-4 py-2 font-semibold text-xl rounded-lg hover:ring-2 ring-violet-500 hover:bg-violet-400 " to="/dashboard/analytics">            Analytics          </Link>
+          <Link className="px-4 py-2 font-semibold text-xl rounded-lg hover:ring-2 ring-violet-500 hover:bg-violet-400 " to="/dashboard/settings">            Settings          </Link>
         </div>
       </aside>
 
