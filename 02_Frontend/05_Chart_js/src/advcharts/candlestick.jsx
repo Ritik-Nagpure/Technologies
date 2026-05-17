@@ -76,7 +76,7 @@ export default function App() {
 
   return (
     <div className="p-6 bg-gray-900 rounded-2xl">
-      <div className="h-[400px]">
+      <div className="h-100">
         <canvas ref={chartRef}></canvas>
       </div>
     </div>
