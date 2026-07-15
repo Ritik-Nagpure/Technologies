@@ -6,7 +6,7 @@ import {
 
 function DashboardLayout() {
   return (
-    <div
+    <div 
       style={{
         display: "flex",
         minHeight: "100vh",
