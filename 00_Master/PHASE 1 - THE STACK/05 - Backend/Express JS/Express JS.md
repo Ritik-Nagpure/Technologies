@@ -1,0 +1,330 @@
+# Express.js
+
+## 01 - [[01 - Overview|Overview]]
+- Introduction
+- Why Express.js
+- Express.js vs Alternatives (Fastify, Koa, Hono, NestJS, bare http)
+- Architecture
+    - Request lifecycle
+    - Middleware pipeline
+    - Router internals
+    - Express 4 vs Express 5
+- When to Use / When Not To
+- Common Misconceptions
+
+## 02 - [[02 - Setup and Structure|Setup and Structure]]
+- Creating a Project
+    - Manual setup
+    - Express generator
+    - TypeScript setup
+- Folder Structure
+    - Layered architecture
+    - Feature-based organization
+    - Colocation rules
+- Configuration
+    - Environment variables
+    - Config modules
+    - dotenv
+- CLI and Scripts
+    - dev, start, test
+    - nodemon, tsx, ts-node
+    - Build steps
+
+## 03 - [[03 - Routing|Routing]]
+- Route Basics
+    - app.get, post, put, patch, delete
+    - Route paths
+    - Route parameters
+    - Query strings
+- Route Handlers
+    - Single handler
+    - Multiple handlers
+    - Handler chaining
+- Router
+    - express.Router
+    - Nested routers
+    - Modular routing
+- Route Organization
+    - Route grouping
+    - Versioning (/api/v1)
+    - Prefixing
+- Route Ordering
+    - Why order matters
+    - Wildcards and catch-all
+- Route Parameters
+    - Named params
+    - Regex params
+    - Optional params
+- Route Chaining
+    - app.route()
+    - Router.route()
+
+## 04 - [[04 - Middleware|Middleware]]
+- Middleware Basics
+    - What middleware is
+    - Signature (req, res, next)
+    - Execution order
+- Types of Middleware
+    - Application-level
+    - Router-level
+    - Error-handling
+    - Built-in
+    - Third-party
+- Writing Custom Middleware
+    - Logging
+    - Auth
+    - Request enrichment
+- Error Middleware
+    - Four-argument signature
+    - Error propagation
+    - Centralized error handling
+- Async Middleware
+    - Why try/catch is needed
+    - asyncHandler wrapper
+    - Express 5 native async support
+- Middleware Pitfalls
+    - Forgetting next()
+    - Calling next() and sending response
+    - Order mistakes
+
+## 05 - [[05 - Request and Response|Request and Response]]
+- Request Object (req)
+    - req.params, req.query, req.body
+    - req.headers, req.cookies
+    - req.ip, req.hostname
+    - req.get, req.accepts
+    - req.files
+- Response Object (res)
+    - res.send, res.json, res.end
+    - res.status, res.set, res.type
+    - res.redirect, res.render
+    - res.sendFile, res.download
+    - res.locals
+- Streaming Responses
+    - res.write, res.end
+    - Piping streams
+- Response Helpers
+    - Custom response wrappers
+    - Standard API response shape
+
+## 06 - [[06 - Body Parsing, Cookies, Sessions|Body Parsing, Cookies, Sessions]]
+- Body Parsing
+    - express.json()
+    - express.urlencoded()
+    - Raw and text bodies
+    - Limits and size
+- Cookies
+    - cookie-parser
+    - Signed cookies
+    - Cookie flags (httpOnly, secure, sameSite)
+- Sessions
+    - express-session
+    - Session stores (Redis, DB)
+    - Session vs JWT
+- File Uploads
+    - Multer
+    - Memory vs disk storage
+    - File size limits
+    - File type validation
+
+## 07 - [[07 - Validation and Serialization|Validation and Serialization]]
+- Why Server-Side Validation Matters
+- Validation Libraries
+    - Zod
+    - Joi
+    - express-validator
+    - Yup
+- Validation Middleware
+    - Body, params, query
+    - Reusable schemas
+    - Field-level errors
+- Serialization
+    - Response DTOs
+    - Hiding sensitive fields
+    - Class-transformer patterns
+- Sanitization
+    - Trimming
+    - Type coercion
+    - XSS escaping
+
+## 08 - [[08 - Security|Security]]
+- Security Headers
+    - helmet
+    - CSP, HSTS, X-Frame-Options
+- CORS
+    - cors package
+    - Credentials handling
+    - Preflight
+- Rate Limiting
+    - express-rate-limit
+    - Redis-backed limiting
+    - Per-route limits
+- CSRF
+    - Why it matters for cookies
+    - csurf alternatives
+    - SameSite cookies
+- Input Hardening
+    - Prototype pollution
+    - ReDoS
+    - Body size limits
+- Authentication
+    - JWT
+    - Sessions
+    - OAuth/OIDC integration
+- Authorization
+    - RBAC
+    - Role middleware
+    - Ownership checks
+- Secrets
+    - Environment variables
+    - Vault integration
+
+## 09 - [[09 - Project Structure and Architecture|Project Structure and Architecture]]
+- Layered Architecture
+    - Routes → Controllers → Services → Repositories
+    - Responsibilities per layer
+- Controllers
+    - Thin controllers
+    - Input → service → response
+- Services
+    - Business logic
+    - Framework-agnostic
+- Repositories
+    - Data access abstraction
+    - ORM integration
+- Dependency Injection
+    - Manual DI
+    - Container libraries (awilix, tsyringe)
+- Config and Environments
+    - Config module
+    - Validation at startup
+- Express as Adapter
+    - Keeping Express at the edges
+    - Hexagonal architecture fit
+- Modular Monolith Patterns
+    - Bounded contexts
+    - Module boundaries
+
+## 10 - [[10 - Database and ORM Integration|Database and ORM Integration]]
+- Choosing an ORM
+    - Prisma, Drizzle, TypeORM, Sequelize, Knex
+- Connection Management
+    - Pooling
+    - Graceful shutdown
+    - Health checks
+- Transactions
+    - Per-request transactions
+    - Transaction middleware
+- Migrations
+    - Schema versioning
+    - Zero-downtime migrations
+- Query Performance
+    - N+1 detection
+    - Batching
+    - Read/write splits
+- Repository Pattern
+    - Abstracting the ORM
+
+## 11 - [[11 - API Design|API Design]]
+- REST Basics
+    - Resource modeling
+    - HTTP methods
+    - Status codes
+- API Versioning
+    - URL, header, media type
+- Pagination
+    - Offset vs cursor
+    - Response shape
+- Filtering and Sorting
+    - Query param conventions
+- Error Responses
+    - Standard error shape
+    - Problem Details (RFC 7807)
+- Idempotency
+    - Idempotency keys
+- OpenAPI / Swagger
+    - Schema generation
+    - Documentation
+- GraphQL with Express
+    - Apollo Server, GraphQL Yoga
+- tRPC with Express
+- When to Use REST vs GraphQL vs tRPC
+
+## 12 - [[12 - Advanced Topics|Advanced Topics]]
+- Express 5 Migration
+    - Breaking changes
+    - Native async error handling
+    - Route wildcard changes
+- Custom Views
+    - Template engines (EJS, Pug, Handlebars)
+    - Server-rendered pages
+- Server-Sent Events
+    - SSE with Express
+    - When to prefer over WebSockets
+- WebSockets with Express
+    - ws, socket.io
+    - Sharing HTTP server
+- Proxies and Trust Proxy
+    - X-Forwarded-For
+    - Reverse proxy setup
+- Static File Serving
+    - express.static
+    - Caching headers
+    - CDN offload
+- Performance
+    - Compression (compression)
+    - Keep-alive
+    - Cluster and PM2
+    - Profiling endpoints
+- Testing
+    - Supertest
+    - Integration tests
+    - Mocking services
+
+## 13 - [[13 - Production|Production]]
+- Deployment
+    - Node server
+    - Docker
+    - Behind Nginx
+    - PM2 / systemd
+- Environment Configuration
+    - Build-time vs runtime
+    - Validation at boot
+- Logging
+    - Winston, Pino
+    - Request ID propagation
+    - Structured logs
+- Observability
+    - Metrics (Prometheus)
+    - Tracing (OpenTelemetry)
+    - Health checks
+- Error Handling at Scale
+    - Uncaught exceptions
+    - Unhandled rejections
+    - Graceful degradation
+- Graceful Shutdown
+    - SIGTERM, draining, timeouts
+- Zero-Downtime Deploys
+    - Rolling, blue-green
+    - Health check gating
+- Common Production Issues
+    - Memory leaks
+    - Event loop blocking
+    - Unbounded body sizes
+    - Leaked connections
+
+## 14 - [[14 - Interview Q&A|Interview Q&A]]
+- Foundation
+- Understanding
+- Senior Engineer
+- Production Debugging
+- System Design
+- Architect Level
+- Scenario Based
+- Trap Questions
+
+## 15 - [[15 - Mastery Checklist|Mastery Checklist]]
+- The Ladder (Explain → Visualize → Implement → Use → Measure → Debug → Break → Recover → Compare → Choose → Design → Defend → Teach)
+- Self-Assessment
+- When to Move On
+- Return Conditions

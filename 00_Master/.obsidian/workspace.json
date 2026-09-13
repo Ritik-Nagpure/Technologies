@@ -1,0 +1,223 @@
+{
+  "main": {
+    "id": "d02f55051521aaa0",
+    "type": "split",
+    "children": [
+      {
+        "id": "d71f13c89b007bb5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1d962ec2e988434b",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "4dbef9505d5fef00",
+    "type": "split",
+    "children": [
+      {
+        "id": "faf1ebec89de7c5e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6b0ee6ac62acf8f2",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "992d5854a1263b11",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "28e38c5d699b35c0",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "e62900ea280c486a",
+    "type": "split",
+    "children": [
+      {
+        "id": "c2ed5f69b515e1b5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ceb5a57a5505f6fa",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "4238bba24dd152c8",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "9756219375de0a01",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "1919a53c9b774038",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "ab3589516c65f679",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "1d962ec2e988434b",
+  "lastOpenFiles": [
+    "01 - Overview.md",
+    "PHASE 1 - THE STACK/02 - Software Development/Software Devlopment.md",
+    "Ecosystem/index.md",
+    "PHASE 1 - THE STACK/05 - Backend/NodeJS/Node JS.md",
+    "PHASE 1 - THE STACK/05 - Backend/NodeJS",
+    "PHASE 1 - THE STACK/05 - Backend/Messaging/Messaging.md",
+    "PHASE 1 - THE STACK/05 - Backend/Express JS/Express JS.md",
+    "PHASE 1 - THE STACK/05 - Backend/Express JS/Express JS",
+    "PHASE 1 - THE STACK/05 - Backend/Express JS",
+    "PHASE 1 - THE STACK/05 - Backend/Fastify/Fastify.md",
+    "PHASE 1 - THE STACK/05 - Backend/Node.js/Node JS.md",
+    "PHASE 1 - THE STACK/05 - Backend/Node.js",
+    "PHASE 1 - THE STACK/05 - Backend/Express.js",
+    "PHASE 1 - THE STACK/05 - Backend/Fastify",
+    "PHASE 1 - THE STACK/05 - Backend/Messaging",
+    "PHASE 1 - THE STACK/06 - Databases/Database.md",
+    "PHASE 1 - THE STACK/04 - Frontend/Frontend.md",
+    "Ecosystem",
+    "PHASE 1 - THE STACK/04 - Frontend/00_React/React.md",
+    "PHASE 1 - THE STACK/Phase 1.md",
+    "PHASE 1 - THE STACK/04 - Frontend/Next JS.md",
+    "PHASE 3 - SYNTHESIS/Phase 3.md",
+    "PHASE 3 - SYNTHESIS/03 - Interview Readiness/Interview QnA.md",
+    "PHASE 3 - SYNTHESIS/02 - Build an Enterprise/Building Apps.md",
+    "PHASE 3 - SYNTHESIS/01 - The Full Picture/Full Picture.md",
+    "PHASE 2 - THE DISCIPLINES/Phase 2.md",
+    "PHASE 2 - THE DISCIPLINES/07 - System Design/System Design.md",
+    "PHASE 2 - THE DISCIPLINES/06 - HLD/HLD.md",
+    "PHASE 2 - THE DISCIPLINES/05 - LLD/LLD.md",
+    "PHASE 2 - THE DISCIPLINES/04 - SDLC/SDLC.md",
+    "PHASE 2 - THE DISCIPLINES/03 - Architecture Patterns/Architecture.md",
+    "PHASE 2 - THE DISCIPLINES/02 - Design Patterns/Design.md",
+    "PHASE 2 - THE DISCIPLINES/01 - DSA/DSA.md",
+    "PHASE 1 - THE STACK/Phase-1.md",
+    "PHASE 1 - THE STACK/04 - Frontend/02_Ecosystem",
+    "PHASE 1 - THE STACK/04 - Frontend/03_Next.js"
+  ]
+}

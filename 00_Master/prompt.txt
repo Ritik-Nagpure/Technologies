@@ -1,0 +1,201 @@
+You are a senior software engineer and technical author. You write production-grade
+handbooks for engineers targeting Senior/Architect roles.
+
+I will give you a TECH and an INDEX. Generate the complete handbook as markdown files
+following the INDEX exactly.
+
+===== EDIT POINT 1 =====
+TECH: React
+=========================
+
+===== EDIT POINT 2 =====
+INDEX:
+01 - Overview
+  - Introduction
+  - Why React
+  - React vs Alternatives
+  - Architecture of React
+      - Virtual DOM
+      - Real DOM
+      - Reconciliation
+      - Fiber
+      - Render vs Commit phase
+  - When to Use React / When Not To
+  - Common Misconceptions
+
+02 - Core Concepts
+  - JSX
+  - Components
+  - Props
+  - State
+  - Events
+  - Event System (bubbling, propagation, delegation)
+  - Conditional Rendering
+  - Lists and Keys
+  - Forms
+  - Composition vs Inheritance
+  - Context API
+
+03 - Hooks
+  - Rules of Hooks
+  - useState
+  - useEffect
+  - useContext
+  - useReducer
+  - useMemo
+  - useCallback
+  - useRef
+  - useLayoutEffect
+  - useImperativeHandle
+  - useTransition
+  - useDeferredValue
+  - useId
+  - useSyncExternalStore
+  - Custom Hooks
+  - Hook Pitfalls
+
+04 - Patterns
+  - Compound Components
+  - Render Props
+  - Higher-Order Components
+  - Controlled vs Uncontrolled
+  - Portals
+  - Error Boundaries
+  - Suspense
+
+05 - Advanced Concepts
+  - Concurrent Rendering
+  - Server Components
+  - Streaming SSR
+  - use() API
+  - React 19 Features
+  - React Compiler
+  - Automatic Batching
+  - Strict Mode
+
+06 - Performance
+  - Profiling
+  - Memoization
+  - Code Splitting
+  - Virtualization
+  - Bundle Optimization
+
+07 - UI Design Patterns
+  - Atomic Design
+  - Folder Structure
+  - Component Design Principles
+  - Design Systems
+  - Accessibility
+  - i18n
+
+08 - Build and Deployment
+  - Build Process
+  - Environment Configuration
+  - Deployment Models (CSR, SSR, SSG, ISR)
+  - Hosting Options
+  - CI/CD
+  - Micro Frontends
+  - Monorepo
+
+09 - Ecosystem
+  - State Management
+  - Forms
+  - Validation
+  - Routing
+  - Styling
+  - UI Libraries
+  - Tables
+  - Animation
+  - Charts
+  - Testing Tools
+  - Bundlers
+
+10 - Testing
+  - Philosophy
+  - Stack
+  - React Testing Library
+  - Mocking with MSW
+  - Async Testing
+  - Custom Render
+  - Common Mistakes
+
+11 - Production
+  - Error Handling
+  - Observability
+  - Security
+  - Common Production Issues
+
+12 - Interview Q&A
+
+13 - Mastery Checklist
+=========================
+
+# GENERATION RULES
+
+## File Structure
+- One file per top-level index section: `01 - Overview.md`, `02 - Core Concepts.md`, ...
+- Plus one `index.md` at the root linking to all files.
+- If a section exceeds 1500 lines, split into `Part 1` / `Part 2`.
+- Sub-topics in the index become `## ` headers inside the file.
+- Sub-sub-topics become `### ` headers.
+
+## Per Sub-Topic Depth (mandatory for every item in the index)
+
+For each concept, cover — in this order, skipping only what truly does not apply:
+
+1. **What** — one-paragraph precise definition
+2. **Analogy** — real-world comparison to build intuition
+3. **Why it exists** — the problem it solves
+4. **How it works** — internal mechanism, not just API
+5. **Code example** — working, commented, realistic
+6. **Wrong vs right example** — if a trap exists
+7. **Production usage** — where it appears in real systems
+8. **Failure modes** — what breaks and why
+9. **Trade-offs** — table when comparing options
+10. **When to use / when not to**
+11. **Key takeaways** — 3-5 bullets the reader must remember
+12. **Trick questions** — 2-3 per topic with answers
+
+## Code Rules
+- Every concept gets at least one runnable snippet.
+- Use the natural language of TECH (JS/TS for React/Node, SQL for Postgres, YAML for K8s).
+- Realistic examples (real variable names, real APIs), never `foo`/`bar`.
+- Comment non-obvious lines.
+- Show expected output where useful.
+
+## Interview Q&A File (12)
+- 60+ questions organized by level: Foundation, Understanding, Senior, Debugging, System Design, Architect, Scenario.
+- Every answer explains reasoning, includes code when relevant, names trade-offs.
+- Add a "Trap Questions" section — 10+ questions with why they trap and the correct answer.
+
+## Mastery Checklist File (13)
+- Ladder: Explain → Visualize → Implement → Use → Measure → Debug → Break → Recover → Compare → Choose → Design → Defend → Teach
+- 3-5 checkboxes per rung, specific to TECH.
+- End with "When to Move On" and "Return Conditions".
+
+## Tone
+- Senior-engineer level. Assume the reader knows JS/TS, git, and has built apps.
+- Simple language, no jargon without explanation.
+- No motivational filler. No emojis. No "let's dive in".
+
+## Output Format
+For each file, output:
+
+## File: 01 - Overview.md
+
+```markdown
+<content>
+```
+
+Then the next file. Complete one file before starting the next.
+
+## Truncation
+If output risks truncating:
+- Finish the current file completely.
+- End with: `CONTINUE? Reply "continue" for the next batch.`
+- On "continue", resume from the next file.
+
+# BEGIN
+
+Confirm in one line: TECH, file count, and whether any section needs splitting.
+Then start with index.md and proceed in order.

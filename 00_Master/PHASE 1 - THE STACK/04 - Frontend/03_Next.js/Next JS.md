@@ -1,0 +1,368 @@
+﻿# Next.js
+
+## 01 - [[01 - Overview|Overview]]
+- Introduction
+- Why Next.js
+- Next.js vs Alternatives (Remix, Astro, Nuxt, Gatsby, Vite+React)
+- Architecture
+    - Compiler (SWC, Turbopack)
+    - Server runtime
+    - App Router vs Pages Router
+    - Rendering pipeline
+    - Build output (standalone, static, hybrid)
+- When to Use / When Not To
+- Common Misconceptions
+
+## 02 - [[02 - Setup and Structure|Setup and Structure]]
+- Creating a Project
+    - create-next-app
+    - Manual setup
+    - TypeScript config
+- Folder Structure
+    - app/ vs pages/
+    - Feature-based organization
+    - Colocation rules
+    - Private folders, route groups
+- Configuration
+    - next.config.js deep dive
+    - Environment variables
+    - Path aliases
+- CLI and Scripts
+    - dev, build, start, lint
+    - Turbopack vs Webpack
+    - Custom build steps
+
+## 03 - [[03 - Routing|Routing]]
+- App Router Basics
+    - File conventions (page, layout, template, loading, error, not-found)
+    - Nested routes
+    - Route segments
+- Dynamic Routes
+    - [slug], [...slug], [[...slug]]
+    - generateStaticParams
+- Route Groups and Organization
+    - (group) folders
+    - Private folders (_folder)
+    - Parallel routes (@slot)
+    - Intercepting routes (.)
+- Navigation
+    - Link component
+    - useRouter
+    - redirect, permanentRedirect, notFound
+    - Prefetching
+    - Back/forward behavior
+- Routing Hooks
+    - useParams
+    - usePathname
+    - useSearchParams
+    - useSelectedLayoutSegment(s)
+- Route Segment Config
+    - dynamic, dynamicParams, revalidate, fetchCache
+    - runtime, preferredRegion, maxDuration
+- Reading Request Data
+    - cookies()
+    - headers()
+    - Server vs Client access
+- Middleware
+    - matcher config
+    - Auth guards, redirects, rewrites, headers
+    - Edge runtime constraints
+- Pages Router (legacy)
+    - getStaticProps, getServerSideProps, getStaticPaths
+    - _app, _document
+
+## 04 - [[04 - Rendering|Rendering]]
+- Rendering Fundamentals
+    - Server vs client rendering
+    - HTML, hydration, RSC payload
+- Server Components
+    - Default in App Router
+    - Async components, direct DB access
+    - Data serialization rules
+    - Limitations
+- Client Components
+    - use client directive
+    - Where to place the boundary
+    - Bundle impact
+- Static and Dynamic Rendering
+    - Static at build
+    - Dynamic at request
+    - Streaming
+    - Partial Prerendering (PPR)
+- Cache Components (use cache)
+    - Explicit cache boundaries vs implicit PPR flags
+    - Relationship to Route Segment Config and Data Cache
+- SSR, SSG, ISR, CSR
+    - Each model explained
+    - revalidate and time-based ISR
+    - On-demand revalidation
+- Streaming and Suspense
+    - Suspense boundaries
+    - loading.tsx
+    - Trade-offs
+- Instant Navigations and Partial Prefetching
+    - Stream / Cache / Block navigation modes
+    - Route shell prefetching
+- Hydration
+    - Hydration mismatches
+    - Selective hydration
+    - Common errors and fixes
+
+## 05 - [[05 - Data Fetching and Caching|Data Fetching and Caching]]
+- Data Fetching Basics
+    - fetch in Server Components
+    - Native fetch extensions
+    - Parallel vs sequential fetching
+    - Colocating vs shared parent fetches
+- Memoization Primitives
+    - React cache()
+    - unstable_cache
+    - Automatic request memoization vs explicit
+- Caching Layers
+    - Request memoization
+    - Data cache
+    - Full route cache
+    - Router cache
+    - Lifetimes and invalidation
+- Revalidation
+    - Time-based (revalidate)
+    - On-demand (revalidatePath, revalidateTag)
+    - Cache-control interplay
+- Client-Side Fetching
+    - SWR / TanStack Query
+    - When to fetch on the client
+    - Hydration from server data
+- Database Access
+    - Prisma / Drizzle in Server Components
+    - Connection pooling
+    - Serverless DB caveats
+- Streaming Data
+    - Suspense + fetch
+    - loading.tsx per segment
+    - Error boundaries with data
+
+## 06 - [[06 - Server Actions and API Routes|Server Actions and API Routes]]
+- Server Actions Basics
+    - use server directive
+    - Calling from client components
+    - Form actions
+    - Progressive enhancement
+- Forms and Validation
+    - useFormState / useActionState
+    - Zod validation server-side
+    - Field errors
+    - Optimistic UI (useOptimistic)
+- Revalidation After Mutation
+    - revalidatePath / revalidateTag
+    - redirect after action
+- Server Actions Security
+    - Auth checks in actions
+    - CSRF, input validation, rate limiting
+- When Not to Use Server Actions
+    - Public APIs, long-running jobs, webhooks
+- Route Handlers
+    - app/api/.../route.ts
+    - GET, POST, PUT, DELETE
+    - Request and Response
+- Dynamic Segments and Search Params
+- Streaming Responses
+    - ReadableStream
+    - SSE
+- File Uploads and Large Payloads
+    - Body size limits
+    - Streaming uploads
+    - multipart/form-data
+- CORS and Headers
+- When to Use Route Handlers
+    - vs Server Actions
+    - vs External API
+
+## 07 - [[07 - Styling, Images, Fonts, SEO|Styling, Images, Fonts, SEO]]
+- CSS in Next.js
+    - Global CSS
+    - CSS Modules
+    - Tailwind CSS
+    - CSS-in-JS caveats
+- Fonts (next/font)
+    - Self-hosting, optimization
+- Images (next/image)
+    - Sizing, priority, remote patterns
+    - Optimization pipeline
+- Metadata and SEO
+    - Metadata API
+    - generateMetadata (dynamic) vs static export
+    - viewport export / generateViewport
+    - Open Graph
+    - Sitemaps, robots
+    - JSON-LD
+- Accessibility
+    - Routing and focus
+    - Route announcements
+- i18n
+    - next-intl
+    - Route-based locale
+    - App Router patterns
+
+## 08 - [[08 - Authentication and Authorization|Authentication and Authorization]]
+- Auth Approaches
+    - Session-based, JWT, stateless vs stateful
+- Auth.js (NextAuth)
+    - Setup, providers, callbacks
+    - Session strategies
+    - Middleware integration
+- Custom Auth
+    - Cookie sessions
+    - Server-side checks
+    - Route protection
+- Authorization Patterns
+    - RBAC, ABAC
+    - Row-level, field-level
+    - Multi-tenant and subdomain-based routing
+    - Where to enforce
+- Security Considerations
+    - CSRF, XSS, session fixation
+    - Cookie flags
+    - CSP
+
+## 09 - [[09 - Performance|Performance]]
+- Core Web Vitals
+    - LCP, INP, CLS in Next.js context
+- Bundling and Code Splitting
+    - Automatic splitting
+    - dynamic() imports
+    - Analyzing bundles
+- RSC and Bundle Reduction
+    - Keeping data fetching on the server
+    - Client boundary costs
+- Images, Fonts, Scripts
+    - next/image, next/font, next/script
+    - Script loading strategies (beforeInteractive, afterInteractive, lazyOnload)
+- Caching and CDN
+    - Edge caching
+    - Region choice
+- Profiling and Observability
+    - React Profiler
+    - Vercel Analytics
+    - OpenTelemetry
+- Performance Checklist
+
+## 10 - [[10 - Deployment and DevOps|Deployment and DevOps]]
+- Build Output
+    - .next/ directory
+    - standalone mode
+    - Static export
+- Vercel
+    - Native deployment
+    - Edge functions
+    - Environment variables
+- Self-Hosting
+    - Node server
+    - Docker (multi-stage build)
+    - Nginx reverse proxy
+    - PM2
+- Other Platforms
+    - AWS (Amplify, ECS, Lambda)
+    - Cloudflare, Netlify
+    - Static hosting for SSG
+- CI/CD
+    - GitHub Actions
+    - Preview deployments
+    - Cache strategies
+- Environment Configuration
+    - Public vs private env vars
+    - Build-time vs runtime env
+- Monitoring
+    - Logs, metrics, traces
+    - Error tracking (Sentry)
+    - Alerting
+
+## 11 - [[11 - Testing|Testing]]
+- Testing Philosophy
+- Testing Stack
+- Unit Testing
+    - Vitest / Jest
+- Component Testing
+    - React Testing Library
+    - Server vs Client component testing
+- Integration Testing
+    - API routes
+    - Server actions
+- E2E Testing
+    - Playwright
+    - Cypress
+- Mocking
+    - MSW
+    - fetch mocking
+    - DB mocking
+- Common Mistakes
+
+## 12 - [[12 - Advanced Topics|Advanced Topics]]
+- Partial Prerendering (PPR)
+- Parallel and Intercepting Routes
+    - Modals over routes
+    - Dashboard slots
+- Draft Mode and Preview
+- Instrumentation and OpenTelemetry
+- Edge Runtime
+    - Constraints
+    - When to use
+- Custom Server
+    - When and why (rare)
+- Micro Frontends with Next.js
+- Monorepo Setup
+    - Turborepo with Next.js
+    - Shared packages
+- Pages to App Router Migration
+    - Incremental adoption strategy
+    - Shared layouts during migration
+    - Data fetching pattern conversion
+- PWA and Service Workers
+    - Manifest, offline support
+    - Service worker caveats with App Router
+- Real-Time and WebSockets
+    - Why serverless/edge does not suit persistent connections
+    - SSE via route handlers
+    - External WebSocket service patterns
+
+## 13 - [[13 - Ecosystem|Ecosystem]]
+> Introductions only. Deep dives in dedicated topics.
+
+- CMS Integration (Contentful, Sanity, Strapi, Payload)
+- UI Libraries (shadcn/ui, Radix, MUI)
+- Data and State (TanStack Query, Zustand, SWR)
+- Forms and Validation (React Hook Form, Zod)
+- API Layer Alternatives (tRPC, GraphQL)
+- Third-Party Integrations (@next/third-parties)
+- Analytics and Feature Flags (PostHog, Vercel Analytics, LaunchDarkly)
+- Library Selection Guide
+
+## 14 - [[14 - Production|Production]]
+- Common Production Issues
+- Debugging Production
+- Error Handling
+    - error.tsx, global-error.tsx
+    - not-found.tsx
+    - Custom error boundaries
+    - Client and server error boundaries
+- Observability
+- Security Checklist
+- Cost Optimization
+    - Vercel bandwidth
+    - Image optimization costs
+    - Caching to reduce invocations
+
+## 15 - [[15 - Interview Q&A|Interview Q&A]]
+- Foundation
+- Understanding
+- Senior Engineer
+- Production Debugging
+- System Design
+- Architect Level
+- Scenario Based
+- Trap Questions
+
+## 16 - [[16 - Mastery Checklist|Mastery Checklist]]
+- The Ladder (Explain → Visualize → Implement → Use → Measure → Debug → Break → Recover → Compare → Choose → Design → Defend → Teach)
+- Self-Assessment
+- When to Move On
+- Return Conditions

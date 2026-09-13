@@ -1,0 +1,331 @@
+﻿# Node.js
+
+## 01 - [[01 - Overview|Overview]]
+- Introduction
+- Why Node.js
+- Node.js vs Alternatives (Deno, Bun, Go, Python, Java)
+- Architecture
+    - V8 engine
+    - libuv
+    - Event loop
+    - Thread pool
+    - Bindings (C++ addons, N-API)
+- When to Use / When Not To
+- Common Misconceptions
+
+## 02 - [[02 - Runtime Internals|Runtime Internals]]
+- V8 Engine
+    - Parsing, bytecode, JIT
+    - Hidden classes, inline caching
+    - Deoptimization
+- libuv
+    - Purpose and architecture
+    - Thread pool (default 4)
+    - Async I/O handling
+- Event Loop
+    - Phases (timers, pending, poll, check, close)
+    - Microtasks vs macrotasks
+    - process.nextTick vs setImmediate vs setTimeout
+    - Starvation
+- Memory Management
+    - Heap and stack
+    - Garbage collection (scavenge, mark-sweep, mark-compact)
+    - Memory leaks
+    - Heap snapshots
+- Module System
+    - CommonJS
+    - ESM
+    - Interop
+    - Resolution algorithm
+    - Loader hooks
+
+## 03 - [[03 - Core Modules|Core Modules]]
+- fs
+    - Sync vs async vs promises
+    - Reading, writing, watching
+    - Streams integration
+- path and os
+- http and https
+    - Server creation
+    - Request/response
+    - Headers, status codes
+    - HTTPS and TLS
+- streams
+    - Types (Readable, Writable, Transform, Duplex)
+    - Backpressure
+    - Piping
+    - Object mode
+    - Real-world usage
+- buffers
+    - Binary data
+    - Encoding
+    - Performance considerations
+- events
+    - EventEmitter
+    - Listeners, once, removal
+    - Memory leak warnings
+    - Custom emitters
+- crypto
+    - Hashing, HMAC
+    - Encryption
+    - Random
+    - Key derivation
+- url and querystring
+- zlib
+- child_process and worker_threads
+    - spawn, exec, fork
+    - Worker threads
+    - Message passing
+
+## 04 - [[04 - Async and Concurrency|Async and Concurrency]]
+- Callbacks
+    - Error-first pattern
+    - Callback hell
+    - When still relevant
+- Promises
+    - States and lifecycle
+    - Chaining, error propagation
+    - Promise.all, allSettled, race, any
+- async and await
+    - Syntax, semantics
+    - Error handling
+    - Top-level await
+    - Pitfalls (sequential loops)
+- Concurrency Patterns
+    - Limiting concurrency (p-limit, bottleneck)
+    - Batch processing
+    - Streaming pipelines
+    - Backpressure
+- Cancellation and Timeouts
+    - AbortController, AbortSignal
+    - Timeouts
+- Async Pitfalls
+    - Unhandled rejections
+    - Floating promises
+    - Zombie promises
+    - Memory leaks in async code
+
+## 05 - [[05 - Multithreading and Scaling|Multithreading and Scaling]]
+- cluster
+    - Master/worker
+    - Round-robin vs shared socket
+    - Zero-downtime reload
+- worker_threads
+    - When to use
+    - Message passing
+    - SharedArrayBuffer
+    - Transferable objects
+- child_process
+    - spawn vs exec vs fork
+    - Use cases (external tools, isolation)
+- Choosing a Scaling Model
+    - cluster vs workers vs children vs containers
+    - CPU-bound vs I/O-bound
+- Horizontal vs Vertical
+    - Node's limits
+    - When to add processes
+    - When to add machines
+
+## 06 - [[06 - Package Management|Package Management]]
+- npm
+    - package.json deep dive
+    - Scripts, lifecycle
+    - npm ci vs install
+- pnpm
+    - Content-addressable store
+    - Strictness
+    - Monorepo advantages
+- yarn
+    - Classic vs Berry
+    - PnP
+- Workspaces and Monorepos
+    - npm/yarn/pnpm workspaces
+    - Turborepo integration
+    - Publishing internal packages
+- Dependency Management
+    - Semver
+    - Lockfiles
+    - Audit and security
+    - Phantom dependencies
+- Publishing Packages
+    - npm publish
+    - Versioning
+    - Scoped packages
+    - Private registries
+
+## 07 - [[07 - Networking and Protocols|Networking and Protocols]]
+- HTTP Server Basics
+    - http.createServer
+    - Request routing
+    - Static files
+- TCP and UDP
+    - net module
+    - dgram module
+    - When to use each
+- WebSockets
+    - ws library
+    - Socket.IO
+    - Scaling WebSockets
+- gRPC
+    - protobuf
+    - Node integration
+- HTTP/2 and HTTP/3
+    - Node support
+    - Real-world use
+
+## 08 - [[08 - Security|Security]]
+- Input Validation
+    - Zod, Joi, Yup
+    - Server-side validation
+- Authentication
+    - JWT, sessions
+    - OAuth integration
+    - Password hashing (bcrypt, argon2)
+- Authorization
+    - RBAC, ABAC
+    - Middleware patterns
+- Common Vulnerabilities
+    - SQL injection
+    - XSS
+    - CSRF
+    - SSRF
+    - Prototype pollution
+    - ReDoS
+- Security Headers
+    - CSP
+    - CORS
+    - HSTS
+- Secrets Management
+    - Environment variables
+    - Vault
+    - Rotation
+
+## 09 - [[09 - Performance|Performance]]
+- Profiling
+    - --prof
+    - --inspect
+    - Clinic.js
+    - Flame graphs
+- Memory
+    - Heap snapshots
+    - Detecting leaks
+    - Memory pressure
+- CPU
+    - Blocking the event loop
+    - Detecting hot paths
+    - Benchmarking
+- I/O Optimization
+    - Streams vs buffers
+    - Connection pooling
+    - DNS caching
+- Caching
+    - In-memory (LRU)
+    - Redis
+    - HTTP caching
+- Compilation and Startup
+    - Cold start
+    - Snapshotting
+    - Bundling (esbuild)
+- Performance Checklist
+
+## 10 - [[10 - Production|Production]]
+- Process Management
+    - PM2
+    - systemd
+    - Docker
+- Graceful Shutdown
+    - SIGTERM, SIGINT
+    - Draining connections
+    - Timeouts
+- Health Checks
+    - Liveness, readiness
+    - Dependencies
+- Logging
+    - Winston, Pino
+    - Structured logs
+    - Log levels
+    - Correlation IDs
+- Observability
+    - Metrics (Prometheus)
+    - Tracing (OpenTelemetry)
+    - Dashboards (Grafana)
+- Error Handling
+    - Uncaught exceptions
+    - Unhandled rejections
+    - Error classification
+    - Retries and circuit breakers
+- Configuration
+    - dotenv
+    - Environment validation
+    - Build-time vs runtime
+- Zero-Downtime Deploys
+    - Rolling, blue-green, canary
+    - Node-specific patterns
+
+## 11 - [[11 - Testing|Testing]]
+- Testing Philosophy
+- Testing Stack
+- Unit Testing
+    - Vitest, Jest
+    - Mocking modules
+- Integration Testing
+    - Supertest
+    - Test databases
+- E2E Testing
+    - Playwright, Cypress
+- Load Testing
+    - k6, Artillery, autocannon
+- Common Mistakes
+
+## 12 - [[12 - Advanced Topics|Advanced Topics]]
+- Native Addons
+    - N-API
+    - node-gyp
+    - When to use
+- Custom Runtimes
+    - Deno, Bun comparison
+    - Embedded V8
+- Edge and Serverless
+    - Node in Lambda, Cloudflare Workers
+    - Cold start
+- Instrumentation Hooks
+    - AsyncLocalStorage
+    - Request context propagation
+- Diagnostics and Debugging
+    - --inspect-brk
+    - Inspector protocol
+    - Postmortem debugging
+- Node with TypeScript
+    - tsx, ts-node
+    - Building for production
+    - Node 22+ type stripping
+
+## 13 - [[13 - Ecosystem|Ecosystem]]
+> Introductions only. Deep dives in dedicated topics.
+
+- Express
+- Fastify
+- NestJS
+- Hono
+- Koa
+- ORMs (Prisma, Drizzle, TypeORM, Mongoose)
+- Job Queues (BullMQ, Bee-Queue)
+- WebSocket Libraries
+- HTTP Clients (axios, undici, got, node-fetch)
+- Library Selection Guide
+
+## 14 - [[14 - Interview Q&A|Interview Q&A]]
+- Foundation
+- Understanding
+- Senior Engineer
+- Production Debugging
+- System Design
+- Architect Level
+- Scenario Based
+- Trap Questions
+
+## 15 - [[15 - Mastery Checklist|Mastery Checklist]]
+- The Ladder (Explain → Visualize → Implement → Use → Measure → Debug → Break → Recover → Compare → Choose → Design → Defend → Teach)
+- Self-Assessment
+- When to Move On
+- Return Conditions
