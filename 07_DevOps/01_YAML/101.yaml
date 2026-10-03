@@ -1,0 +1,118 @@
+# Comprehensive YAML file demonstrating all features
+
+# Comments
+# This is a comment line explaining the section above
+
+# Scalars (basic values)
+string: "Hello, YAML!" 
+integer: 42
+float: 3.14159
+boolean_true: true
+boolean_false: false
+null_value: null
+
+# Explicit scalars with type tags
+explicit_string: !!str 12345        # forced string
+explicit_integer: !!int "42"        # forced integer
+explicit_float: !!float "3.14"      # forced float
+explicit_boolean: !!bool "true"     # forced boolean
+explicit_null: !!null ""            # forced null
+
+# Lists (sequences)
+fruits:
+  - Apple
+  - Banana
+  - Cherry
+
+# Sequence with explicit types
+numbers: !!seq
+  - !!int 1
+  - !!int 2
+  - !!int 3
+
+# Dictionaries (mappings)
+person:
+  name: John Doe
+  age: 30
+  married: true
+
+# Mapping with explicit type
+person_tagged: !!map
+  name: !!str "Alice"
+  age: !!int 30
+  married: !!bool false
+
+# Nested structures
+company:
+  name: ExampleCorp
+  employees:
+    - name: Alice
+      role: Developer
+    - name: Bob
+      role: Designer
+
+# Multi-line strings
+description: |
+  This is a multi-line string.
+  It preserves line breaks.
+  Useful for long text blocks.
+
+folded_text: >
+  This is a folded string.
+  Line breaks are converted to spaces,
+  except for empty lines which become new paragraphs.
+
+# Anchors (&) and Aliases (*)
+defaults: &defaults
+  role: User
+  active: true
+
+user1:
+  <<: *defaults
+  name: Charlie
+
+user2:
+  <<: *defaults
+  name: Diana
+  active: false
+
+# Anchors with explicit tags
+defaults_tagged: &defaults_tagged
+  role: !!str "User"
+  active: !!bool true
+
+user1_tagged:
+  <<: *defaults_tagged
+  name: !!str "Charlie"
+
+user2_tagged:
+  <<: *defaults_tagged
+  name: !!str "Diana"
+  active: !!bool false
+
+# Set type (!!set)
+colors: !!set
+  red: null
+  green: null
+  blue: null
+
+# Complex keys
+? [first_name, last_name]
+: John Smith
+
+# Inline collections
+inline_list: [red, green, blue]
+inline_map: {x: 10, y: 20, z: 30}
+
+# Nested with tags
+data:
+  id: !!int 1001
+  description: !!str "Tagged string"
+  values: !!seq
+    - !!float 2.718
+    - !!float 3.14159
+
+
+# Special types
+date: 2026-01-16
+time: 22:21:00
