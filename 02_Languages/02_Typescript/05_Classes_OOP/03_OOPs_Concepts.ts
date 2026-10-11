@@ -1,253 +1,273 @@
-// ===============================
-// 🧬 INHERITANCE & POLYMORPHISM
-// ===============================
-// This file covers the core OOP concepts of inheritance and polymorphism,
-// showing how TypeScript enables class hierarchies and dynamic behavior.
+// 05_Classes_OOP/03_OOPs_Concepts.ts
 
-// ✅ Inheritance
-// Inheritance allows a class to reuse and specialize behavior from a parent class.
+/* ============================================================
+ *  📘 OOP CONCEPTS IN TYPESCRIPT
+ *
+ *  Sections:
+ *   1. Encapsulation
+ *   2. Inheritance (extends, super, override)
+ *   3. Polymorphism (subtype, parametric, ad-hoc)
+ *   4. Abstraction (abstract classes)
+ *   5. Composition over inheritance
+ *   6. Interfaces as contracts (implements)
+ *   7. Mixins
+ *   8. SOLID principles (quick tour)
+ *   9. Edge cases, pitfalls, version notes
+ * ============================================================ */
+
+/* ============================================================
+ *  1️⃣ ENCAPSULATION
+ * ============================================================ */
+
+// Hide internal state; expose a controlled public API.
+
+class BankAccount {
+  #balance = 0;                                   // truly private
+
+  deposit(amount: number): void {
+    if (amount <= 0) throw new Error("Invalid deposit");
+    this.#balance += amount;
+  }
+
+  withdraw(amount: number): void {
+    if (amount > this.#balance) throw new Error("Insufficient funds");
+    this.#balance -= amount;
+  }
+
+  get balance(): number { return this.#balance; }
+}
+
+const acc = new BankAccount();
+acc.deposit(100);
+acc.withdraw(30);
+console.log(acc.balance);       // 70
+
+/* ============================================================
+ *  2️⃣ INHERITANCE
+ * ============================================================ */
+
 class Animal {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-
-  // speak() is a general method that all animals share.
-  speak(): void {
-    console.log(`${this.name} makes a sound.`);
-  }
+  constructor(public name: string) {}
+  speak(): void { console.log(`${this.name} makes a sound.`); }
 }
 
-// Dog extends Animal and inherits its properties and methods.
 class Dog extends Animal {
-  breed: string;
-
-  constructor(name: string, breed: string) {
-    super(name); // Call the parent constructor
-    this.breed = breed;
+  constructor(name: string, public breed: string) {
+    super(name);                          // must call super first
   }
-
-  // Overriding the speak() method to provide dog-specific behavior.
-  speak(): void {
-    console.log(`${this.name} barks. Breed: ${this.breed}`);
+  override speak(): void {
+    console.log(`${this.name} (${this.breed}) barks.`);
+    super.speak();                        // call parent method
   }
 }
 
-const dog = new Dog("Buddy", "Labrador");
-dog.speak(); // Buddy barks. Breed: Labrador
+new Dog("Rex", "Lab").speak();
 
-// ✅ Polymorphism
-// Polymorphism allows different classes to be treated through a common interface or base class.
-class Cat extends Animal {
-  speak(): void {
-    console.log(`${this.name} meows.`);
-  }
-}
+// 🔸 `override` keyword (TS 4.3+) — required under noImplicitOverride.
+// 🔸 Override signature must be compatible with the base method.
 
-const animals: Animal[] = [
-  new Dog("Max", "Beagle"),
-  new Cat("Whiskers"),
-];
+/* ============================================================
+ *  3️⃣ POLYMORPHISM
+ * ============================================================ */
 
-// Each animal responds differently to the same method call.
-animals.forEach((animal) => animal.speak());
-// Output:
-// Max barks. Breed: Beagle
-// Whiskers meows.
-
-// ✅ Method Overriding
-// Overriding means redefining a method from the base class in a subclass.
-class Printer {
-  print(): void {
-    console.log("Printing document...");
-  }
-}
-
-class ColorPrinter extends Printer {
-  // Overrides the base method and adds extra behavior.
-  print(): void {
-    super.print(); // Optional: preserve base behavior
-    console.log("Using color ink.");
-  }
-}
-
-const cp = new ColorPrinter();
-cp.print();
-// Output:
-// Printing document...
-// Using color ink.
-
-// ✅ Abstract Classes
-// Abstract classes define a blueprint and cannot be instantiated directly.
+// 🔸 Subtype polymorphism — subclasses can stand in for parents.
 abstract class Shape {
-  constructor(public color: string) {}
-
-  // Abstract method must be implemented by subclasses.
-  abstract getArea(): number;
+  abstract area(): number;
 }
 
 class Circle extends Shape {
-  constructor(color: string, private radius: number) {
-    super(color);
-  }
+  constructor(private r: number) { super(); }
+  area(): number { return Math.PI * this.r ** 2; }
+}
 
-  getArea(): number {
-    return Math.PI * this.radius ** 2;
+class Square extends Shape {
+  constructor(private s: number) { super(); }
+  area(): number { return this.s ** 2; }
+}
+
+function totalArea(shapes: Shape[]): number {
+  return shapes.reduce((t, s) => t + s.area(), 0);
+}
+
+totalArea([new Circle(1), new Square(2)]);   // polymorphic call
+
+// 🔸 Parametric polymorphism — generics
+class Box<T> {
+  constructor(public value: T) {}
+  map<U>(fn: (v: T) => U): Box<U> { return new Box(fn(this.value)); }
+}
+
+// 🔸 Ad-hoc polymorphism — function/method overloading
+function print(x: string): void;
+function print(x: number): void;
+function print(x: string | number): void { console.log(x); }
+
+/* ============================================================
+ *  4️⃣ ABSTRACTION
+ * ============================================================ */
+
+// Abstract classes define shared behavior + enforce subclass contracts.
+
+abstract class Repository<T> {
+  abstract findById(id: string): Promise<T | null>;
+  abstract save(entity: T): Promise<void>;
+
+  // Concrete shared helper available to subclasses
+  protected log(action: string): void {
+    console.log(`[${this.constructor.name}] ${action}`);
   }
 }
 
-const circle = new Circle("blue", 5);
-console.log(circle.getArea()); // 78.53981633974483
-
-// ✅ Abstraction
-// Abstraction hides internal details and exposes only essential features.
-// Abstract classes and interfaces enforce abstraction by defining contracts.
-
-// ===============================
-// ❓ Trick Questions
-// ===============================
-// - Can you instantiate an abstract class? ❌ No.
-// - Can abstract methods have a body? ❌ No—they must be implemented.
-// - Can you override a method with a different return type? ❌ No—must match signature.
-// - Can you call super.method() in an overridden method? ✅ Yes.
-// - Can a subclass override a constructor? ✅ Yes—but must call super().
-
-
-// ===============================
-// 🧬 INHERITANCE & POLYMORPHISM + ADVANCED OOP CONCEPTS
-// ===============================
-// This file focuses on deeper OOP principles beyond basic inheritance and overriding,
-// including polymorphism, substitution, and SOLID design principles.
-
-// ✅ Multiple Inheritance via Interfaces
-// TypeScript doesn't support multiple class inheritance, but interfaces can simulate it.
-interface Logger {
-  log(message: string): void;
+class UserRepository extends Repository<{ id: string; name: string }> {
+  async findById(id: string) { this.log(`findById(${id})`); return null; }
+  async save() { this.log("save"); }
 }
 
-interface Serializer {
+// 🔸 Rule: abstract classes CANNOT be instantiated directly.
+//     They CAN declare abstract methods (no body) and concrete methods (with body).
+
+/* ============================================================
+ *  5️⃣ COMPOSITION OVER INHERITANCE
+ * ============================================================ */
+
+// Prefer "has-a" over "is-a" — less coupling, easier testing.
+
+// ❌ Fragile inheritance:
+// class Logger {} class Service extends Logger {}
+
+// ✅ Composition:
+class Logger {
+  log(msg: string): void { console.log(msg); }
+}
+
+class Service {
+  constructor(private logger: Logger = new Logger()) {}
+  run(): void { this.logger.log("running"); }
+}
+
+// 🔸 Dependency injection (constructor param) makes testing easy.
+
+/* ============================================================
+ *  6️⃣ INTERFACES AS CONTRACTS (implements)
+ * ============================================================ */
+
+interface Serializable {
   serialize(): string;
+  deserialize(input: string): void;
 }
 
-// Implements multiple interfaces
-class DataModel implements Logger, Serializer {
-  constructor(private data: string) {}
-
-  log(message: string): void {
-    console.log("LOG:", message);
-  }
-
-  serialize(): string {
-    return JSON.stringify({ data: this.data });
-  }
+interface Loggable {
+  log(): void;
 }
 
-// ✅ Dynamic Dispatch
-// Dynamic dispatch ensures that the correct method is called based on the runtime type.
-class Shape2 {
-  draw(): void {
-    console.log("Drawing a generic shape");
-  }
+class Entity implements Serializable, Loggable {
+  constructor(public data: Record<string, unknown>) {}
+  serialize(): string { return JSON.stringify(this.data); }
+  deserialize(input: string): void { this.data = JSON.parse(input); }
+  log(): void { console.log("Entity:", this.data); }
 }
 
-class Triangle extends Shape2 {
-  draw(): void {
-    console.log("Drawing a triangle");
-  }
+// 🔸 A class can `extends` one class AND `implements` many interfaces.
+// 🔸 Interfaces describe PUBLIC shape — private/protected ignored.
+
+/* ============================================================
+ *  7️⃣ MIXINS
+ * ============================================================ */
+
+// Composing behaviors without deep inheritance chains.
+
+type Constructor<T = {}> = new (...args: any[]) => T;
+
+function Timestamped<TBase extends Constructor>(Base: TBase) {
+  return class extends Base {
+    timestamp = new Date();
+    getAge() { return Date.now() - this.timestamp.getTime(); }
+  };
 }
 
-function render(shape: Shape2) {
-  shape.draw(); // Calls the correct method based on actual object type
+function Tagged<TBase extends Constructor>(Base: TBase) {
+  return class extends Base {
+    tag = "";
+    setTag(t: string) { this.tag = t; }
+  };
 }
 
-render(new Triangle()); // Output: Drawing a triangle
+class BaseEntity { id = ""; }
 
-// ✅ Liskov Substitution Principle (LSP)
-// Subtypes must be substitutable for their base types without altering correctness.
-class Bird {
-  fly(): string {
-    return "Flying";
-  }
-}
+const TrackedEntity = Tagged(Timestamped(BaseEntity));
 
-class Penguin extends Bird {
-  // Violates LSP if fly() throws or behaves unexpectedly
-  fly(): string {
-    throw new Error("Penguins can't fly"); // ❌ Bad design
-  }
-}
+const te = new TrackedEntity();
+te.id = "1";
+te.setTag("user");
+console.log(te.getAge());
 
-// ✅ Open/Closed Principle (OCP)
-// Classes should be open for extension but closed for modification.
-abstract class Notification {
-  abstract send(): void;
-}
+/* ============================================================
+ *  8️⃣ SOLID PRINCIPLES (QUICK TOUR)
+ * ============================================================ */
 
-class EmailNotification extends Notification {
-  send() {
-    console.log("Sending email");
-  }
-}
+// S — Single Responsibility
+//     One reason to change. Split large classes.
+//     ❌ class User { save(); email(); render(); }
+//     ✅ class UserRepository / EmailService / UserRenderer
 
-class SMSNotification extends Notification {
-  send() {
-    console.log("Sending SMS");
-  }
-}
+// O — Open/Closed
+//     Open for extension, closed for modification.
+//     Extend via subclasses/interfaces, not by editing base logic.
 
-function notifyAll(notifiers: Notification[]) {
-  notifiers.forEach(n => n.send());
-}
+// L — Liskov Substitution
+//     Subtypes must be substitutable for their base type.
+//     Overriding must preserve behavior contracts.
 
-// ✅ Interface Segregation Principle (ISP)
-// Clients shouldn't be forced to depend on interfaces they don't use.
-interface FullPrinter {
-  print(): void;
-  scan(): void;
-  fax(): void;
-}
+// I — Interface Segregation
+//     Small, focused interfaces over fat ones.
+//     interface Reader { read() } interface Writer { write() }
 
-// Segregated interfaces
-interface SimplePrinter {
-  print(): void;
-}
+// D — Dependency Inversion
+//     Depend on abstractions, not concretions.
+//     constructor(private logger: LoggerInterface) {}
 
-class BasicPrinter implements SimplePrinter {
-  print() {
-    console.log("Printing only");
-  }
-}
+/* ============================================================
+ *  9️⃣ EDGE CASES, PITFALLS, VERSION NOTES
+ * ============================================================ */
 
-// ✅ Dependency Inversion Principle (DIP)
-// High-level modules should depend on abstractions, not concrete implementations.
-interface Storage {
-  save(data: string): void;
-}
+// ⚠️ `super()` must be called BEFORE `this` in a derived constructor.
+// ⚠️ Overriding must be COMPATIBLE — narrowing params or widening returns
+//     can break Liskov substitution.
+// ⚠️ Abstract classes cannot be instantiated — but CAN hold shared logic.
+// ⚠️ `abstract` members must be implemented by concrete subclasses.
+// ⚠️ Mixin chains grow types quickly — mind complexity.
+// ⚠️ Prefer composition for cross-cutting concerns (logging, caching).
+// ⚠️ Prefer interfaces for contracts, classes for implementation.
+// ⚠️ `override` under `noImplicitOverride` catches accidental overrides.
+// ⚠️ Static side is NOT inherited by subclasses in the same way — `this` in
+//     static methods refers to the derived constructor.
 
-class FileStorage implements Storage {
-  save(data: string) {
-    console.log("Saving to file:", data);
-  }
-}
+// 🕒 Version notes
+// - `super` and inheritance: TS 1.0+
+// - `abstract` classes: TS 1.0+
+// - `override` keyword: TS 4.3
+// - Mixins with generic constructors: TS 2.2+
 
-class AppService {
-  constructor(private storage: Storage) {}
-
-  persist(data: string) {
-    this.storage.save(data);
-  }
-}
-
-const service = new AppService(new FileStorage());
-service.persist("User data");
-
-// ===============================
-// ❓ Trick Questions
-// ===============================
-// - Can TypeScript support multiple class inheritance? ❌ No—only via interfaces.
-// - Can dynamic dispatch fail if method is missing? ✅ Yes—ensure base class defines it.
-// - Is LSP violated if subclass throws where base returns? ✅ Yes—avoid behavioral mismatch.
-// - Can you follow OCP without abstract classes? ✅ Yes—use interfaces or strategy patterns.
-// - Is ISP about splitting interfaces? ✅ Yes—keep them focused.
-// - Can DIP be applied without a framework? ✅ Absolutely—use constructor injection.
+/* ============================================================
+ *  📌 RECAP TABLE
+ * ─────────────────────────────────────────────────────────────
+ * | Concept        | Tool                                |
+ * ─────────────────────────────────────────────────────────────
+ * | Encapsulation  | private / protected / #field        |
+ * | Inheritance    | extends, super, override            |
+ * | Polymorphism   | abstract / override / generics      |
+ * | Abstraction    | abstract class / interface          |
+ * | Composition    | constructor injection               |
+ * | Contracts      | implements                          |
+ * | Mixins         | generic constructor + class expr    |
+ * | SOLID          | principles summary                  |
+ * ─────────────────────────────────────────────────────────────
+ *
+ * 🧠 BEST PRACTICES
+ *  - Favor composition over inheritance.
+ *  - Program to interfaces, not implementations.
+ *  - Prefer abstract classes for shared code, interfaces for contracts.
+ *  - Use `override` for clear intent.
+ *  - Keep inheritance shallow (2–3 levels max).
+ *  - Apply SOLID when the codebase grows.
+ * ============================================================ */

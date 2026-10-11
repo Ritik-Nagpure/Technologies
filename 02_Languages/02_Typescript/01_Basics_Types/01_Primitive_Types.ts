@@ -1,110 +1,216 @@
-// primitive-types.ts
+// 03-primitive-types-and-void.ts
 
-// ✅ NUMBER
-// Represents both integers and floating-point numbers.
-// TypeScript uses double-precision 64-bit format (same as JavaScript).
+/* ============================================================
+ *  📘 PRIMITIVE TYPES & VOID — COMPLETE COVERAGE
+ *
+ *  Sections:
+ *   1. number (incl. literals, NaN, Infinity, -0)
+ *   2. string (incl. literal types, template literals)
+ *   3. boolean (incl. literal true/false, truthiness)
+ *   4. null & undefined (incl. strictNullChecks)
+ *   5. symbol (incl. Symbol keys, well-known symbols)
+ *   6. bigint (incl. rules & limitations)
+ *   7. void (incl. void vs undefined)
+ *   8. Literal types (bonus section)
+ *   9. Edge cases, pitfalls, version notes
+ * ============================================================ */
+
+/* ============================================================
+ *  1️⃣ NUMBER
+ * ============================================================ */
+
+// All numbers are 64-bit floats (IEEE 754) — same as JS.
 let age: number = 30;
-let temperature: number = 36.6;
-let hex: number = 0xff;         // hexadecimal
-let binary: number = 0b1010;    // binary
-let octal: number = 0o744;      // octal
+let temp: number = 36.6;
+let hex: number = 0xff;         // 255
+let bin: number = 0b1010;       // 10
+let oct: number = 0o744;        // 484
+let sep: number = 1_000_000;    // numeric separators (ES2021)
+let exp: number = 1e3;          // 1000
 
-// ✅ STRING
-// Used to store textual data. Can use single, double, or backticks.
-// Backticks allow for template literals and embedded expressions.
-let firstName: string = "John";
-let lastName: string = 'Doe';
-let fullName: string = `${firstName} ${lastName}`; // template literal
+// Special values
+let nan: number = NaN;
+let inf: number = Infinity;
+let negInf: number = -Infinity;
+let negZero: number = -0;
 
-// ✅ BOOLEAN
-// Represents logical values: true or false.
-// Commonly used in control flow and conditionals.
+// ⚠️ Number rules
+// - No integer vs float distinction — both are `number`.
+// - Safe integer range: Number.MIN_SAFE_INTEGER .. MAX_SAFE_INTEGER
+// - Beyond that, use bigint for precision.
+// - `NaN !== NaN` — use Number.isNaN().
+
+/* ============================================================
+ *  2️⃣ STRING
+ * ============================================================ */
+
+let first: string = "John";
+let last: string = 'Doe';
+let full: string = `${first} ${last}`;  // template literal
+let multi: string = `line1
+line2`;                                  // multi-line
+
+// 🔸 String literal types (see section 8)
+type Greeting = "hello" | "hi" | "hey";
+
+/* ============================================================
+ *  3️⃣ BOOLEAN
+ * ============================================================ */
+
 let isActive: boolean = true;
-let hasPermission: boolean = false;
+let hasPerm: boolean = false;
 
-// ✅ NULL
-// Represents an intentional absence of any object value.
-// Often used to reset or clear a variable.
-let emptyValue: null = null;
+// Literal types
+let alwaysTrue: true = true;
+// alwaysTrue = false; // ❌
 
-// ✅ UNDEFINED
-// Indicates a variable has been declared but not yet assigned a value.
-// Default value of uninitialized variables.
+// ⚠️ Truthiness: TS won't let you use non-booleans as conditions
+//    (unless you use `!!` or explicit comparisons).
+
+/* ============================================================
+ *  4️⃣ NULL & UNDEFINED
+ * ============================================================ */
+
+let empty: null = null;
 let notAssigned: undefined = undefined;
 
-// ✅ SYMBOL
-// Introduced in ES6. Used to create unique and immutable identifiers.
-// Often used as keys for object properties to avoid naming collisions.
-const uniqueId: symbol = Symbol("id");
-const anotherId: symbol = Symbol("id");
-console.log(uniqueId === anotherId); // false — each symbol is unique
+// 🔸 strictNullChecks (tsconfig) — ON in `strict` mode
+//    When ON:
+//      null and undefined are NOT assignable to other types
+//      You must explicitly handle them (or use `!` / narrowing)
+//    When OFF:
+//      null/undefined are assignable to everything (unsafe)
 
-// ✅ BIGINT
-// Used for arbitrarily large integers beyond the safe range of number.
-// Useful in financial or scientific calculations requiring precision.
-let bigNumber: bigint = 9007199254740991n;
-let anotherBig: bigint = BigInt("123456789012345678901234567890");
+// 🔸 Optional chaining + nullish coalescing
+type MaybeUser = { name?: string } | null;
+const u: MaybeUser = null;
+const n = u?.name ?? "anon";  // "anon"
 
+/* ============================================================
+ *  5️⃣ SYMBOL
+ * ============================================================ */
 
-// ✅ LOGGING ALL VALUES
-console.log("Age:", age);
-console.log("Full Name:", fullName);
-console.log("Is Active:", isActive);
-console.log("Empty Value:", emptyValue);
-console.log("Not Assigned:", notAssigned);
-console.log("Big Number:", bigNumber);
+const uid: symbol = Symbol("id");
+const uid2: symbol = Symbol("id");
+uid === uid2;   // false — each Symbol is unique
 
+// Symbols as object keys
+const KEY = Symbol("key");
+const obj = { [KEY]: 42 };
+obj[KEY];       // 42 — only accessible via the same symbol
 
-// voidTypeDemo.ts
-
-// ✅ What is `void`?
-// `void` is used to indicate that a function does not return a value.
-// It's commonly used for functions that perform actions like logging or updating state.
-
-function logMessage(message: string): void {
-  console.log("Log:", message);
+// Well-known symbols (typing common ones)
+class Coll {
+  [Symbol.iterator](): Iterator<number> {
+    let n = 0;
+    return { next: () => ({ value: n++, done: n > 3 }) };
+  }
 }
-logMessage("Hello from a void function!");
+[...new Coll()]; // [0, 1, 2]
 
-// 🧪 Invalid use of return in a void function
-// Uncommenting the line below will cause a TypeScript error
-/*
-function invalidReturn(): void {
-  return "Oops"; // ❌ Error: Type 'string' is not assignable to type 'void'
-}
-*/
+// 🔸 unique symbol — for const declarations only
+const TOKEN: unique symbol = Symbol("token");
+// Type of TOKEN is `typeof TOKEN`, a distinct type
+type Token = typeof TOKEN;
 
-// 🧼 Usage in Callbacks
-// `void` is often used in callback functions where the return value is ignored.
+// ⚠️ Symbols cannot be used as numeric indices or in JSON.stringify.
 
-type Callback = () => void;
+/* ============================================================
+ *  6️⃣ BIGINT
+ * ============================================================ */
 
-function run(callback: Callback): void {
-  console.log("Running callback...");
-  callback();
-}
+let big: bigint = 9007199254740991n;
+let big2: bigint = BigInt("12345678901234567890");
+let big3: bigint = BigInt(42);
 
-run(() => {
-  console.log("Callback executed.");
-});
+// Arithmetic
+big + 1n;       // ✅
+// big + 1;     // ❌ cannot mix bigint & number in arithmetic
+big * 2n;
+big > 1;        // ✅ comparisons allowed across number/bigint
 
-// ⚠️ `void` vs `undefined`
+// Conversions
+Number(1n);     // 1
+BigInt(42);     // 42n
 
-// `undefined` is a value, while `void` is a type.
-// You can assign `undefined` to a variable, but you can't assign `void`.
+// ⚠️ Bigint limitations
+// - Cannot be used with Math.* methods
+// - Cannot mix with number in arithmetic (except comparisons)
+// - No JSON.stringify support
+// - Requires target ES2020+ in tsconfig
 
-let notDefined: undefined = undefined;
-console.log("Undefined value:", notDefined);
+/* ============================================================
+ *  7️⃣ VOID
+ * ============================================================ */
 
-// let nothing: void = undefined; // ✅ Technically allowed, but not useful
-// let wrong: void = "hello";     // ❌ Error: Type 'string' is not assignable to type 'void'
+function logMessage(msg: string): void { console.log(msg); }
 
-// 🧠 Trivia
-// In JavaScript, functions that don’t return anything implicitly return `undefined`.
-// TypeScript uses `void` to make that intent explicit.
+// void callback can return anything — return is ignored
+type Cb = () => void;
+const c: Cb = () => 42;  // ✅
 
-function jsStyleFunction() {
-  console.log("This function returns nothing.");
-}
-const result = jsStyleFunction(); // result is `undefined`
-console.log("Result of jsStyleFunction():", result);
+// ⚠️ void vs undefined
+// void      — TYPE for "no return value"; only meaningful as fn return
+// undefined — VALUE (and also a type)
+let u1: undefined = undefined;
+// let v1: void = undefined;   // ✅ technically allowed but useless
+// let v2: void = "hello";     // ❌
+
+// ⚠️ void-returning function != function returning undefined
+function f1(): void {}
+function f2(): undefined { return; }
+// Both called the same way, but typed differently.
+
+/* ============================================================
+ *  8️⃣ LITERAL TYPES (BONUS)
+ * ============================================================ */
+
+// A literal type is a type with exactly ONE value.
+type Direction = "north" | "south" | "east" | "west";
+type One = 1;
+type Yes = true;
+
+// Combined with `as const` — see type-assertions notes.
+
+/* ============================================================
+ *  9️⃣ EDGE CASES, PITFALLS, VERSION NOTES
+ * ============================================================ */
+
+// ⚠️ `NaN` and `-0` are edge cases — use Number.isNaN / Object.is.
+// ⚠️ `number` is NOT an integer — always validate integer inputs with
+//    Number.isInteger.
+// ⚠️ bigint + JSON.stringify throws — stringify manually.
+// ⚠️ Symbols don't appear in Object.keys / for..in — use
+//    Object.getOwnPropertySymbols.
+// ⚠️ Under strictNullChecks, `undefined` is NOT assignable to optional
+//    params unless you use `?` or `| undefined`.
+
+// 🕒 Version notes
+// - bigint supported from TS 3.2 (target ES2020)
+// - numeric separators (1_000) from TS 2.7
+// - strictNullChecks since TS 2.0
+
+/* ============================================================
+ *  📌 RECAP TABLE
+ * ─────────────────────────────────────────────────────────────
+ * | Type      | Example                 | Notes                    |
+ * ─────────────────────────────────────────────────────────────
+ * | number    | 30, 36.6, 0xff, 1_000   | 64-bit float             |
+ * | string    | "a", 'a', `a`           | Template literals OK     |
+ * | boolean   | true, false             | Literal types allowed    |
+ * | null      | null                    | Intentional empty        |
+ * | undefined | undefined               | Not yet assigned         |
+ * | symbol    | Symbol("id")            | Unique, immutable        |
+ * | unique sym| const X = Symbol()      | distinct type            |
+ * | bigint    | 9007199254740991n       | ES2020+ required         |
+ * | void      | function f(): void {}   | Only fn return           |
+ * | literal   | "dark", 1, true         | One-value type           |
+ * ─────────────────────────────────────────────────────────────
+ *
+ * 🧠 BEST PRACTICES
+ *  - Enable "strict": true (includes strictNullChecks).
+ *  - Prefer literal types over string for small closed sets.
+ *  - Use bigint only when int precision beyond 2^53 is needed.
+ *  - Avoid `void` return in anything other than callbacks/actions.
+ *  - Validate runtime numbers — TS `number` ≠ integer.
+ * ============================================================ */

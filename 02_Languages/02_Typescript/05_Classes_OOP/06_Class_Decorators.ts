@@ -1,87 +1,310 @@
-// ===============================
-// 🎨 ADVANCED FEATURES: DECORATORS
-// ===============================
-// This file introduces decorators in TypeScript—special functions that can modify or annotate classes,
-// methods, properties, or parameters. Decorators are a powerful metaprogramming tool.
+// 05_Classes_OOP/06_Class_Decorators.ts
 
-// ✅ What is a Decorator?
-// A decorator is a function that gets called at runtime and can modify or enhance the behavior of a class or its members.
+/* ============================================================
+ *  📘 CLASS DECORATORS IN TYPESCRIPT
+ *
+ *  Decorators are functions that add behavior to classes, methods,
+ *  properties, accessors, and parameters at design time.
+ *
+ *  Sections:
+ *   1. Enabling decorators (tsconfig)
+ *   2. Class decorator
+ *   3. Method decorator
+ *   4. Property decorator
+ *   5. Accessor decorator
+ *   6. Parameter decorator
+ *   7. Decorator factories
+ *   8. Decorator composition & order
+ *   9. Real-world patterns
+ *  10. TS 5.0 standard vs legacy experimental decorators
+ *  11. Edge cases, pitfalls, version notes
+ * ============================================================ */
 
-// ✅ Enabling Decorators
-// You must enable `experimentalDecorators` in tsconfig.json to use them.
+/* ============================================================
+ *  1️⃣ ENABLING DECORATORS
+ * ============================================================ */
 
-// ✅ Class Decorator
-// A class decorator receives the constructor function and can modify or log metadata.
+// Legacy (experimental) decorators — the classic TS behavior:
+// tsconfig.json:
+// {
+//   "compilerOptions": {
+//     "experimentalDecorators": true,
+//     "emitDecoratorMetadata": true   // optional — used by DI frameworks
+//   }
+// }
+//
+// TS 5.0+ standard decorators — no flag needed if targeting ES2022+
+// and not using experimentalDecorators.
 
-function Logger(constructor: Function) {
-  console.log(`Class ${constructor.name} has been initialized`);
+/* ============================================================
+ *  2️⃣ CLASS DECORATOR
+ * ============================================================ */
+
+// Applied to a class constructor.
+// Can replace or extend the class.
+
+function Sealed<T extends { new (...args: any[]): {} }>(Ctor: T) {
+  Object.seal(Ctor);
+  Object.seal(Ctor.prototype);
+  return Ctor;
 }
 
-// Applying the decorator to a class
-@Logger
+@Sealed
 class Service {
-  constructor() {
-    console.log("Service instance created");
-  }
+  run() {}
 }
 
-// Output:
-// Class Service has been initialized
-// Service instance created
-
-// ✅ Decorator Factory
-// A decorator factory returns a decorator function and allows customization.
-
-function Sealed(name: string) {
-  return function (constructor: Function) {
-    Object.seal(constructor); // Prevents adding new properties to the class
-    Object.seal(constructor.prototype); // Prevents adding methods to the prototype
-    console.log(`Sealed class: ${name}`);
+// 🔸 Decorator that REPLACES the class:
+function Tagged<T extends { new (...args: any[]): {} }>(Ctor: T) {
+  return class extends Ctor {
+    tag = "tagged";
   };
 }
 
-@Sealed("MyClass")
-class MyClass {
-  message = "Hello";
-}
+@Tagged
+class UserService {}
 
-// ✅ Why Use Decorators?
-// - Logging and analytics
-// - Dependency injection
-// - Access control
-// - Metadata tagging
-// - Framework-level annotations (e.g., Angular)
+/* ============================================================
+ *  3️⃣ METHOD DECORATOR
+ * ============================================================ */
 
-// ✅ Decorator Types (Brief Overview)
-// - Class decorators: modify or annotate the class
-// - Method decorators: wrap or modify method behavior
-// - Property decorators: observe or transform property access
-// - Parameter decorators: tag parameters for injection or validation
+// Receives (target, propertyKey, descriptor).
 
-// ✅ Example: Method Decorator (basic logging)
-function LogMethod(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+function Log(
+  target: any,
+  key: string,
+  descriptor: PropertyDescriptor
+): PropertyDescriptor {
   const original = descriptor.value;
   descriptor.value = function (...args: any[]) {
-    console.log(`Calling ${propertyKey} with`, args);
+    console.log(`[Log] ${key}(${args.join(", ")})`);
     return original.apply(this, args);
+  };
+  return descriptor;
+}
+
+class Calc {
+  @Log
+  add(a: number, b: number) { return a + b; }
+}
+
+new Calc().add(1, 2);   // [Log] add(1, 2) → 3
+
+/* ============================================================
+ *  4️⃣ PROPERTY DECORATOR
+ * ============================================================ */
+
+// Receives (target, propertyKey).
+// Cannot directly modify the property value — only metadata or prototype hooks.
+
+function Required(target: any, key: string) {
+  const set = new Set<string>(target.__required ?? []);
+  set.add(key);
+  Object.defineProperty(target, "__required", { value: set });
+}
+
+class Form {
+  @Required name!: string;
+  @Required email!: string;
+}
+
+/* ============================================================
+ *  5️⃣ ACCESSOR DECORATOR
+ * ============================================================ */
+
+// Applied to getters/setters.
+// Receives (target, key, descriptor) like method decorators.
+
+function Enumerable(target: any, key: string, descriptor: PropertyDescriptor) {
+  descriptor.enumerable = true;
+  return descriptor;
+}
+
+class Person {
+  private _name = "";
+  @Enumerable
+  get name() { return this._name; }
+  set name(v: string) { this._name = v; }
+}
+
+/* ============================================================
+ *  6️⃣ PARAMETER DECORATOR
+ * ============================================================ */
+
+// Applied to constructor or method parameters.
+// Receives (target, key, parameterIndex).
+
+function Inject(token: string) {
+  return (target: any, key: string | undefined, index: number) => {
+    const existing: any[] = target.__inject ?? [];
+    existing.push({ token, index, key });
+    Object.defineProperty(target, "__inject", { value: existing });
   };
 }
 
-class Calculator {
-  @LogMethod
-  add(a: number, b: number): number {
-    return a + b;
-  }
+class UserController {
+  constructor(@Inject("UserService") private svc: any) {}
 }
 
-const calc = new Calculator();
-console.log(calc.add(2, 3)); // Logs method call and result
+/* ============================================================
+ *  7️⃣ DECORATOR FACTORIES
+ * ============================================================ */
 
-// ===============================
-// ❓ Trick Questions
-// ===============================
-// - Do decorators run at compile time? ❌ No—they run at runtime.
-// - Can you use decorators without enabling `experimentalDecorators`? ❌ No—must be enabled in tsconfig.
-// - Can decorators modify class behavior? ✅ Yes—especially with factories.
-// - Can you apply multiple decorators to one class? ✅ Yes—they stack top-down.
-// - Are decorators part of standard JavaScript? ❌ No—still a TypeScript/ES proposal.
+// A function that RETURNS a decorator — lets you configure the decorator.
+
+function Prefix(prefix: string) {
+  return function (
+    target: any,
+    key: string,
+    descriptor: PropertyDescriptor
+  ) {
+    const original = descriptor.value;
+    descriptor.value = function (...args: any[]) {
+      return `${prefix}${original.apply(this, args)}`;
+    };
+  };
+}
+
+class Greeter {
+  @Prefix(">> ")
+  hello(name: string) { return `Hello, ${name}`; }
+}
+
+console.log(new Greeter().hello("Ravi"));   // ">> Hello, Ravi"
+
+/* ============================================================
+ *  8️⃣ DECORATOR COMPOSITION & ORDER
+ * ============================================================ */
+
+// Multiple decorators on the same declaration evaluate:
+//   - top-to-bottom for the DECORATOR EXPRESSIONS
+//   - bottom-to-top for the DECORATOR CALLS
+
+function A() { console.log("A eval"); return () => console.log("A call"); }
+function B() { console.log("B eval"); return () => console.log("B call"); }
+
+class Demo {
+  @A()
+  @B()
+  method() {}
+}
+
+// Output order:
+//   A eval
+//   B eval
+//   B call
+//   A call
+
+/* ============================================================
+ *  9️⃣ REAL-WORLD PATTERNS
+ * ============================================================ */
+
+// 🔸 Dependency injection (Angular, NestJS-style)
+// @Injectable()
+// class UserService {
+//   constructor(@Inject("Repo") private repo: Repo) {}
+// }
+
+// 🔸 ORM entity mapping (TypeORM-style)
+// @Entity()
+// class User {
+//   @PrimaryGeneratedColumn()
+//   id!: number;
+//   @Column()
+//   name!: string;
+// }
+
+// 🔸 Validation (class-validator-style)
+// class DTO {
+//   @IsString() @MinLength(1) name!: string;
+//   @IsEmail() email!: string;
+// }
+
+// 🔸 Logging & benchmarking
+// function Measure(target: any, key: string, desc: PropertyDescriptor) {
+//   const original = desc.value;
+//   desc.value = function (...args: any[]) {
+//     const t = performance.now();
+//     const r = original.apply(this, args);
+//     console.log(`${key} took ${(performance.now() - t).toFixed(2)}ms`);
+//     return r;
+//   };
+// }
+
+/* ============================================================
+ *  🔟 TS 5.0 STANDARD vs LEGACY DECORATORS
+ * ============================================================ */
+
+// Legacy (experimental) decorators — the classic:
+//   - Need `experimentalDecorators: true`
+//   - Method decorator receives (target, key, descriptor)
+//   - Cannot be used with `useDefineForClassFields` cleanly
+//   - This is what NestJS, Angular, TypeORM use today.
+
+// Standard (TS 5.0+) decorators — Stage 3 TC39:
+//   - No flag needed (may still need `experimentalDecorators: false`)
+//   - Use `ClassMethodDecoratorContext` etc.
+//   - Cleaner, standardized, forward-compatible
+//   - Different signature — receives (value, context)
+
+// Standard decorator example:
+function standardLog<This, Args extends any[], Return>(
+  target: (this: This, ...args: Args) => Return,
+  context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
+) {
+  return function (this: This, ...args: Args): Return {
+    console.log(`Calling ${String(context.name)}`);
+    return target.call(this, ...args);
+  };
+}
+
+class StdDemo {
+  @standardLog
+  hello(name: string) { return `Hello, ${name}`; }
+}
+
+// ⚠️ You cannot mix standard and legacy decorators on the same declaration.
+
+/* ============================================================
+ *  1️⃣1️⃣ EDGE CASES, PITFALLS, VERSION NOTES
+ * ============================================================ */
+
+// ⚠️ Experimental decorators need `experimentalDecorators: true`.
+// ⚠️ Standard decorators need TS 5.0+ and target ES2022+.
+// ⚠️ Cannot mix standard & legacy on the same declaration.
+// ⚠️ Property decorators CANNOT modify the property — only metadata/hooks.
+// ⚠️ Decorators run ONCE when the class is DEFINED — not per instantiation.
+// ⚠️ Decorator factories return a decorator — configure behavior.
+// ⚠️ Decorator evaluation order: expressions top→bottom, calls bottom→top.
+// ⚠️ `emitDecoratorMetadata` emits design-time types — used by DI frameworks.
+// ⚠️ Parameter decorators cannot be used standalone — only with methods/ctors.
+// ⚠️ Method decorators may return a NEW descriptor to replace behavior.
+
+// 🕒 Version notes
+// - `experimentalDecorators`: TS 1.5
+// - `emitDecoratorMetadata`: TS 1.5
+// - Standard TC39 decorators: TS 5.0
+// - Both supported from TS 5.0 onwards
+
+/* ============================================================
+ *  📌 RECAP TABLE
+ * ─────────────────────────────────────────────────────────────
+ * | Decorator type     | Signature                                    |
+ * ─────────────────────────────────────────────────────────────
+ * | Class              | (Ctor) => Ctor | void                        |
+ * | Method             | (target, key, descriptor) => descriptor|void |
+ * | Property           | (target, key) => void                        |
+ * | Accessor           | (target, key, descriptor) => descriptor|void |
+ * | Parameter          | (target, key, index) => void                 |
+ * | Factory            | (...args) => decorator                       |
+ * ─────────────────────────────────────────────────────────────
+ *
+ * 🧠 BEST PRACTICES
+ *  - Use decorator factories to make decorators configurable.
+ *  - Keep decorators FOCUSED — one responsibility per decorator.
+ *  - Document evaluation order when stacking decorators.
+ *  - Prefer STANDARD decorators for new projects (TS 5.0+).
+ *  - Use LEGACY decorators when integrating with frameworks (NestJS, TypeORM).
+ *  - Avoid heavy reflection/metadata unless needed.
+ *  - Remember: decorators run ONCE at class-definition time.
+ * ============================================================ */

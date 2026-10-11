@@ -3,7 +3,7 @@
 export class Toy {
     public a: string = '';
     protected toyname: string = "Robert"; // Protected properties are usually prefixed with an underscore _
-    private toyage: number; // Privates should start with #. They are only accessible from inside the class.
+    private toyage: number = 0; // Privates should start with #. They are only accessible from inside the class.
 
     constructor() {
 
@@ -23,5 +23,4 @@ export class Toy {
     set age(x) {
         this.toyage = x;
     }
-
 }
