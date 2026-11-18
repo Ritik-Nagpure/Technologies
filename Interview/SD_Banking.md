@@ -1,1206 +1,1710 @@
-# PhonePe Payment System Architecture – Complete System Design
+# Complete Banking System Architecture – HLD, LLD, Technologies, Workflows and Production Design
 
-## 1. Introduction
+# 1. Introduction to Banking System Architecture
 
-PhonePe is a digital payments platform that enables users to:
-- Transfer money using UPI.
-- Pay merchants.
-- Scan QR codes.
-- Recharge mobile phones.
-- Pay utility bills.
-- Access financial services.
+A modern banking system is a combination of distributed systems, financial transaction processing, security infrastructure, data platforms, and real-time payment networks.
 
-PhonePe does not act as the bank holding money in a normal UPI bank-to-bank transaction. It acts as a Third-Party Application Provider (TPAP) participating in the UPI ecosystem.
+Unlike applications such as Instagram or Uber, banking systems prioritize:
 
-The actual payment infrastructure involves PhonePe, PSP banks, NPCI and participating banks.
+1. Financial correctness.
+2. Strong consistency.
+3. Security.
+4. Auditability.
+5. Regulatory compliance.
+6. Availability and reliability.
+7. Performance and scalability.
 
-**Important:** PhonePe's exact internal production architecture is proprietary. This document describes the publicly documented UPI ecosystem and a representative production-grade architecture. The proposed technologies are architectural recommendations, not verified claims about PhonePe's internal technology stack.
+A banking application must support:
 
----
+- Customer registration and KYC verification.
+- Savings and current account creation.
+- Deposits and withdrawals.
+- Money transfers between accounts.
+- UPI, NEFT, RTGS, IMPS and card payments.
+- Loan management and EMI processing.
+- Interest calculations.
+- Fraud detection.
+- Transaction history and statements.
+- Notifications and alerts.
+- Regulatory reporting and auditing.
 
-# 2. Participants in the UPI Ecosystem
+Consider a simple scenario:
 
-## 2.1 PhonePe – TPAP
+Ritik has ₹50,000 in his savings account and wants to transfer ₹10,000 to another customer.
 
-Third-Party Application Provider.
+The banking system must:
 
-Responsibilities:
-- Provides the mobile application.
-- Provides the payment initiation interface.
-- Manages the user experience.
-- Displays transaction history and payment status.
-- Integrates with sponsor PSP banks.
+1. Authenticate Ritik.
+2. Verify his account.
+3. Check the available balance.
+4. Validate transaction limits.
+5. Detect suspicious activity.
+6. Debit ₹10,000 from his account.
+7. Credit ₹10,000 to the recipient.
+8. Record the transaction permanently.
+9. Generate the appropriate business events.
+10. Notify both customers.
 
-## 2.2 PSP Bank – Payment Service Provider Bank
-
-Responsibilities:
-- Connects the TPAP application to the UPI ecosystem.
-- Supports user onboarding and registration.
-- Facilitates payment processing.
-- Communicates with NPCI through approved interfaces.
-
-## 2.3 NPCI – National Payments Corporation of India
-
-Responsibilities:
-- Operates the UPI infrastructure.
-- Routes payment requests between participating banks.
-- Maintains the UPI network framework.
-- Supports transaction processing and status management.
-
-NPCI is not the bank holding the customer's money.
-
-## 2.4 Issuer Bank – Remitter Bank
-
-The bank maintaining the sender's account.
-
-Responsibilities:
-- Verifies account information.
-- Validates payment authentication.
-- Checks available balance.
-- Applies transaction limits.
-- Processes the debit.
-
-## 2.5 Beneficiary Bank
-
-The bank maintaining the receiver's account.
-
-Responsibilities:
-- Identifies the beneficiary account.
-- Processes the credit.
-- Returns the transaction result.
-
-**Important distinction:**
-- PSP Bank and Issuer Bank can be different banks.
-- NPCI operates the UPI infrastructure.
-- PhonePe provides the payment application.
-- The participating banks maintain the underlying bank accounts.
+The most important requirement is that money must never disappear or be duplicated because of a system failure.
 
 ---
 
-# 3. High-Level Architecture (HLD)
+# 2. High-Level Banking Architecture
 
-A representative PhonePe-scale architecture can be divided into six logical layers.
-
-## 3.1 Architecture Diagram
+A typical modern digital banking architecture looks like this:
 
 ```text
-                 CLIENT LAYER
-                       |
-             PhonePe Mobile Application
-                       |
-                 API GATEWAY
-                       |
-        AUTHENTICATION / RATE LIMITING
-                       |
-       +---------------+----------------+
-       |               |                |
-   USER SERVICE   PAYMENT SERVICE   MERCHANT SERVICE
-       |               |                |
-       |          RISK ENGINE            |
-       |               |                |
-       |         TRANSACTION             |
-       |         ORCHESTRATOR            |
-       |               |                |
-       |          UPI ADAPTER            |
-       |               |                |
-       |          PSP BANK API           |
-       |               |                |
-       |             NPCI                |
-       |               |                |
-       |       REMITTER BANK             |
-       |               |                |
-       |       BENEFICIARY BANK          |
-       |                                |
-       +--------------------------------+
-                       |
-               EVENT PROCESSING
-                       |
-                    KAFKA
-                       |
-          +------------+-------------+
-          |            |             |
-      NOTIFICATION  ANALYTICS    RECONCILIATION
-          |            |             |
-       PUSH/SMS     DATA LAKE     BANK REPORTS
-
-       DATABASES / CACHE / AUDIT LOGS
+                  CLIENT APPLICATIONS
+              +-----------+-----------+
+              |           |           |
+           Mobile       Web App    ATM / Branch
+           Banking                 Terminals
+              |           |           |
+              +-----------+-----------+
+                          |
+                          v
+                  API GATEWAY / WAF
+                          |
+                          v
+                   LOAD BALANCER
+                          |
+                          v
+                IDENTITY & AUTH SERVICE
+                          |
+                          v
+                     API / BFF
+                          |
+        +-----------------+------------------+
+        |                 |                  |
+        v                 v                  v
+   ACCOUNT SERVICE   PAYMENT SERVICE   CUSTOMER SERVICE
+        |                 |                  |
+        |                 v                  |
+        |            FRAUD SERVICE            |
+        |                 |                  |
+        +-----------------+------------------+
+                          |
+                          v
+                  CORE BANKING SYSTEM
+                          |
+                          v
+                   TRANSACTION ENGINE
+                          |
+                          v
+                     LEDGER SYSTEM
+                          |
+             +------------+------------+
+             |            |            |
+             v            v            v
+         PostgreSQL     Redis        Kafka
+         / Oracle       Cache      Event Bus
+             |            |            |
+             +------------+------------+
+                          |
+                          v
+                 ANALYTICS / DATA LAKE
+                          |
+                          v
+              REPORTING / RECONCILIATION
 ```
 
-This is a conceptual architecture, not PhonePe's disclosed internal service topology.
-
-## 3.2 Component Responsibilities
-
-| Component | Responsibility |
-|---|---|
-| API Gateway | Entry point for client requests |
-| Authentication Service | Verifies user and device identity |
-| Payment Service | Creates and manages payments |
-| Risk Engine | Detects suspicious transactions |
-| Transaction Orchestrator | Coordinates payment lifecycle |
-| UPI Adapter | Communicates with PSP/UPI interfaces |
-| Event Processing | Processes asynchronous events |
-| Notification Service | Sends transaction updates |
-| Reconciliation Service | Compares transaction records |
-| Analytics Service | Generates operational insights |
-
-### Why separate these components?
-
-Each component has a different responsibility.
-
-Separating them provides:
-- Independent scaling.
-- Better fault isolation.
-- Easier maintenance.
-- Clear ownership.
-- Reduced coupling.
-- Independent deployments.
+This is a conceptual architecture. Not every bank uses the same technologies or service boundaries.
 
 ---
 
-# 4. Complete Payment Lifecycle – Step by Step
+# 3. Client Applications
 
-Consider this example:
+## Responsibility
 
-- Rahul uses PhonePe.
-- Rahul has an HDFC Bank account.
-- Amit has an ICICI Bank account.
-- Amit's UPI ID is `amit@icici`.
-- Rahul wants to send Amit Rs. 1,000.
+Provides the interface through which customers interact with banking services.
 
-## Step 1: User Initiates Payment
+Examples:
 
-Rahul opens PhonePe and enters the payment details.
+- Check account balance.
+- Transfer money.
+- Download statements.
+- Manage beneficiaries.
+- Manage debit cards.
+- Apply for loans.
+- Manage account information.
 
-Example request:
+## Technologies
 
-```json
-{
-  "receiverUpiId": "amit@icici",
-  "amount": 1000,
-  "currency": "INR"
-}
-```
+| Technology | Purpose |
+|---|---|
+| React | Web banking application |
+| Angular | Enterprise web banking |
+| Kotlin | Native Android banking |
+| Swift | Native iOS banking |
+| Flutter | Cross-platform mobile applications |
+| React Native | Cross-platform mobile applications |
 
-The mobile application sends the request to the backend.
+## Why React or Angular?
+
+Banking applications have complex interfaces involving:
+
+- Forms.
+- Authentication workflows.
+- Financial dashboards.
+- Validation.
+- Permissions.
+- Reusable components.
+- API integration.
+
+Frameworks make these applications easier to maintain.
+
+## Why not plain JavaScript?
+
+Plain JavaScript works, but large applications become difficult to organize as the number of components, workflows and developers increases.
+
+## Trade-offs
+
+| Technology | Advantages | Disadvantages |
+|---|---|---|
+| React | Flexible, large ecosystem | Requires architectural decisions |
+| Angular | Structured, batteries included | More complexity |
+| Flutter | Cross-platform development | Platform-specific integration trade-offs |
+| Native Kotlin/Swift | Native performance | Separate development teams |
+
+---
+
+# 4. API Gateway
+
+The API Gateway is the entry point for backend requests.
+
+Suppose a customer requests:
 
 ```http
-POST /api/v1/payments
-Authorization: Bearer <access_token>
-Idempotency-Key: payment-unique-key
+GET /api/accounts/12345/balance
+Authorization: Bearer JWT_TOKEN
 ```
 
-The backend performs:
+The API Gateway performs:
 
-1. Authentication.
-2. Request validation.
-3. Amount validation.
-4. Device and risk checks.
-5. Idempotency verification.
+1. Receives the request.
+2. Validates the token or coordinates authentication checks.
+3. Applies rate limiting.
+4. Checks request size and security policies.
+5. Routes the request to the Account Service.
+6. Returns the response.
 
-### Why Idempotency?
+## Technologies
 
-Suppose Rahul clicks Pay twice because the application freezes.
-
-Without idempotency, the backend might initiate two payments.
-
-With idempotency, the backend recognizes the same logical request and prevents accidental duplicate processing.
-
-## Step 2: Payment Record Creation
-
-The Payment Service creates a transaction record.
-
-Example:
-
-```json
-{
-  "transactionId": "TXN10001",
-  "sender": "RAHUL123",
-  "receiver": "amit@icici",
-  "amount": 1000,
-  "status": "INITIATED",
-  "currency": "INR"
-}
-```
-
-The transaction is stored in a durable database.
-
-Possible simplified states:
-
-```text
-INITIATED
-    |
-    v
-PENDING
-    |
-    +------> SUCCESS
-    |
-    +------> FAILED
-    |
-    +------> UNKNOWN
-```
-
-UNKNOWN is important.
-
-A timeout does not necessarily mean that the payment failed.
-
-The bank may have processed the debit, but its response may have been lost because of a network failure.
-
-## Step 3: Payment Authentication
-
-Rahul enters his UPI PIN.
-
-The UPI authentication process verifies that the payment is authorized through the participating bank infrastructure.
-
-Important security properties:
-
-- The UPI PIN must not be stored in the application database.
-- The PIN must not be logged.
-- Authentication must follow the approved UPI security protocol.
-- Device registration and customer authentication are separate concerns.
-
-## Step 4: PhonePe Communicates With the PSP Bank
-
-PhonePe participates in UPI through its sponsor PSP banks.
-
-The payment request goes through the appropriate PSP integration.
-
-```text
-PhonePe
-   |
-   v
-PSP Bank
-   |
-   v
-NPCI UPI
-```
-
-The PSP Bank connects the application to the UPI network.
-
-## Step 5: NPCI Routes the Payment
-
-NPCI identifies the destination based on the payment address and routes the transaction to the relevant participating bank infrastructure.
-
-For Rahul's payment:
-
-```text
-Rahul's PhonePe
-       |
-       v
-PhonePe PSP Bank
-       |
-       v
-      NPCI
-       |
-       v
-   HDFC Bank
-```
-
-The payer's bank verifies the payment authorization and processes the debit.
-
-## Step 6: Money Is Debited
-
-HDFC verifies relevant conditions:
-
-- Account validity.
-- Available balance.
-- Authentication.
-- Applicable transaction limits.
-- Risk and compliance controls.
-
-If approved, Rs. 1,000 is debited from Rahul's account.
-
-## Step 7: Beneficiary Receives Money
-
-NPCI routes the credit request to Amit's bank.
-
-```text
-NPCI
-  |
-  v
-ICICI Bank
-  |
-  v
-Amit's Account
-  |
-  v
-Rs. 1,000 Credited
-```
-
-ICICI processes the credit and returns its response through the UPI network.
-
-## Step 8: Transaction Response
-
-The result is communicated back through the payment network.
-
-```text
-ICICI Bank
-    |
-    v
-   NPCI
-    |
-    v
-PSP Bank
-    |
-    v
-PhonePe Backend
-    |
-    v
-PhonePe Application
-```
-
-Rahul sees:
-
-```text
--------------------------------
-       PAYMENT SUCCESSFUL
--------------------------------
-
-Amount: Rs. 1,000
-Paid to: Amit
-UPI: amit@icici
-
-Transaction ID: TXN10001
-Status: SUCCESS
--------------------------------
-```
-
-The beneficiary can also receive a notification through their payment application or bank channels.
-
----
-
-# 5. Technology Stack and Why It Is Used
-
-The following is a recommended stack for a PhonePe-scale implementation, not a verified inventory of PhonePe's private infrastructure.
-
-## 5.1 Frontend – Mobile Application
-
-| Technology | Why Use It? | Alternative |
-|---|---|---|
-| Kotlin | Native Android development | Java |
-| Swift | Native iOS development | Objective-C |
-| React Native | Shared cross-platform development | Flutter |
-| Secure Device Storage | Protects sensitive local credentials | Ordinary local storage (not recommended) |
-
-### Why Native Development Can Be Preferable
-
-- Better control over device security.
-- Native biometric integration.
-- Better control over device-specific capabilities.
-- Predictable performance.
-
-Trade-off:
-
-Maintaining separate Android and iOS codebases increases development costs.
-
-## 5.2 Backend – Application Services
-
-| Technology | Responsibility | Why Use It? |
-|---|---|---|
-| Java + Spring Boot | Payment services | Mature enterprise ecosystem, concurrency and transaction support |
-| Go | High-throughput services | Lightweight concurrency and efficient resource utilization |
-| Node.js | API and notification services | Efficient I/O-bound workloads |
-| gRPC | Internal service communication | Efficient binary serialization and strongly defined contracts |
-| REST | Mobile-facing APIs | Simple, widely supported HTTP interface |
-
-### Why Java and Spring Boot?
-
-Payment systems require:
-
-- Predictable transaction processing.
-- Mature database integration.
-- Enterprise security libraries.
-- Observability.
-- Well-established concurrency support.
-
-Java and Spring Boot provide a mature ecosystem for these requirements.
-
-Go is also a strong choice for infrastructure-heavy services.
-
-Node.js can also handle payment APIs. Its suitability depends on workload and implementation quality.
-
-## 5.3 API Gateway
-
-Possible technologies:
-
-- Kong.
+- Kong Gateway.
 - NGINX.
 - AWS API Gateway.
+- Apigee.
 - Envoy.
 
-Responsibilities:
+## Why use an API Gateway?
 
-1. Request routing.
-2. Authentication enforcement.
-3. Rate limiting.
-4. Request validation.
-5. TLS termination.
-6. API versioning.
+Imagine having 50 backend microservices.
 
-### Why Not Allow Mobile Applications to Communicate Directly With Every Microservice?
+Without a gateway, the frontend might need to know the address and authentication requirements of every service.
 
-Because this would:
-
-- Expose internal service topology.
-- Complicate security.
-- Increase client-side complexity.
-- Create tight coupling between clients and backend services.
-
-An API Gateway provides a centralized entry point.
-
-## 5.4 Database – PostgreSQL / Distributed SQL
-
-PostgreSQL is a relational database with:
-
-- ACID transactions.
-- Constraints.
-- Durable persistence.
-- Indexing.
-- Referential integrity.
-
-### Why Use a Relational Database for Payments?
-
-Financial systems need:
-
-- ACID transactions.
-- Durable writes.
-- Unique transaction references.
-- Constraints.
-- Auditability.
-- Reliable recovery.
-
-For internal wallet or ledger operations, relational databases are particularly useful.
-
-At very high scale, distributed SQL databases or partitioned relational databases can be considered.
-
-### Why Not MongoDB as the Default Financial Ledger?
-
-MongoDB supports transactions, so it is not incapable of financial workloads.
-
-However, relational databases offer a natural fit for structured financial records, constraints and accounting relationships.
-
-## 5.5 Redis – Caching
-
-Redis is an in-memory data store.
-
-Potential use cases:
-
-- User session information.
-- Rate limiting.
-- Temporary payment state.
-- Frequently accessed merchant information.
-- Short-lived idempotency coordination.
-
-Example:
-
-A user repeatedly opens the PhonePe home screen.
-
-Instead of repeatedly querying the database for every piece of relatively static information, a cache can serve suitable data.
-
-### Why Not Use Redis as the Financial Database?
-
-Redis should not be the authoritative financial ledger.
-
-If Redis loses data, the system must still be able to reconstruct the correct financial state from durable records.
-
-## 5.6 Kafka – Event Streaming
-
-Kafka is a distributed event streaming platform.
-
-Suppose a payment succeeds.
-
-Several operations need to happen:
-
-1. Update transaction history.
-2. Notify sender.
-3. Notify receiver.
-4. Update merchant reporting.
-5. Update analytics.
-6. Trigger fraud monitoring.
-7. Update reconciliation records.
-
-Should the payment API wait for all seven operations?
-
-No.
-
-That would unnecessarily increase payment latency and create additional failure dependencies.
-
-Instead:
+With an API Gateway:
 
 ```text
-Payment Service
-      |
-      v
-Database Transaction
-      |
-      v
-Outbox Event
-      |
-      v
-Kafka
-      |
-      +------> Notification Service
-      |
-      +------> Analytics Service
-      |
-      +------> Fraud Monitoring
-      |
-      +------> Reconciliation
+Frontend
+   |
+API Gateway
+   |
+   +-- Account Service
+   +-- Payment Service
+   +-- Loan Service
+   +-- Customer Service
+   +-- Card Service
 ```
 
-### Why Kafka Instead of RabbitMQ?
+The frontend communicates through a controlled entry point.
 
-| Kafka | RabbitMQ |
+## Why not directly communicate with microservices?
+
+Direct communication can create:
+
+- Tight coupling.
+- More exposed endpoints.
+- Duplicated security logic.
+- Difficult API versioning.
+- More complicated client applications.
+
+## Trade-offs
+
+| Advantages | Disadvantages |
 |---|---|
-| Distributed event log | Message broker |
-| High-throughput streaming | Flexible message routing |
-| Event replay | Traditional queue consumption |
-| Partition-based scalability | Queue-based scalability |
-| Multiple independent consumers | Task and message distribution |
+| Centralized security policies | Additional network hop |
+| Rate limiting | Potential bottleneck |
+| Routing | Operational complexity |
+| API versioning | Gateway availability becomes critical |
 
-Kafka is a good fit when multiple consumers need to process the same payment event independently.
-
-RabbitMQ is also a valid choice for command and task-oriented messaging.
-
-Neither is universally better.
-
-## 5.7 Object Storage – Amazon S3
-
-Amazon S3 can store:
-
-- Transaction reports.
-- Reconciliation files.
-- Statements.
-- Documents.
-- Large audit exports.
-
-### Why Not Store Everything in PostgreSQL?
-
-Object storage is optimized for large files, durability and cost-effective storage.
-
-A database should store the metadata and references to those files.
-
-## 5.8 Infrastructure and Deployment
-
-| Technology | Responsibility |
-|---|---|
-| Kubernetes | Container orchestration and workload scaling |
-| Docker | Consistent application packaging |
-| NGINX / Envoy | Traffic management and proxying |
-| Terraform | Infrastructure as code |
-| Prometheus | Metrics collection |
-| Grafana | Operational dashboards |
-| OpenTelemetry | Distributed tracing and telemetry |
-| ELK / OpenSearch | Log aggregation and investigation |
+Production gateways should be deployed redundantly to avoid a single point of failure.
 
 ---
 
-# 6. How Does PhonePe Prevent Duplicate Payments?
+# 5. Identity and Authentication Service
 
-This is one of the most important payment-system interview questions.
+Banking applications require strong authentication.
 
-Imagine:
+Consider a customer logging into mobile banking.
 
-1. Rahul initiates Rs. 1,000 payment.
-2. PhonePe sends the request to the PSP.
-3. The bank successfully debits Rs. 1,000.
-4. The bank sends a success response.
-5. The network fails before PhonePe receives it.
-6. Rahul sees a pending transaction.
-7. Rahul clicks Pay again.
+The authentication service verifies:
 
-What happens?
+- Username or customer identifier.
+- Password or PIN.
+- OTP.
+- Device identity.
+- Biometric authentication where applicable.
+- Session validity.
 
-If the backend blindly processes the second request, Rahul could potentially be charged twice.
+## Technologies
 
-This is why payment systems need idempotency and transaction-state management.
+- Keycloak.
+- OAuth 2.0.
+- OpenID Connect.
+- Spring Security.
+- Custom identity platforms.
 
-## 6.1 Idempotency Key
+## Important distinction
 
-The client sends a unique key for each logical payment attempt.
+OAuth 2.0 is an authorization framework.
 
-```http
-POST /payments
-Idempotency-Key: abc-123
-```
+OpenID Connect adds an authentication layer on top of OAuth 2.0.
 
-The backend stores:
+Banks may also use:
 
-```text
-Idempotency Key: abc-123
-Transaction ID: TXN10001
-Status: PENDING
-```
+- Hardware-backed credentials.
+- Device binding.
+- Risk-based authentication.
+- Multi-factor authentication.
+- Session revocation.
 
-If the same logical request arrives again:
+## Why not use simple JWT authentication everywhere?
 
-```text
-abc-123
-    |
-    v
-Already Exists?
-    |
-    YES
-    |
-    v
-Return Existing Transaction
-```
+JWT is a token format, not a complete authentication or authorization system.
 
-Do not initiate a second payment.
+Banking applications need:
 
-The backend must also validate that the same key is not reused with a different amount or receiver.
+- Token lifecycle management.
+- Session revocation.
+- MFA.
+- Device management.
+- Role-based and attribute-based authorization.
+- Fraud and risk-based authentication.
 
-## 6.2 Transaction State Machine
-
-A robust payment system needs controlled state transitions.
-
-```text
-          INITIATED
-              |
-              v
-           PENDING
-              |
-       +------+------+ 
-       |      |      |
-       v      v      v
-    SUCCESS FAILED UNKNOWN
-```
-
-This is a simplified model. Real payment protocols have additional intermediate and reversal states.
-
-## 6.3 What Happens When a Transaction Is UNKNOWN?
-
-The system must not assume that a timeout equals failure.
-
-Instead:
-
-1. Retain the transaction reference.
-2. Query the appropriate PSP/UPI transaction-status interface.
-3. Wait for authoritative status or reconciliation.
-4. Update the internal transaction state.
-5. Initiate a reversal or dispute process when required by the protocol and outcome.
-
-**Critical rule: Never blindly retry a financial debit after an ambiguous timeout.**
-
-## 6.4 Why Not Simply Use Database Transactions?
-
-Because PhonePe, NPCI, HDFC and ICICI are independent systems.
-
-A PostgreSQL transaction cannot atomically commit changes across all those external participants.
-
-This is a distributed transaction problem.
-
-The practical solution is:
-
-- Durable transaction records.
-- Idempotent requests.
-- State machines.
-- Authoritative status enquiries.
-- Reconciliation.
-- Defined reversal and dispute processes.
-
-This is more realistic than assuming a single ACID transaction covers the entire UPI network.
+A stolen, still-valid token must not provide unlimited access to financial operations.
 
 ---
 
-# 7. Database Architecture – How Should Payment Data Be Stored?
+# 6. Core Banking System (CBS)
 
-A simplified relational schema could look like this.
+The Core Banking System is the central system responsible for maintaining the bank's financial operations.
 
-## 7.1 Users Table
+It manages:
 
-| Column | Type |
-|---|---|
-| user_id | UUID |
-| name | VARCHAR |
-| mobile_number | VARCHAR |
-| created_at | TIMESTAMP |
+- Customer accounts.
+- Account balances.
+- Deposits.
+- Withdrawals.
+- Transfers.
+- Loans.
+- Interest calculations.
+- Financial transactions.
+- Account restrictions.
 
-## 7.2 Bank Accounts Table
+Think of it as the financial engine of the bank.
 
-| Column | Type |
-|---|---|
-| account_id | UUID |
-| user_id | UUID |
-| bank_id | UUID |
-| masked_account_number | VARCHAR |
-| upi_id | VARCHAR |
-| status | VARCHAR |
+## Example
 
-## 7.3 Payments Table
+A customer visits a branch in Mumbai and deposits ₹20,000.
 
-| Column | Type |
-|---|---|
-| transaction_id | UUID |
-| sender_id | UUID |
-| receiver_vpa | VARCHAR |
-| amount | DECIMAL |
-| status | VARCHAR |
-| idempotency_key | VARCHAR |
-| external_reference | VARCHAR |
-| created_at | TIMESTAMP |
+The transaction is recorded in the bank's core banking infrastructure.
 
-## 7.4 Payment Events Table
+The customer can then see the updated balance through a mobile application or another branch.
 
-| Column | Type |
-|---|---|
-| event_id | UUID |
-| transaction_id | UUID |
-| event_type | VARCHAR |
-| event_payload | JSONB |
-| created_at | TIMESTAMP |
+This is why banking is called core banking: customers can access their banking services across branches and channels.
 
-## 7.5 Ledger Entries Table
+## Why do banks use Java, COBOL and C/C++?
 
-For a platform that maintains its own wallet or accounting ledger, a double-entry model can be used.
+These are examples of technologies found in banking environments, not technologies universally used by every bank.
 
-| Column | Type |
-|---|---|
-| entry_id | UUID |
-| transaction_id | UUID |
-| account_id | UUID |
-| entry_type | DEBIT / CREDIT |
-| amount | DECIMAL |
-| created_at | TIMESTAMP |
+| Technology | Why banks use it | Disadvantages |
+|---|---|---|
+| Java | Enterprise systems and transaction processing | JVM resource consumption |
+| COBOL | Legacy mainframe systems and established financial processing | Specialized talent and legacy complexity |
+| C/C++ | Performance-sensitive systems | Memory safety and maintenance complexity |
+| C#/.NET | Enterprise banking applications | Platform and ecosystem considerations |
+| Go | Network services and infrastructure | Smaller legacy banking footprint |
 
-For a double-entry ledger:
+## Why COBOL is still relevant
 
-```text
-Total Debits = Total Credits
-```
+Many large banks have decades of financial processing logic running on mainframes.
 
-However, remember the distinction:
+Replacing this logic is risky because it contains:
 
-A normal UPI bank-to-bank transfer is not equivalent to PhonePe transferring money between two balances in its own wallet ledger.
+- Financial calculations.
+- Interest rules.
+- Account processing.
+- Historical business rules.
+- Regulatory requirements.
 
-PhonePe maintains transaction records, but the underlying bank accounts are maintained by their respective banks.
+A bank cannot simply replace its core banking platform because a newer programming language exists.
+
+Migration requires extensive testing, reconciliation and controlled execution.
 
 ---
 
-# 8. Reconciliation – Financial Correctness
+# 7. Transaction Processing and Double-Entry Accounting
 
-Suppose:
+This is arguably the most important concept in banking architecture.
 
-- PhonePe records transaction as SUCCESS.
-- HDFC records debit as SUCCESS.
-- ICICI records credit as SUCCESS.
+Banks do not simply update a customer's balance using:
 
-Everything is fine.
-
-But imagine:
-
-- HDFC records debit as SUCCESS.
-- PhonePe records transaction as PENDING.
-- ICICI records credit as SUCCESS.
-
-Different participants have different views of the same transaction.
-
-This is where reconciliation becomes essential.
-
-## 8.1 How Reconciliation Works
-
-```text
-       PhonePe Transaction Records
-                  |
-                  |
-          Reconciliation Engine
-                  |
-          +-------+-------+
-          |               |
-      HDFC Records    ICICI Records
-          |               |
-          +-------+-------+
-                  |
-              Comparison
-                  |
-          +-------+-------+
-          |               |
-        MATCH          MISMATCH
-          |               |
-       Verified       Investigation
-                          |
-                   Status Correction /
-                   Reversal / Dispute
+```javascript
+account.balance -= 10000;
 ```
 
-The reconciliation system compares transaction references, amounts, statuses and settlement information across participants.
+That approach is insufficient for a reliable financial system.
 
-It identifies:
+Instead, banks maintain a financial ledger.
 
-- Debited but not credited.
-- Credited but sender sees pending.
-- Duplicate transaction records.
-- Missing transaction records.
-- Incorrect amounts.
-- Delayed status updates.
+## What is a ledger?
 
-**Why is reconciliation important?**
+A ledger is a permanent record of financial movements.
 
-Because a payment system must not merely display a successful payment. It must be able to establish what actually happened financially.
+Consider:
 
----
+- Ritik has ₹50,000.
+- Rahul has ₹20,000.
+- Ritik transfers ₹10,000 to Rahul.
 
-# 9. How Does PhonePe Handle Millions of Concurrent Users?
+The transaction produces two accounting entries.
 
-Imagine 10 million users opening PhonePe around the same time.
+### Before Transaction
 
-A single backend server cannot efficiently handle all requests.
+| Customer | Balance |
+|---|---:|
+| Ritik | ₹50,000 |
+| Rahul | ₹20,000 |
+| Total | ₹70,000 |
 
-The architecture needs horizontal scalability.
+### After Transaction
 
-## 9.1 Load Balancing
+| Customer | Balance |
+|---|---:|
+| Ritik | ₹40,000 |
+| Rahul | ₹30,000 |
+| Total | ₹70,000 |
 
-Instead of sending every request to one server:
+### Ledger Entries
 
-```text
-          10 Million Users
-                 |
-                 v
-            Load Balancer
-                 |
-       +---------+---------+
-       |         |         |
-    Server 1  Server 2  Server 3
-       |         |         |
-       +---------+---------+
-                 |
-            Backend APIs
+| Account | Debit | Credit |
+|---|---:|---:|
+| Ritik's account | ₹10,000 | — |
+| Rahul's account | — | ₹10,000 |
+| Total | ₹10,000 | ₹10,000 |
+
+The accounting invariant is:
+
+Total Debits = Total Credits.
+
+The exact debit/credit interpretation depends on account type and accounting conventions. The important invariant is that the transaction balances.
+
+## Why PostgreSQL or Oracle?
+
+Banks need strong transactional guarantees.
+
+Consider a transfer:
+
+1. Debit Ritik.
+2. Credit Rahul.
+
+What happens if the application crashes after step one?
+
+A database transaction ensures both changes commit together or neither does.
+
+### Illustrative SQL
+
+```sql
+BEGIN;
+
+UPDATE accounts
+SET balance = balance - 10000
+WHERE account_id = 'RITIK'
+AND balance >= 10000;
+
+UPDATE accounts
+SET balance = balance + 10000
+WHERE account_id = 'RAHUL';
+
+COMMIT;
 ```
 
-Benefits:
+This is illustrative SQL, not production-ready transfer logic.
 
-- Distributes incoming traffic.
-- Prevents individual servers from becoming bottlenecks.
-- Supports horizontal scaling.
-- Allows unhealthy instances to be removed from traffic.
+Production code must:
 
-## 9.2 Database Partitioning
+- Verify affected row counts.
+- Validate account ownership.
+- Validate account status.
+- Enforce transaction limits.
+- Apply appropriate locking.
+- Handle concurrent transactions.
+- Record immutable ledger entries.
 
-A payment table can grow to billions of records.
+## ACID Properties
 
-Keeping everything on one database instance creates operational and performance challenges.
-
-A possible partitioning strategy:
-
-```text
-Payment Database
-       |
-       +------> Partition 1 (2026 Jan-Mar)
-       |
-       +------> Partition 2 (2026 Apr-Jun)
-       |
-       +------> Partition 3 (2026 Jul-Sep)
-       |
-       +------> Partition 4 (2026 Oct-Dec)
-```
-
-Alternative: hash partitioning by transaction ID or another suitable key.
-
-Benefits:
-
-- Smaller indexes per partition.
-- Easier archival.
-- Better maintenance.
-- Improved query performance for suitable access patterns.
-
-Partitioning does not automatically increase write throughput. For that, multiple database nodes or shards may be required.
-
-## 9.3 Kafka Partitioning
-
-Kafka distributes events across partitions.
-
-```text
-             Payment Events
-                   |
-                 Kafka
-                   |
-       +-----------+-----------+
-       |           |           |
-   Partition 1  Partition 2  Partition 3
-       |           |           |
-   Consumer 1  Consumer 2  Consumer 3
-```
-
-A useful strategy is to partition by transaction ID.
-
-This allows events belonging to the same transaction to be processed in order within a partition.
-
-However, consumer processing must still be idempotent because duplicate delivery or retries can happen.
-
-## 9.4 Geographic Distribution
-
-PhonePe needs to serve users across India.
-
-A geographically distributed infrastructure can reduce latency and improve resilience.
-
-Possible architecture:
-
-- Multiple availability zones.
-- Regional application clusters.
-- Distributed edge/CDN infrastructure for static assets.
-- Replicated databases.
-- Disaster recovery infrastructure.
-
-However, financial writes must follow applicable consistency and data residency requirements.
-
-You cannot simply allow arbitrary regional writes to financial state without controlling consistency.
-
----
-
-# 10. Security Architecture
-
-Payments involve money, personal information and authentication credentials.
-
-Security cannot be an afterthought.
-
-| Security Mechanism | Purpose |
+| Property | Meaning in banking |
 |---|---|
-| TLS | Encrypts network communication |
-| Encryption at Rest | Protects stored data |
-| OAuth 2.0 / Tokens | Application authentication and authorization |
-| Device Binding | Associates registration with an authorized device |
-| UPI PIN | Authorizes UPI payment transactions |
-| HSM | Protects cryptographic keys |
-| Rate Limiting | Prevents excessive requests |
-| Fraud Detection | Identifies suspicious behaviour |
-| Audit Logs | Supports investigations and compliance |
+| Atomicity | Both financial entries succeed or neither does |
+| Consistency | Financial invariants remain valid |
+| Isolation | Concurrent transactions do not corrupt results |
+| Durability | Committed transactions survive failures |
 
-## 10.1 Fraud Detection Example
+## Why not MongoDB or Redis as the primary ledger?
 
-Suppose a user normally makes payments of Rs. 100–2,000.
+They have different strengths and transaction models.
+
+MongoDB supports transactions, but relational databases are often a natural fit for financial ledgers and accounting relationships.
+
+Redis is excellent for caching and fast lookups, but should not be the authoritative financial ledger.
+
+PostgreSQL and Oracle provide mature transactional guarantees, relational constraints and operational tooling.
+
+For a new banking ledger, PostgreSQL is a strong option if its deployment, isolation, partitioning, backup and recovery strategy meets the bank's requirements.
+
+---
+
+# 8. Payment Processing Architecture
+
+A bank generally does not process every payment through the same mechanism.
+
+Different payment rails have different protocols, settlement models, participants and operational requirements.
+
+## Common Indian Payment Methods
+
+| Payment Method | Responsibility |
+|---|---|
+| UPI | Real-time account-to-account payments |
+| IMPS | Immediate interbank payments |
+| NEFT | Electronic funds transfer through settlement batches |
+| RTGS | Real-time gross settlement |
+| Debit/Credit Cards | Card-network-based payment processing |
+
+These payment methods involve external infrastructure and participating banks.
+
+## Example: UPI Payment
+
+Suppose Ritik sends ₹5,000 to Rahul using UPI.
+
+```text
+        Ritik's UPI App
+               |
+               v
+         PSP / UPI App
+               |
+               v
+          NPCI UPI
+               |
+               v
+        Remitter Bank
+               |
+          Validation
+               |
+        Debit Processing
+               |
+               v
+          NPCI UPI
+               |
+               v
+        Beneficiary Bank
+               |
+        Credit Processing
+               |
+               v
+         Rahul's Account
+               |
+               v
+         Confirmation
+```
+
+This is a simplified logical flow.
+
+Actual routing, messaging, authentication and settlement involve additional participants and processes.
+
+## Why is a Payment Switch Required?
+
+A payment switch routes transactions between participating financial institutions.
+
+It handles:
+
+- Transaction routing.
+- Message validation.
+- Bank identification.
+- Response handling.
+- Timeouts.
+- Duplicate requests.
+- Transaction status.
+
+## What happens if the recipient bank does not respond?
+
+The transaction may enter a pending or uncertain state.
+
+The system must not assume that a timeout means the transaction failed.
+
+It must perform status checks and reconciliation before deciding what corrective action is required.
+
+This is important because the sender may have been debited even though confirmation was not received.
+
+---
+
+# 9. Kafka and Event-Driven Architecture
+
+Banks process enormous numbers of events.
+
+For example, when a customer transfers money, multiple systems need to know about the transaction.
+
+- Notification Service sends an SMS.
+- Fraud Service evaluates transaction behavior.
+- Analytics Service records transaction metrics.
+- Statement Service updates transaction history.
+- Reporting Service processes relevant financial events.
+
+Should the Payment Service call all five services synchronously?
+
+Usually, no.
+
+This creates tight coupling and increases transaction latency.
+
+Instead, an event-driven architecture can be used.
+
+```text
+             Payment Service
+                    |
+                    v
+             Financial Database
+                    |
+                    v
+               Kafka Event
+                    |
+          +---------+----------+
+          |         |          |
+          v         v          v
+        Fraud   Notification Analytics
+        Service   Service    Service
+          |         |          |
+          v         v          v
+       Analysis    SMS       Reporting
+```
+
+## Technology: Apache Kafka
+
+Why Kafka?
+
+- High-throughput event streaming.
+- Persistent event storage.
+- Consumer groups.
+- Replayable events.
+- Horizontal scalability.
+- Decoupled services.
+
+## Why not simply use REST APIs?
+
+REST is appropriate for synchronous request-response operations.
+
+However, if every service must be called synchronously, a temporary failure in the notification system could affect the payment workflow unnecessarily.
+
+Kafka allows independent consumers to process events asynchronously.
+
+## Trade-offs
+
+| Advantages | Disadvantages |
+|---|---|
+| Loose coupling | Operational complexity |
+| High throughput | Eventual consistency |
+| Replayability | Duplicate processing is possible |
+| Independent scaling | Requires monitoring and partition management |
+
+## Transactional Outbox Pattern
+
+A financial transaction must not depend on an unreliable asynchronous event being published after the database commits.
+
+A common solution is the Transactional Outbox Pattern.
+
+The financial transaction and its corresponding outbox event are committed in the same database transaction.
+
+A separate publisher delivers the event to Kafka.
+
+Consumers should be idempotent because messages may be delivered more than once.
+
+---
+
+# 10. Database Architecture
+
+Banks do not necessarily use one database for everything.
+
+Different data types have different consistency and performance requirements.
+
+| Database | Responsibility | Why |
+|---|---|---|
+| Oracle | Core banking and financial records | Mature enterprise transaction processing |
+| PostgreSQL | Accounts, transactions, ledgers | ACID and relational integrity |
+| Redis | Caching, rate limits, temporary state | Low-latency access |
+| Cassandra | High-volume distributed workloads | Horizontal scalability |
+| Elasticsearch/OpenSearch | Search and log analysis | Full-text search and indexing |
+| Data Lake | Historical and analytical data | Large-scale analytics |
+
+## Source of Truth vs Read-Optimized Data
+
+The source of truth and the read-optimized data store should not be confused.
+
+For example:
+
+When a customer checks their balance, a bank may use a read-optimized service.
+
+However, the balance shown must have an appropriate freshness guarantee.
+
+A cached balance must never be used as the authority for approving a withdrawal.
+
+---
+
+# 11. Fraud Detection and Risk Management
+
+Banks must identify suspicious transactions.
+
+Consider the following situation:
+
+A customer normally makes transactions between ₹100 and ₹5,000.
 
 Suddenly:
 
-- Rs. 50,000 payment.
-- New device.
-- New beneficiary.
-- Multiple payment attempts.
-- Unusual transaction pattern.
+- A ₹2 lakh transaction occurs.
+- The transaction comes from a new device.
+- The IP address is from a different country.
+- Multiple failed login attempts occurred.
+- The beneficiary was recently added.
 
-A risk engine can evaluate these signals.
+The bank may calculate a risk score.
 
-Possible outcomes:
+### Illustrative Risk Scoring
 
-- Allow.
-- Block.
-- Apply additional verification where supported.
-- Flag for investigation.
+| Signal | Risk Contribution |
+|---|---:|
+| Unusual transaction amount | 25 |
+| New device | 15 |
+| Unusual location | 20 |
+| New beneficiary | 15 |
+| Suspicious behavioral pattern | 25 |
+| Total | 100 |
 
-Machine learning can assist with fraud detection, but rule-based controls and deterministic security checks remain important.
+### Illustrative Decision Rules
 
----
+```text
+Risk Score: 0-30
+    -> Allow transaction
 
-# 11. What Happens When Individual Components Fail?
+Risk Score: 31-60
+    -> Additional authentication
 
-A payment system must be designed around failure, not just successful requests.
+Risk Score: 61-80
+    -> Manual review or additional controls
 
-| Failure | Expected Handling |
+Risk Score: 81-100
+    -> Block or hold according to policy
+```
+
+Actual bank risk engines use more sophisticated rules, models, thresholds and regulatory requirements.
+
+## Technologies
+
+- Python.
+- Scikit-learn.
+- XGBoost.
+- TensorFlow.
+- PyTorch.
+- Apache Flink.
+- Kafka Streams.
+
+## Why Machine Learning?
+
+Rule-based systems are useful for known fraud patterns.
+
+Machine learning can help detect more complex behavioral patterns.
+
+However, machine learning is not automatically better.
+
+| Rule-Based | Machine Learning |
 |---|---|
-| PhonePe API unavailable | Retry safely or show service unavailable |
-| PSP bank unavailable | Keep transaction pending where appropriate |
-| NPCI timeout | Perform status enquiry |
-| Sender bank timeout | Do not assume debit failed |
-| Receiver bank unavailable | Follow UPI status/reversal process |
-| Kafka unavailable | Retain events in durable outbox |
-| Database unavailable | Stop accepting unsafe financial writes |
-| Notification service unavailable | Retry notification independently |
-| Redis unavailable | Fall back to authoritative data where safe |
+| Easy to understand | Can identify complex patterns |
+| Predictable | Requires model monitoring |
+| Easier to audit | Explainability can be difficult |
+| Limited adaptability | Can adapt through retraining |
 
-## 11.1 Important Resilience Patterns
-
-### 1. Circuit Breaker
-
-Stops repeatedly calling an unhealthy external dependency.
-
-### 2. Retry With Exponential Backoff
-
-Gradually increases retry intervals to avoid overwhelming a recovering service.
-
-### 3. Timeout
-
-Prevents requests from waiting indefinitely.
-
-### 4. Dead-Letter Queue
-
-Stores messages that cannot be successfully processed after configured attempts.
-
-### 5. Outbox Pattern
-
-Ensures that a database update and its corresponding event publication intent are committed together.
-
-### 6. Reconciliation
-
-Repairs discrepancies between internal records and external financial outcomes.
-
-**Important:** Retries are not universally safe. A read-only status enquiry can generally be retried differently from a financial debit request.
+Banks often use both.
 
 ---
 
-# 12. Why These Technologies and Not Alternatives?
+# 12. Infrastructure and Deployment Architecture
 
-| Requirement | Recommended Choice | Why Not the Alternative by Default? |
-|---|---|---|
-| Core payment services | Java/Spring Boot | Python may have less mature conventional enterprise payment ecosystem adoption |
-| Financial persistence | PostgreSQL | Redis lacks durable relational accounting capabilities |
-| Caching | Redis | PostgreSQL is not optimized for every low-latency cache access |
-| Event streaming | Kafka | Synchronous REST creates tight downstream dependencies |
-| API Gateway | Kong/Envoy | Direct service exposure increases coupling and security complexity |
-| Container orchestration | Kubernetes | Manual server management becomes operationally expensive at scale |
-| Monitoring | Prometheus/Grafana | Logs alone cannot provide comprehensive service health metrics |
-| File storage | S3 | Relational databases are inefficient for large document storage |
+Banking infrastructure needs high availability and disaster recovery.
 
-These are default architectural preferences, not universal rules.
+A bank cannot afford to have its entire digital banking system unavailable because one server or data center fails.
 
-## 12.1 Overall Advantages
+## Example Architecture
 
-- Horizontal scalability.
-- Independent services.
-- Asynchronous processing.
-- Better fault isolation.
-- Strong financial auditability.
-- Flexible technology choices.
-- Better operational visibility.
+```text
+                 CUSTOMERS
+                     |
+                LOAD BALANCER
+                     |
+             +-------+-------+
+             |               |
+          REGION A        REGION B
+             |               |
+        Application      Application
+          Cluster          Cluster
+             |               |
+        Database          Database
+          Primary       Replica / DR
+             |               |
+             +-------+-------+
+                     |
+              BACKUP SYSTEM
+```
 
-## 12.2 Overall Disadvantages
+## Technologies
 
-- High infrastructure cost.
-- Distributed debugging complexity.
-- Eventual consistency.
-- Complex deployments.
-- Complex data reconciliation.
-- Network dependency.
-- Requires specialized security expertise.
+| Technology | Responsibility |
+|---|---|
+| Kubernetes | Container orchestration |
+| Docker | Application packaging |
+| AWS/Azure | Cloud infrastructure |
+| Terraform | Infrastructure as Code |
+| Prometheus | Metrics collection |
+| Grafana | Monitoring dashboards |
+| ELK/OpenSearch | Centralized logging |
+| Vault/HSM | Secret and cryptographic key management |
 
----
+## Why Kubernetes?
 
-# 13. Important Interview Questions
+It helps with:
 
-These questions test whether you understand the architecture rather than just memorizing technologies.
-
-1. Why does PhonePe need NPCI when it already has its own backend?
-2. What is the difference between TPAP, PSP Bank and Issuer Bank?
-3. What happens if money is debited but the PhonePe application shows pending?
-4. How do you prevent duplicate payment requests?
-5. Why can't you use a normal database transaction across PhonePe, NPCI and banks?
-6. Why use Kafka instead of synchronous REST communication?
-7. Why should Redis never be the authoritative payment ledger?
-8. How would you design a transaction state machine?
-9. How do you guarantee that a payment event is not lost?
-10. How does reconciliation work?
-11. What happens if Kafka is unavailable after a successful payment?
-12. How would you handle 10 million concurrent users?
-13. How would you partition the payment database?
-14. How do you prevent a fraudster from making payments using a compromised device?
-15. What is the difference between payment processing and settlement?
-16. Why is eventual consistency acceptable for notifications but not for financial accounting?
-17. How would you design a payment-status enquiry API?
-18. How would you implement a circuit breaker for a bank integration?
-19. How do you handle out-of-order payment events?
-20. What is the difference between at-most-once, at-least-once and effectively-once processing?
-
----
-
-# 14. What Should You Learn From This Architecture?
-
-As a full-stack engineer progressing towards software architecture, don't start by memorizing 20 technologies.
-
-Understand these six concepts deeply.
-
-## 14.1 Distributed Systems
-
-Understand:
-- Service communication.
-- Network failures.
-- Timeouts.
-- Retries.
-- Consistency.
-
-## 14.2 Database Transactions
-
-Understand:
-- ACID.
-- Isolation levels.
-- Constraints.
-- Indexing.
-- Double-entry accounting.
-
-## 14.3 Event-Driven Architecture
-
-Understand:
-- Kafka.
-- Consumers.
-- Partitions.
-- Ordering.
-- Delivery guarantees.
-- Outbox pattern.
-
-## 14.4 Reliability Engineering
-
-Understand:
-- Idempotency.
-- Circuit breakers.
-- Reconciliation.
-- Disaster recovery.
-- Observability.
-
-## 14.5 Security Engineering
-
-Understand:
-- Authentication.
-- Authorization.
-- Encryption.
-- Key management.
-- Fraud prevention.
-
-## 14.6 Scalability
-
-Understand:
-- Load balancing.
+- Container orchestration.
+- Automatic workload recovery.
 - Horizontal scaling.
-- Database partitioning.
-- Caching.
-- Capacity planning.
+- Deployment management.
+- Service discovery.
+
+## Why not deploy everything on a single EC2 instance?
+
+Because banking applications require resilience, scalability, controlled deployment and fault isolation.
+
+However, Kubernetes is not mandatory for every banking workload.
+
+Mainframe systems, virtual machines, managed platforms and bare-metal environments remain relevant.
+
+Kubernetes also does not automatically solve database high availability or cross-region consistency.
 
 ---
 
-# 15. Reference Materials
+# 13. How Does a Bank Handle Millions of Customers?
 
-1. PhonePe Official UPI Terms and Conditions – TPAP, PSP banks and participant responsibilities.
-2. NPCI UPI Frequently Asked Questions – UPI functionality, account linking and reversals.
-3. RBI documentation – Payment system regulations and UPI ecosystem.
-4. Apache Kafka Documentation – Event streaming and distributed messaging.
-5. PostgreSQL Documentation – Transactions, indexing and database consistency.
-6. Redis Documentation – Caching and data structures.
-7. OpenTelemetry Documentation – Distributed tracing and observability.
+Suppose a bank has:
+
+- 50 million registered customers.
+- 5 million daily active customers.
+- 500,000 concurrent users during peak periods.
+- Millions of transactions per day.
+
+These numbers are illustrative.
+
+The bank cannot handle this load by simply increasing the capacity of one server.
+
+It uses several techniques.
+
+## A. Horizontal Scaling
+
+Instead of one payment service:
+
+```text
+Payment Service
+```
+
+Deploy multiple instances:
+
+```text
+Load Balancer
+      |
+  +---+---+
+  |   |   |
+ P1  P2  P3
+  |   |   |
+  +---+---+
+      |
+   Database
+```
+
+## B. Database Partitioning
+
+Financial records can be partitioned based on suitable keys and access patterns.
+
+For example:
+
+- Customer ID.
+- Account ID.
+- Transaction date.
+- Geographic or regulatory boundaries.
+
+The partitioning strategy must preserve transaction correctness.
+
+## C. Caching
+
+Frequently accessed information can be cached.
+
+Examples:
+
+- Product information.
+- Branch details.
+- Customer preferences.
+- Non-authoritative account display data.
+
+## D. Asynchronous Processing
+
+Non-critical tasks can happen independently.
+
+Examples:
+
+- Notifications.
+- Analytics.
+- Statement generation.
+- Some reporting workloads.
+
+## E. Geographic Distribution
+
+Banks may distribute services and infrastructure across regions to reduce latency and improve availability.
+
+However, financial writes need carefully designed consistency and failover rules.
 
 ---
 
-# 16. Final Architectural Takeaway
+# 14. How Does Banking Architecture Handle Failures?
 
-The most important lesson from a payment system is that processing a payment is not simply an API call that deducts money.
+Consider five scenarios.
 
-It is a distributed workflow involving multiple independent systems.
+| Failure | Required Behavior |
+|---|---|
+| Customer clicks Pay twice | Prevent duplicate financial execution |
+| Payment service crashes | Recover transaction state |
+| Database crashes | Recover committed transactions |
+| Recipient bank times out | Reconcile transaction status |
+| Kafka becomes unavailable | Preserve committed events in outbox for later delivery |
 
-A production-grade payment architecture must handle:
+## 14.1 Idempotency
 
-- Financial correctness.
-- Authentication.
-- Duplicate requests.
-- Network failures.
-- Transaction status ambiguity.
-- Asynchronous processing.
-- Reconciliation.
-- Security.
-- Scalability.
-- Auditability.
+Suppose Ritik clicks Pay twice because the application freezes.
 
-The next important area to study is the internal design of the Payment Service itself:
+Without protection, the system might process two payments.
 
-1. Payment APIs.
-2. Database schema.
-3. Transaction state machine.
-4. Idempotency implementation.
-5. Kafka outbox.
-6. Retry strategy.
-7. Reconciliation engine.
+The application sends:
 
-These are where the most important senior and staff-level engineering decisions happen.
+```http
+POST /api/payments
+Idempotency-Key: payment-123456
+```
+
+The backend stores the key with the transaction result.
+
+If the same request arrives again, the backend returns the existing result rather than executing another transfer.
+
+The key must be associated with the authenticated customer and appropriate request parameters.
+
+## 14.2 Reconciliation
+
+Suppose:
+
+- Ritik's bank debits ₹10,000.
+- The receiving bank does not return confirmation.
+- The payment remains pending.
+
+The bank cannot simply assume that the money has disappeared.
+
+It must reconcile internal transaction records with external payment-network records and determine whether to confirm, reverse or continue processing.
+
+This is a critical banking operation.
+
+---
+
+# 15. Security Architecture
+
+Security is not one microservice. It is a cross-cutting architectural requirement.
+
+| Component | Responsibility |
+|---|---|
+| WAF | Web attack protection |
+| IAM | Identity and access management |
+| MFA | Strong authentication |
+| HSM | Cryptographic key protection |
+| TLS | Encryption in transit |
+| Encryption at rest | Protect stored information |
+| RBAC/ABAC | Authorization |
+| SIEM | Security monitoring |
+| Audit logs | Traceability |
+| Fraud engine | Financial risk detection |
+
+## Important Security Principles
+
+1. Never store passwords in plaintext.
+2. Never log OTPs, PINs or sensitive credentials.
+3. Apply least-privilege access.
+4. Encrypt sensitive information.
+5. Use hardware-backed key management where required.
+6. Separate operational permissions from financial approval permissions.
+7. Maintain tamper-resistant audit trails.
+8. Implement transaction limits and velocity checks.
+
+For Indian banks, regulatory requirements from RBI and applicable payment-system requirements must also influence architecture.
+
+---
+
+# 16. Customer, Account, Mobile Number and Device Relationships
+
+This is an important architectural concept.
+
+A customer, bank account, mobile number and device are separate entities.
+
+## Can a Customer Have the Same Savings Account on Different Mobile Numbers?
+
+Yes, depending on the bank's policies and account configuration.
+
+However, a bank account is not duplicated for every mobile number.
+
+There are three common scenarios.
+
+### Scenario A: Single Account, Single Registered Mobile Number
+
+```text
+Customer: Ritik
+     |
+Customer ID: CIF-1001
+     |
+Savings Account: ACC-1001
+     |
+Registered Mobile: 9876543210
+```
+
+Transaction alerts go to the registered number and other configured channels.
+
+### Scenario B: Joint Account, Multiple Account Holders
+
+```text
+       Joint Savings Account
+                |
+         +------+------+
+         |             |
+       Ritik         Rahul
+         |             |
+      Mobile A      Mobile B
+```
+
+Both customers may have separate customer identities and mobile numbers.
+
+Whether both receive transaction alerts depends on the bank's account mandate, customer-level registration and notification policies.
+
+### Scenario C: Same Customer with Multiple Registered Devices
+
+```text
+         Customer: Ritik
+                |
+         Savings Account
+                |
+         Mobile Banking
+                |
+          +-----+-----+
+          |           |
+       Device A    Device B
+       iPhone       Android
+```
+
+A bank may allow multiple registered devices, subject to its security policy.
+
+The devices do not create separate bank accounts or independent balances.
+
+**Important:** Multiple phone numbers and multiple devices are different things.
+
+A bank may permit multiple devices while sending SMS transaction alerts only to the registered contact number.
+
+---
+
+# 17. What Happens When a Customer Changes Their Mobile Number?
+
+Suppose Ritik originally registered:
+
+- Mobile A: 9876543210.
+- Account: ACC-1001.
+
+He changes his number to:
+
+- Mobile B: 9123456780.
+
+The account does not change. The bank updates the customer's registered contact information after verification.
+
+## Mobile Number Change Flow
+
+```text
+Customer requests mobile number change
+                |
+                v
+        Identity verification
+                |
+                v
+     Bank performs risk checks
+                |
+                v
+       New number verification
+                |
+                v
+      Update customer profile
+                |
+                v
+     Update account associations
+                |
+                v
+     Update notification routing
+                |
+                v
+      Confirmation notification
+```
+
+Depending on the bank, verification may involve:
+
+- Branch-based verification.
+- ATM-based verification.
+- Existing registered mobile number.
+- Debit card authentication.
+- Other approved identity verification methods.
+
+The old number should not automatically remain an authorized notification destination after a successful change unless the bank's policy specifically provides otherwise.
+
+**Architectural point:** Mobile number changes are customer-profile events, not account-creation events.
+
+---
+
+# 18. How Does the Bank Know Where to Send Notifications?
+
+A bank maintains separate records for customers, accounts, contact details, devices and notification preferences.
+
+## Customer Table
+
+| customer_id | name |
+|---|---|
+| C001 | Ritik |
+| C002 | Rahul |
+
+## Account Table
+
+| account_id | account_type |
+|---|---|
+| A001 | Savings |
+| A002 | Savings |
+
+## Account Holders Table
+
+| account_id | customer_id | relationship |
+|---|---|---|
+| A001 | C001 | Primary |
+| A001 | C002 | Joint |
+| A002 | C001 | Primary |
+
+## Customer Contacts Table
+
+| contact_id | customer_id | mobile | verified |
+|---|---|---|---|
+| M001 | C001 | 9876543210 | Yes |
+| M002 | C002 | 9123456780 | Yes |
+
+## Registered Devices Table
+
+| device_id | customer_id | device |
+|---|---|---|
+| D001 | C001 | iPhone |
+| D002 | C001 | Android |
+| D003 | C002 | Android |
+
+Notice:
+
+- C001 has two accounts.
+- C001 has two registered devices.
+- A001 has two account holders.
+- Mobile numbers belong to customer records, not necessarily directly to bank accounts.
+
+Some banks instead maintain account-level contact preferences or primary-holder notification rules.
+
+The actual schema depends on the bank's core banking platform.
+
+---
+
+# 19. What Exactly Triggers a Bank Notification?
+
+A notification is generally triggered by a business event, not simply because someone clicked a button in the frontend.
+
+Consider Ritik transferring ₹10,000.
+
+## Complete Event Flow
+
+```text
+1. Customer initiates payment
+           |
+           v
+2. Payment API receives request
+           |
+           v
+3. Authentication and authorization
+           |
+           v
+4. Fraud and transaction validation
+           |
+           v
+5. Transaction Engine processes payment
+           |
+           v
+6. Ledger transaction commits
+           |
+           v
+7. Payment status changes to SUCCESS
+           |
+           v
+8. Transaction event is created
+           |
+           v
+9. Event published to Kafka
+           |
+           v
+10. Notification Service consumes event
+           |
+           v
+11. Fetch notification recipients
+           |
+           v
+12. Fetch notification preferences
+           |
+           v
+13. Generate notification message
+           |
+           v
+14. Send through notification channels
+           |
+      +----+---------+
+      |    |         |
+      SMS  Email    Push
+```
+
+The critical detail is step 6.
+
+The bank should not send a successful-payment notification merely because the API received a request.
+
+It should send it when the relevant transaction reaches the appropriate confirmed state.
+
+For an external payment, that may require additional confirmation from the payment network or recipient bank.
+
+## Events That Trigger Notifications
+
+| Event | Notification |
+|---|---|
+| ACCOUNT_CREATED | Account opening confirmation |
+| MONEY_CREDITED | Credit alert |
+| MONEY_DEBITED | Debit alert |
+| PAYMENT_PENDING | Payment pending notification |
+| PAYMENT_FAILED | Payment failure notification |
+| PAYMENT_REVERSED | Reversal confirmation |
+| MOBILE_NUMBER_CHANGED | Contact change confirmation |
+| NEW_DEVICE_REGISTERED | New device registration alert |
+| PASSWORD_CHANGED | Password change alert |
+| BENEFICIARY_ADDED | Beneficiary registration alert |
+| CARD_BLOCKED | Card blocking confirmation |
+| LARGE_TRANSACTION_DETECTED | Security alert |
+
+These are illustrative internal event names, not standardized banking event names.
+
+---
+
+# 20. How Does the Notification Service Decide Who Receives the Notification?
+
+Consider Ritik and Rahul sharing a joint account.
+
+Ritik transfers ₹10,000 from their account.
+
+The transaction event might look like this:
+
+```json
+{
+  "eventId": "EVT-10001",
+  "eventType": "MONEY_DEBITED",
+  "transactionId": "TXN-10001",
+  "accountId": "A001",
+  "amount": 10000,
+  "currency": "INR",
+  "status": "SUCCESS",
+  "timestamp": "2026-11-17T10:30:00Z"
+}
+```
+
+The Notification Service receives this event.
+
+## Step 1: Identify the Account Holders
+
+```sql
+SELECT account_id, customer_id, relationship
+FROM account_holders
+WHERE account_id = 'A001';
+```
+
+Result:
+
+```text
+A001 -> C001 (Ritik)
+A001 -> C002 (Rahul)
+```
+
+## Step 2: Fetch Eligible Notification Recipients
+
+```sql
+SELECT customer_id, mobile_number, email
+FROM customer_notification_contacts
+WHERE customer_id IN ('C001', 'C002')
+AND transaction_alerts_enabled = TRUE;
+```
+
+## Step 3: Apply Bank Policies
+
+The service determines:
+
+- Should only the primary account holder receive alerts?
+- Should all joint account holders receive alerts?
+- Are there customer-level notification preferences?
+- Are there account-level notification preferences?
+- Is the mobile number verified?
+- Is the channel enabled?
+
+## Step 4: Dispatch Notifications
+
+```text
+Ritik  -> SMS / Push / Email
+Rahul  -> SMS / Push / Email
+```
+
+The result depends on the bank's configured notification policy.
+
+This is why a bank can send notifications to different mobile numbers without maintaining separate savings accounts for every number.
+
+---
+
+# 21. How Are SMS, Email and Push Notifications Actually Delivered?
+
+The Notification Service generally integrates with external communication providers.
+
+```text
+              Notification Service
+                       |
+             +---------+---------+
+             |         |         |
+             v         v         v
+            SMS      Email      Push
+             |         |         |
+             v         v         v
+          SMS API   Email API   FCM/APNs
+             |         |         |
+             v         v         v
+          Telecom   Mailbox   Mobile Device
+          Operator
+```
+
+## A. SMS Notification
+
+```text
+Notification Service
+        |
+        v
+     SMS API
+        |
+        v
+    SMS Gateway
+        |
+        v
+  Telecom Operator
+        |
+        v
+ Customer's SIM
+```
+
+The SMS provider sends the message to the phone number supplied by the bank.
+
+It does not need to know which mobile banking application is installed.
+
+## B. Push Notification
+
+Push notifications work differently.
+
+Suppose Ritik has installed the banking application on two phones.
+
+Both devices register with the bank's mobile backend.
+
+The application obtains device-specific push tokens through:
+
+- Firebase Cloud Messaging (FCM) on Android.
+- Apple Push Notification Service (APNs) on iOS.
+
+The backend stores these tokens against registered devices.
+
+```text
+Customer C001
+      |
+      +-- Device D001
+      |      |
+      |      +-- Push Token P001
+      |
+      +-- Device D002
+             |
+             +-- Push Token P002
+```
+
+When a transaction occurs:
+
+```text
+Notification Service
+        |
+        v
+   Device Registry
+        |
+   +----+-----+
+   |          |
+ Token P001  Token P002
+   |          |
+   v          v
+  FCM        FCM
+   |          |
+ Phone 1    Phone 2
+```
+
+Both devices can receive notifications if both are registered and eligible.
+
+Notice that push notifications are routed using device tokens, whereas SMS is routed using mobile numbers.
+
+These are two entirely different notification delivery mechanisms.
+
+---
+
+# 22. What If a Customer Uses Another Phone with a Different SIM?
+
+Consider:
+
+- Bank-registered number: 9876543210.
+- New phone SIM: 9123456780.
+- Banking application installed on the new phone.
+
+The bank cannot assume that the new SIM belongs to the same customer.
+
+The bank must establish the customer's identity and register the device through its approved security process.
+
+## Device Registration Flow
+
+```text
+New phone opens banking application
+                |
+                v
+       Device identification
+                |
+                v
+       Customer authentication
+                |
+                v
+      Mobile number verification
+                |
+                v
+         Device binding
+                |
+                v
+       Risk / security checks
+                |
+                v
+       Device registration
+                |
+                v
+      Registration notification
+                |
+                v
+        Banking access enabled
+```
+
+If the bank supports multiple registered devices, it must maintain a device registry and provide the customer with a way to disable registered devices.
+
+A particularly important distinction:
+
+Installing an application on a new phone does not automatically authorize that phone to perform financial transactions.
+
+Device binding and transaction authentication are separate security controls.
+
+---
+
+# 23. What Happens If Notification Delivery Fails?
+
+Suppose the payment succeeds, but the SMS provider is unavailable.
+
+Should the bank reverse the payment?
+
+No.
+
+Notification delivery and financial transaction execution are separate processes.
+
+The bank should preserve the successful financial transaction and retry notification delivery independently.
+
+## Failure Handling
+
+```text
+Payment SUCCESS
+      |
+      v
+Event persisted in Outbox
+      |
+      v
+Kafka publishes event
+      |
+      v
+Notification Service
+      |
+      v
+SMS provider unavailable
+      |
+      v
+Retry mechanism
+      |
+      +-- Success -> Mark delivered
+      |
+      +-- Failure -> Retry / Dead Letter Queue
+```
+
+The system should maintain separate statuses:
+
+| Status | Meaning |
+|---|---|
+| Transaction SUCCESS | Money movement confirmed |
+| Notification PENDING | Notification not yet processed |
+| Notification SENT | Provider accepted the request |
+| Notification DELIVERED | Delivery confirmed, if provider supports it |
+| Notification FAILED | Delivery unsuccessful |
+
+Never confuse notification delivered with payment successful.
+
+---
+
+# 24. What Triggers the Process: Database Triggers or Application Events?
+
+As a backend engineer, you should understand this distinction.
+
+There are three possible mechanisms.
+
+| Mechanism | How it works | Recommendation |
+|---|---|---|
+| Database Trigger | Database detects INSERT/UPDATE and executes logic | Use selectively |
+| Application Domain Event | Business service emits an event after a state transition | Recommended |
+| Transactional Outbox | Business transaction stores an event in the same database transaction | Strong production choice |
+
+For a banking system, I would prefer:
+
+**Domain Events + Transactional Outbox + Kafka + Notification Service.**
+
+## Why?
+
+A database trigger that directly calls an SMS API introduces external dependencies into the financial database transaction.
+
+That is undesirable.
+
+Instead:
+
+1. Payment service processes the transaction.
+2. Ledger entries are committed.
+3. An outbox event is committed in the same database transaction.
+4. An outbox publisher sends the event to Kafka.
+5. Notification service consumes it.
+6. The service resolves recipients.
+7. SMS, email and push providers deliver it.
+
+This gives us independent failure handling and reliable event publication.
+
+---
+
+# 25. Database Design for the Complete Banking System
+
+If implementing this using Node.js and PostgreSQL, I would consider the following schema.
+
+| Table | Responsibility |
+|---|---|
+| customers | Customer identity |
+| accounts | Bank accounts |
+| account_holders | Customer-account relationship |
+| customer_contacts | Mobile numbers and email |
+| notification_preferences | Alert preferences |
+| registered_devices | Authorized devices |
+| device_push_tokens | FCM/APNs tokens |
+| transactions | Financial transaction records |
+| ledger_entries | Debit and credit records |
+| outbox_events | Reliable event publication |
+| notification_logs | Notification processing and delivery status |
+
+## Important Database Relationships
+
+```text
+CUSTOMERS
+    |
+    +---- CUSTOMER_CONTACTS
+    |
+    +---- REGISTERED_DEVICES
+    |
+    +---- ACCOUNT_HOLDERS
+                  |
+                  v
+               ACCOUNTS
+                  |
+                  v
+              TRANSACTIONS
+                  |
+                  v
+              LEDGER_ENTRIES
+
+TRANSACTIONS
+    |
+    v
+OUTBOX_EVENTS
+    |
+    v
+KAFKA
+    |
+    v
+NOTIFICATION_SERVICE
+    |
+    v
+NOTIFICATION_LOGS
+```
+
+**Important design rule:** Never use a mobile number as the primary identifier of a bank customer.
+
+Use an immutable customer ID and maintain mobile numbers as independently verifiable contact attributes.
+
+The mobile number can change. The customer's identity and account ownership should not change merely because the contact number changes.
+
+---
+
+# 26. Production Architecture: How I Would Design a New Digital Banking Platform
+
+If I were architecting a new digital banking platform, I would separate financial correctness from customer-facing features.
+
+## Proposed Architecture
+
+```text
+                    CLIENT LAYER
+              React / Android / iOS
+                         |
+                         v
+                   API GATEWAY
+                         |
+                         v
+                  IDENTITY SERVICE
+                         |
+                         v
+                 ACCOUNT / CUSTOMER
+                         |
+                         v
+                  PAYMENT SERVICE
+                         |
+              +----------+----------+
+              |                     |
+              v                     v
+        FRAUD ENGINE          PAYMENT SWITCH
+              |                     |
+              +----------+----------+
+                         |
+                         v
+                 TRANSACTION ENGINE
+                         |
+                         v
+                   LEDGER SERVICE
+                         |
+                         v
+                 POSTGRESQL / ORACLE
+                         |
+                    OUTBOX TABLE
+                         |
+                         v
+                       KAFKA
+                         |
+           +-------------+-------------+
+           |             |             |
+           v             v             v
+      NOTIFICATION    ANALYTICS     AUDIT /
+        SERVICE        SERVICE     REPORTING
+```
+
+## Recommended Technology Decisions
+
+| Component | My Choice | Reason |
+|---|---|---|
+| Frontend | React + TypeScript | Maintainable web application |
+| Backend | Java + Spring Boot | Mature enterprise ecosystem |
+| API Gateway | Kong | Flexible API management |
+| Database | PostgreSQL | ACID and relational integrity |
+| Cache | Redis | Fast non-authoritative lookups |
+| Messaging | Kafka | Durable event streaming |
+| Fraud | Python | Mature data science ecosystem |
+| Deployment | Kubernetes | Workload orchestration |
+| Monitoring | Prometheus + Grafana | Operational visibility |
+
+One important design decision:
+
+I would initially keep the financial ledger and transaction engine within a tightly controlled transactional boundary rather than immediately splitting every financial operation into independent microservices.
+
+I would introduce additional service boundaries only when there is a clear scaling, ownership, security or deployment requirement.
+
+This avoids distributed transactions and unnecessary complexity in the most sensitive part of the system.
+
+---
+
+# 27. Technology Stack – Consolidated View
+
+Here is an example of a modern banking technology stack.
+
+| Layer | Example Technology | Purpose |
+|---|---|---|
+| Web Frontend | React | Banking web application |
+| Mobile | Kotlin / Swift | Mobile banking |
+| API Gateway | Kong / Apigee | API management |
+| Backend | Java / Spring Boot | Financial business logic |
+| Legacy Core | COBOL / Mainframe | Existing core banking workloads |
+| Authentication | Keycloak / OIDC | Identity management |
+| Primary Database | Oracle / PostgreSQL | Financial records |
+| Cache | Redis | Fast data access |
+| Event Streaming | Kafka | Asynchronous communication |
+| Fraud Detection | Python / XGBoost | Risk analysis |
+| Stream Processing | Flink | Real-time analytics |
+| Search | OpenSearch | Search and indexing |
+| Containers | Docker | Application packaging |
+| Orchestration | Kubernetes | Deployment |
+| Cloud | AWS / Azure / Private Cloud | Infrastructure |
+| Monitoring | Prometheus / Grafana | Observability |
+| Push Notifications | FCM / APNs | Mobile device notifications |
+| SMS | SMS Gateway | Telecom delivery |
+| Email | Email Provider | Email delivery |
+
+These are candidate technologies and examples, not a verified inventory of any particular bank's production stack.
+
+---
+
+# 28. Why Banks Don't Use One Technology for Everything
+
+This is an important architectural decision.
+
+| Requirement | Selected Approach | Why Not Alternatives? |
+|---|---|---|
+| Financial ledger | PostgreSQL / Oracle | Redis is not suitable as the authoritative ledger |
+| Real-time event streaming | Kafka | REST alone creates tight coupling |
+| Authentication | OIDC / OAuth-based identity | Basic username/password is insufficient |
+| Caching | Redis | Relational databases are inefficient for every cache lookup |
+| Fraud detection | Rules + ML | Rules alone cannot identify every complex pattern |
+| Financial processing | ACID transactions | Eventual consistency alone is insufficient

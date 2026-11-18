@@ -672,3 +672,35 @@ I first execute the synchronous code, then process microtasks such as Promise ca
 
 This helps me determine the exact execution order and output of a JavaScript program.
 
+
+# A. VAR VS LET IN FOR LOOPS
+
+## 1. What will be the output and why?
+
+```javascript
+for (var i = 1; i <= 3; i++) console.log(i);
+```
+
+Output:
+```text
+1
+2
+3
+```
+
+Explanation: `var` is function-scoped, and `console.log(i)` executes during each iteration after the current value is assigned.
+
+## 2. What will be the output and why?
+
+```javascript
+for (let i = 1; i <= 3; i++) console.log(i);
+```
+
+Output:
+```text
+1
+2
+3
+```
+
+Explanation: `let` is block-scoped. A new binding of `i` is created for each loop iteration, and its current value is logged.
